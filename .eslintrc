@@ -1,0 +1,26 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "extends": [ 
+  "eslint:recommended", 
+  "prettier"  
+  ],
+  "rules": {
+    "no-console": 1,
+    "prettier/prettier": 2,
+    "semi": 2
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "script",
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "binaryLiterals": true,
+      "blockBindings": true,
+      "classes": true
+    }
+  }
+}
