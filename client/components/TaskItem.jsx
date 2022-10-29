@@ -4,13 +4,13 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
-import { Box, IconButton } from '@mui/material'
+import { Box, Checkbox, IconButton } from '@mui/material'
 import { delTaskByTaskId, taskCompleted } from '../apis/tasks'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditTaskForm from './forms/EditTaskForm'
 import { useState } from 'react'
 
-const TaskItem = ({ task, setUpdate }) => {
+const TaskItem = ({ task, setUpdate, setGroup }) => {
   const [editFormOpen, setEditFormOpen] = useState(false)
   const { taskId, name, description, deadline } = task
 
@@ -34,6 +34,20 @@ const TaskItem = ({ task, setUpdate }) => {
     setUpdate((n) => n + 1)
   }
 
+  // When checked, save the task's id in state. When unchecked, remove the task's id from state.
+  const handleChecked = (event) => {
+    if (event.target.checked) {
+      setGroup((group) => {
+        return { ...group, [taskId]: true }
+      })
+    } else {
+      setGroup((group) => {
+        delete group[taskId]
+        return group
+      })
+    }
+  }
+
   return (
     <>
       <EditTaskForm
@@ -54,6 +68,10 @@ const TaskItem = ({ task, setUpdate }) => {
           <DeleteIcon />
         </IconButton>
       </Box>
+      <Checkbox
+        onChange={(event) => handleChecked(event)}
+        inputProps={{ 'aria-label': 'controlled' }}
+      />
       <Paper>
         <Accordion>
           <AccordionSummary>
