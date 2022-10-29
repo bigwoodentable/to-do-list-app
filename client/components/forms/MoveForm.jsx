@@ -42,13 +42,13 @@ const MoveForm = ({
   }
 
   const handleSubmit = (value) => {
-    if (group === {}) {
-      alert('Sorry, no tasks were selected. Please select tasks first.')
+    if (!value.listId) {
+      alert('Sorry, please pick a list.')
       return null
+    } else {
+      const listid = Number(value.listId)
+      moveGroup(listid)
     }
-
-    const listid = Number(value.listId)
-    moveGroup(listid)
   }
 
   return (

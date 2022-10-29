@@ -21910,12 +21910,13 @@ var MoveForm = function MoveForm(_ref) {
     });
   };
   var handleSubmit = function handleSubmit(value) {
-    if (group === {}) {
-      alert('Sorry, no tasks were selected. Please select tasks first.');
+    if (!value.listId) {
+      alert('Sorry, please pick a list.');
       return null;
+    } else {
+      var listid = Number(value.listId);
+      moveGroup(listid);
     }
-    var listid = Number(value.listId);
-    moveGroup(listid);
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["default"], {
     open: moveFormOpen,
