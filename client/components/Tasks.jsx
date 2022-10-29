@@ -2,19 +2,30 @@ import React, { useState } from 'react'
 import TaskItem from './TaskItem.jsx'
 import { useStateIfMounted } from 'use-state-if-mounted'
 import AddTaskForm from './forms/AddTaskForm.jsx'
+import ListComponent from './ListComponent.jsx'
 import { Box } from '@mui/system'
 import { IconButton } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
+import { tasksMockData, listsMockData, allLists } from './mockdata'
+import { useEffect } from 'react'
+import { getAllLists } from '../apis/lists.js'
 
-const tasksMockData = [
-  { name: 'cook', description: 'Cookign Class', deadline: '010101' },
-  { name: 'clean', description: 'Cleaning class', deadline: '010101' },
-  { name: 'wash', description: 'Washing Class', deadline: '010101' },
+/*
+data shape:
+[
+  { list_name: 'Kitchen', tasks: [] },
+  { list_name: 'Kitchen', tasks: [] },
+  { list_name: 'Kitchen', tasks: [] },
 ]
+*/
 
 function Tasks() {
-  const [tasks, setTasks] = useStateIfMounted(tasksMockData)
+  const [lists, setLists] = useStateIfMounted([])
   const [open, setOpen] = useState(false)
+
+  useEffect(async () => {
+    setLists(await getAllLists())
+  }, [])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -24,19 +35,18 @@ function Tasks() {
     setOpen(false)
   }
 
-  return (
-    <React.Fragment>
-      <AddTaskForm open={open} handleClose={handleClose} setTasks={setTasks} />
+  return lists.map((listItem, i) => (
+    <React.Fragment key={i}>
+      {/* <AddTaskForm open={open} handleClose={handleClose} setTasks={setTasks} /> */}
+      <AddTaskForm open={open} handleClose={handleClose} />
       <Box display="flex" justifyContent="flex-end">
         <IconButton color="primary" size="large" onClick={handleClickOpen}>
           <EditIcon />
         </IconButton>
       </Box>
-      {tasks.map((task, i) => (
-        <TaskItem key={i} task={task} setTasks={setTasks} />
-      ))}
+      <ListComponent key={i} listItem={listItem} />
     </React.Fragment>
-  )
+  ))
 }
 
 export default Tasks
