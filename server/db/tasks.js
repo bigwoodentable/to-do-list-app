@@ -15,7 +15,11 @@ const addTaskByListId = (task, db = connection) => {
 const getTasksByListId = (listId, db = connection) => {
   return db('tasks')
     .where('lists_id', listId)
-    .select('name', 'description', 'deadline')
+    .select('id as taskId', 'name', 'description', 'deadline')
 }
 
-module.exports = { getTasksByListId, addTaskByListId }
+function delTaskByTaskId(taskId, db = connection) {
+  return db('tasks').where('id', taskId).del()
+}
+
+module.exports = { getTasksByListId, addTaskByListId, delTaskByTaskId }

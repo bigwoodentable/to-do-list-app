@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { getAllLists } from '../apis/lists.js'
 // Delete this when refactoring
 import { tasksMockData, listsMockData, allLists } from './mockdata'
+import { useRef } from 'react'
 
 /*
 data shape:
@@ -20,13 +21,15 @@ data shape:
 ]
 */
 
+// Consider renaming this component
 function Tasks() {
   const [lists, setLists] = useStateIfMounted([])
   const [open, setOpen] = useState(false)
+  const update = useRef(0)
 
   useEffect(async () => {
     setLists(await getAllLists())
-  }, [open])
+  }, [update])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -42,13 +45,14 @@ function Tasks() {
         open={open}
         handleClose={handleClose}
         listId={listItem.listId}
+        update={update}
       />
       <Box display="flex" justifyContent="flex-end">
         <IconButton color="primary" size="large" onClick={handleClickOpen}>
           <EditIcon />
         </IconButton>
       </Box>
-      <ListComponent key={i} listItem={listItem} />
+      <ListComponent key={i} listItem={listItem} update={update} />
     </React.Fragment>
   ))
 }

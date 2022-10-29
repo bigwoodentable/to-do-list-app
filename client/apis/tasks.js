@@ -10,3 +10,8 @@ export function addTaskByListId(task, handleClose) {
     .then((res) => res.body)
     .then(handleClose())
 }
+
+// /api/v1/tasks/del/:id
+export function delTaskByTaskId(taskId) {
+  return request.delete(rootUrl + `/del/${taskId}`).then(() => null)
+}

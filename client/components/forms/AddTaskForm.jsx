@@ -9,7 +9,7 @@ const initialValues = {
   deadline: '',
 }
 
-function AddTaskForm({ open, handleClose, listId }) {
+function AddTaskForm({ open, handleClose, listId, update }) {
   const handleSubmit = (task) => {
     //add task to db
     const taskWithListId = {
@@ -17,6 +17,7 @@ function AddTaskForm({ open, handleClose, listId }) {
       listId,
     }
     addTaskByListId(taskWithListId, handleClose)
+    update.current += 1
   }
 
   return (

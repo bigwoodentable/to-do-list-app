@@ -22,4 +22,13 @@ router.post('/add', async (req, res) => {
   }
 })
 
+// /api/v1/tasks/del/:taskId
+
+router.delete('/del/:taskId', (req, res) => {
+  const taskId = req.params.taskId
+  db.delTaskByTaskId(taskId)
+    .then(() => res.json('success in deleting the report'))
+    .catch((err) => console.error(error))
+})
+
 module.exports = router

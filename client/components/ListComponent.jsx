@@ -3,15 +3,14 @@ import { Box } from '@mui/system'
 import React from 'react'
 import TaskItem from './TaskItem'
 
-function ListComponent({ listItem }) {
+function ListComponent({ listItem, update }) {
   const { listName, tasks } = listItem
 
   return (
     <Box>
       <Typography>{listName}</Typography>
       {tasks.map((task, i) => {
-        return <TaskItem key={i} task={task} />
-        // return <TaskItem key={i} task={task} setLists={setLists} />
+        return <TaskItem key={i} task={task} update={update} />
       })}
     </Box>
   )
