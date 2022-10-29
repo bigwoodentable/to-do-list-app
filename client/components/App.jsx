@@ -1,7 +1,7 @@
 import React from 'react'
 import Tasks from './Tasks'
 
-function App() {
+const App = () => {
   return <Tasks />
 }
 

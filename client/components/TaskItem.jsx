@@ -7,8 +7,11 @@ import Paper from '@mui/material/Paper'
 import { Box, IconButton } from '@mui/material'
 import { delTaskByTaskId, taskCompleted } from '../apis/tasks'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EditTaskForm from './forms/EditTaskForm'
+import { useState } from 'react'
 
-function TaskItem({ task, setUpdate }) {
+const TaskItem = ({ task, setUpdate }) => {
+  const [editFormOpen, setEditFormOpen] = useState(false)
   const { taskId, name, description, deadline } = task
 
   const handleDelete = () => {
@@ -21,8 +24,28 @@ function TaskItem({ task, setUpdate }) {
     setUpdate((n) => n + 1)
   }
 
+  const handleEdit = () => {
+    setEditFormOpen(true)
+    setUpdate((n) => n + 1)
+  }
+
+  const handleCloseEdit = () => {
+    setEditFormOpen(false)
+    setUpdate((n) => n + 1)
+  }
+
   return (
     <>
+      <EditTaskForm
+        editFormOpen={editFormOpen}
+        handleCloseEdit={handleCloseEdit}
+        taskId={taskId}
+        setUpdate={setUpdate}
+        task={task}
+      />
+      <Box>
+        <IconButton onClick={handleEdit}>EDIT</IconButton>
+      </Box>
       <Box>
         <IconButton onClick={handleCompleted}>COMPLETED</IconButton>
       </Box>

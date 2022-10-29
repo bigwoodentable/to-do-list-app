@@ -3,9 +3,8 @@ import { Box } from '@mui/system'
 import React from 'react'
 import TaskItem from './TaskItem'
 
-function ListComponent({ listItem, setUpdate }) {
+const ListComponent = ({ listItem, setUpdate }) => {
   const { listName, tasks } = listItem
-
   return (
     <Box>
       <Typography>{listName}</Typography>

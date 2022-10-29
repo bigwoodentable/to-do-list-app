@@ -9,7 +9,7 @@ router.get('/test', (req, res) => {
   // db.getTasksByListId(1).then((res) => console.log('route', res))
 })
 
-// /api/v1/tasks/add { "listId": 1, "name": "Test", "description": "Test Desc", "deadline": "Test Dead" }
+// /api/v1/tasks/add
 
 router.post('/add', async (req, res) => {
   const task = req.body
@@ -24,20 +24,40 @@ router.post('/add', async (req, res) => {
 
 // /api/v1/tasks/del/:taskId
 
-router.delete('/del/:taskId', (req, res) => {
+router.delete('/del/:taskId', async (req, res) => {
   const taskId = req.params.taskId
-  db.delTaskByTaskId(taskId)
-    .then(() => res.json('success in deleting the task'))
-    .catch((err) => console.error(error))
+  try {
+    const id = await db.delTaskByTaskId(taskId)
+    return res.json('success in deleting the task')
+  } catch (error) {
+    console.error(error)
+    return null
+  }
 })
 
 // /api/v1/tasks/completed/:taskId
 
-router.patch('/completed/:taskId', (req, res) => {
+router.patch('/completed/:taskId', async (req, res) => {
   const taskId = req.params.taskId
-  db.updateStatusByTaskId(taskId)
-    .then(() => res.json('success in completing the task'))
-    .catch((err) => console.error(error))
+  try {
+    const id = await db.updateStatusByTaskId(taskId)
+    return res.json('success in completing the task')
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+})
+
+// /api/v1/tasks/update
+router.patch('/update', async (req, res) => {
+  const updatedTask = req.body
+  try {
+    const id = await db.editTaskByTaskId(updatedTask)
+    return res.json('success in updating the task')
+  } catch (error) {
+    console.error(error)
+    return null
+  }
 })
 
 module.exports = router

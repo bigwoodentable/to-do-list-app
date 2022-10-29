@@ -9,7 +9,7 @@ const initialValues = {
   deadline: '',
 }
 
-function AddTaskForm({ open, handleClose, listId, setUpdate }) {
+const AddTaskForm = ({ open, handleClose, listId, setUpdate }) => {
   const handleSubmit = (task) => {
     //add task to db
     const taskWithListId = {

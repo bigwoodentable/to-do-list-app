@@ -3,7 +3,7 @@ import request from 'superagent'
 const rootUrl = '/api/v1/tasks'
 
 // /api/v1/tasks/add
-export function addTaskByListId(task, handleClose) {
+export const addTaskByListId = (task, handleClose) => {
   return request
     .post(rootUrl + '/add')
     .send(task)
@@ -12,11 +12,19 @@ export function addTaskByListId(task, handleClose) {
 }
 
 // /api/v1/tasks/del/:id
-export function delTaskByTaskId(taskId) {
+export const delTaskByTaskId = (taskId) => {
   return request.delete(rootUrl + `/del/${taskId}`).then(() => null)
 }
 
 // /api/v1/tasks/del/:id
-export function taskCompleted(taskId) {
+export const taskCompleted = (taskId) => {
   return request.patch(rootUrl + `/completed/${taskId}`).then(() => null)
+}
+
+// /api/v1/tasks/update
+export const updateTask = (updatedTask) => {
+  return request
+    .patch(rootUrl + `/update`)
+    .send(updatedTask)
+    .then(() => null)
 }
