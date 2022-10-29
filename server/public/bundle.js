@@ -20108,6 +20108,7 @@ if (false) {} else {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "addList": () => (/* binding */ addList),
 /* harmony export */   "getAllLists": () => (/* binding */ getAllLists)
 /* harmony export */ });
 /* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! superagent */ "./node_modules/superagent/lib/client.js");
@@ -20119,6 +20120,15 @@ var rootUrl = '/api/v1/lists';
 var getAllLists = function getAllLists() {
   return superagent__WEBPACK_IMPORTED_MODULE_0___default().get(rootUrl + '/all').then(function (res) {
     return res.body;
+  })["catch"](function (err) {
+    return console.error(err);
+  });
+};
+
+// /api/v1/lists/add
+var addList = function addList(newList) {
+  return superagent__WEBPACK_IMPORTED_MODULE_0___default().post(rootUrl + '/add').send(newList).then(function () {
+    return null;
   })["catch"](function (err) {
     return console.error(err);
   });
@@ -20187,13 +20197,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _Tasks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tasks */ "./client/components/Tasks.jsx");
+/* harmony import */ var _Dashboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Dashboard */ "./client/components/Dashboard.jsx");
 
 
 var App = function App() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Tasks__WEBPACK_IMPORTED_MODULE_1__["default"], null);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Dashboard__WEBPACK_IMPORTED_MODULE_1__["default"], null);
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+
+/***/ }),
+
+/***/ "./client/components/Dashboard.jsx":
+/*!*****************************************!*\
+  !*** ./client/components/Dashboard.jsx ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var use_state_if_mounted__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! use-state-if-mounted */ "./node_modules/use-state-if-mounted/index.js");
+/* harmony import */ var _forms_AddTaskForm_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./forms/AddTaskForm.jsx */ "./client/components/forms/AddTaskForm.jsx");
+/* harmony import */ var _ListComponent_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ListComponent.jsx */ "./client/components/ListComponent.jsx");
+/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/Box/Box.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
+/* harmony import */ var _mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/icons-material/Edit */ "./node_modules/@mui/icons-material/Edit.js");
+/* harmony import */ var _apis_lists_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../apis/lists.js */ "./client/apis/lists.js");
+/* harmony import */ var _forms_AddListForm_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./forms/AddListForm.jsx */ "./client/components/forms/AddListForm.jsx");
+
+
+
+
+
+
+
+
+
+
+
+
+
+function Dashboard() {
+  var _useStateIfMounted = (0,use_state_if_mounted__WEBPACK_IMPORTED_MODULE_4__.useStateIfMounted)([]),
+    _useStateIfMounted2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useStateIfMounted, 2),
+    lists = _useStateIfMounted2[0],
+    setLists = _useStateIfMounted2[1];
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
+    _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState, 2),
+    addTaskFormOpen = _useState2[0],
+    setAddTaskFormOpen = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
+    _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState3, 2),
+    addListFormOpen = _useState4[0],
+    setAddListFormOpen = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(0),
+    _useState6 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState5, 2),
+    update = _useState6[0],
+    setUpdate = _useState6[1];
+  console.log('update', update);
+  //--------------------------------------------------------
+  //Gets all lists and all tasks from the database
+  (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)( /*#__PURE__*/(0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee() {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.t0 = setLists;
+            _context.next = 3;
+            return (0,_apis_lists_js__WEBPACK_IMPORTED_MODULE_7__.getAllLists)();
+          case 3:
+            _context.t1 = _context.sent;
+            (0, _context.t0)(_context.t1);
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  })), [update]);
+
+  //functions for AddTaskForm.jsx to create a new task
+  var handleClickOpen = function handleClickOpen() {
+    setAddTaskFormOpen(true);
+  };
+  var handleClose = function handleClose() {
+    setAddTaskFormOpen(false);
+  };
+  //--------------------------------------------------------
+  //functions for AddListForm.jsx to create a new to-do list
+  var handleAddList = function handleAddList() {
+    setAddListFormOpen(true);
+    setUpdate(function (n) {
+      return n + 1;
+    });
+  };
+  var handleCloseAddList = function handleCloseAddList() {
+    setAddListFormOpen(false);
+  };
+  //--------------------------------------------------------
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(react__WEBPACK_IMPORTED_MODULE_3__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_forms_AddListForm_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    addListOpen: addListFormOpen,
+    handleCloseAddList: handleCloseAddList,
+    setUpdate: setUpdate
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_9__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    onClick: handleAddList
+  }, "ADD LIST")), lists.map(function (listItem, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      style: {
+        border: '3px solid red',
+        margin: '15px'
+      },
+      key: i
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_forms_AddTaskForm_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      addTaskFormOpen: addTaskFormOpen,
+      handleClose: handleClose,
+      listId: listItem.listId,
+      setUpdate: setUpdate
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      display: "flex",
+      justifyContent: "flex-end"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      color: "primary",
+      size: "large",
+      onClick: handleClickOpen
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_11__["default"], null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_ListComponent_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      key: i,
+      listItem: listItem,
+      setUpdate: setUpdate
+    }));
+  }));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dashboard);
 
 /***/ }),
 
@@ -20291,7 +20432,7 @@ var TaskItem = function TaskItem(_ref) {
       return n + 1;
     });
   };
-  var handleEdit = function handleEdit() {
+  var handleEditOpen = function handleEditOpen() {
     setEditFormOpen(true);
     setUpdate(function (n) {
       return n + 1;
@@ -20310,7 +20451,7 @@ var TaskItem = function TaskItem(_ref) {
     setUpdate: setUpdate,
     task: task
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    onClick: handleEdit
+    onClick: handleEditOpen
   }, "EDIT")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     onClick: handleCompleted
   }, "COMPLETED")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -20330,10 +20471,10 @@ var TaskItem = function TaskItem(_ref) {
 
 /***/ }),
 
-/***/ "./client/components/Tasks.jsx":
-/*!*************************************!*\
-  !*** ./client/components/Tasks.jsx ***!
-  \*************************************/
+/***/ "./client/components/forms/AddListForm.jsx":
+/*!*************************************************!*\
+  !*** ./client/components/forms/AddListForm.jsx ***!
+  \*************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -20341,108 +20482,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _TaskItem_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TaskItem.jsx */ "./client/components/TaskItem.jsx");
-/* harmony import */ var use_state_if_mounted__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! use-state-if-mounted */ "./node_modules/use-state-if-mounted/index.js");
-/* harmony import */ var _forms_AddTaskForm_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./forms/AddTaskForm.jsx */ "./client/components/forms/AddTaskForm.jsx");
-/* harmony import */ var _ListComponent_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ListComponent.jsx */ "./client/components/ListComponent.jsx");
-/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
-/* harmony import */ var _mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/icons-material/Edit */ "./node_modules/@mui/icons-material/Edit.js");
-/* harmony import */ var _apis_lists_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../apis/lists.js */ "./client/apis/lists.js");
-/* harmony import */ var _mockdata__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mockdata */ "./client/components/mockdata.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/Button.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Box/Box.js");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/Dialog/Dialog.js");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/DialogTitle/DialogTitle.js");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/DialogContent/DialogContent.js");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/DialogActions/DialogActions.js");
+/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
+/* harmony import */ var _apis_lists__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../apis/lists */ "./client/apis/lists.js");
 
 
 
 
 
 
-
-
-
-
-
-
-
-// Delete this when refactoring
-
-
-
-/*
-data shape:
-[
-  { listId: 1, listName: 'Kitchen', tasks: [] },
-  { listId: 1, listName: 'Kitchen', tasks: [] },
-  { listId: 1, listName: 'Kitchen', tasks: [] },
-]
-*/
-
-// Consider renaming this component
-function Tasks() {
-  var _useStateIfMounted = (0,use_state_if_mounted__WEBPACK_IMPORTED_MODULE_5__.useStateIfMounted)([]),
-    _useStateIfMounted2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useStateIfMounted, 2),
-    lists = _useStateIfMounted2[0],
-    setLists = _useStateIfMounted2[1];
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
-    _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState, 2),
-    open = _useState2[0],
-    setOpen = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(0),
-    _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState3, 2),
-    update = _useState4[0],
-    setUpdate = _useState4[1];
-  console.log('update', update);
-  (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)( /*#__PURE__*/(0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee() {
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.t0 = setLists;
-            _context.next = 3;
-            return (0,_apis_lists_js__WEBPACK_IMPORTED_MODULE_8__.getAllLists)();
-          case 3:
-            _context.t1 = _context.sent;
-            (0, _context.t0)(_context.t1);
-          case 5:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  })), [update]);
-  var handleClickOpen = function handleClickOpen() {
-    setOpen(true);
+var initialValues = {
+  name: ''
+};
+var AddListForm = function AddListForm(_ref) {
+  var addListOpen = _ref.addListOpen,
+    handleCloseAddList = _ref.handleCloseAddList,
+    setUpdate = _ref.setUpdate;
+  var handleSubmit = function handleSubmit(newList) {
+    (0,_apis_lists__WEBPACK_IMPORTED_MODULE_2__.addList)(newList);
+    handleCloseAddList();
+    setUpdate(function (n) {
+      return n + 1;
+    });
   };
-  var handleClose = function handleClose() {
-    setOpen(false);
-  };
-  return lists.map(function (listItem, i) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(react__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-      key: i
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_forms_AddTaskForm_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      open: open,
-      handleClose: handleClose,
-      listId: listItem.listId,
-      setUpdate: setUpdate
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      display: "flex",
-      justifyContent: "flex-end"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      color: "primary",
-      size: "large",
-      onClick: handleClickOpen
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_12__["default"], null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_ListComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      key: i,
-      listItem: listItem,
-      setUpdate: setUpdate
-    }));
-  });
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Tasks);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    open: addListOpen,
+    onClose: handleCloseAddList
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Formik, {
+    initialValues: initialValues,
+    onSubmit: function onSubmit(values) {
+      return handleSubmit(values);
+    }
+  }, function () {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Form, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      align: "center"
+    }, " Edit Task"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Field, {
+      name: "name",
+      placeholder: "Name"
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      variant: "contained",
+      type: "submit"
+    }, "Submit")));
+  }))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddListForm);
 
 /***/ }),
 
@@ -20475,7 +20564,7 @@ var initialValues = {
   deadline: ''
 };
 var AddTaskForm = function AddTaskForm(_ref) {
-  var open = _ref.open,
+  var addTaskFormOpen = _ref.addTaskFormOpen,
     handleClose = _ref.handleClose,
     listId = _ref.listId,
     setUpdate = _ref.setUpdate;
@@ -20489,7 +20578,7 @@ var AddTaskForm = function AddTaskForm(_ref) {
       return n + 1;
     });
   };
-  return open && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(react__WEBPACK_IMPORTED_MODULE_2__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Formik, {
+  return addTaskFormOpen && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(react__WEBPACK_IMPORTED_MODULE_2__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Formik, {
     initialValues: initialValues,
     onSubmit: function onSubmit(values) {
       return handleSubmit(values);
@@ -20497,7 +20586,7 @@ var AddTaskForm = function AddTaskForm(_ref) {
   }, function () {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Form, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Field, {
       name: "name",
-      placeholder: "Name"
+      placeholder: "Task Name"
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Field, {
       name: "description",
       placeholder: "Description",
@@ -20564,8 +20653,8 @@ var EditTaskForm = function EditTaskForm(_ref) {
       taskId: taskId
     }, task);
     console.log('handleSubmit', taskWithId);
-    (0,_apis_tasks__WEBPACK_IMPORTED_MODULE_3__.updateTask)(taskWithId);
     handleCloseEdit();
+    (0,_apis_tasks__WEBPACK_IMPORTED_MODULE_3__.updateTask)(taskWithId);
     setUpdate(function (n) {
       return n + 1;
     });
@@ -20598,99 +20687,6 @@ var EditTaskForm = function EditTaskForm(_ref) {
   }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EditTaskForm);
-
-/***/ }),
-
-/***/ "./client/components/mockdata.js":
-/*!***************************************!*\
-  !*** ./client/components/mockdata.js ***!
-  \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "allLists": () => (/* binding */ allLists),
-/* harmony export */   "listsMockData": () => (/* binding */ listsMockData),
-/* harmony export */   "tasksMockData": () => (/* binding */ tasksMockData)
-/* harmony export */ });
-var allLists = [{
-  listName: 'Kitchen',
-  tasks: [{
-    name: 'Boiling Water',
-    description: 'Boil the water',
-    deadline: '1000-01-01 00:00:00'
-  }, {
-    name: 'Chop the carrot',
-    description: 'Chopping the carrot up into small pieces',
-    deadline: '1000-01-01 00:00:00'
-  }]
-}, {
-  listName: 'Groceries',
-  tasks: [{
-    name: 'Apple',
-    description: 'Buy apples',
-    deadline: '1000-01-01 00:00:00'
-  }, {
-    name: 'Oranges',
-    description: 'Buy oranges',
-    deadline: '1000-01-01 00:00:00'
-  }]
-}];
-var listsMockData = [{
-  id: 1,
-  list_name: 'Kitchen'
-}, {
-  id: 2,
-  list_name: 'Groceries'
-}, {
-  id: 3,
-  list_name: 'Gym'
-}];
-var tasksMockData = [{
-  id: 1,
-  lists_id: 1,
-  name: 'Boiling Water',
-  description: 'Boil the water',
-  deadline: '1000-01-01 00:00:00'
-}, {
-  id: 2,
-  lists_id: 1,
-  name: 'Chop the carrot',
-  description: 'Chopping the carrot up into small pieces',
-  deadline: '1000-01-01 00:00:00'
-}, {
-  id: 3,
-  lists_id: 2,
-  name: 'Apple',
-  description: 'Buy apples',
-  deadline: '1000-01-01 00:00:00'
-}, {
-  id: 4,
-  lists_id: 2,
-  name: 'Oranges',
-  description: 'Buy oranges',
-  deadline: '1000-01-01 00:00:00'
-}, {
-  id: 5,
-  lists_id: 3,
-  name: 'Bicepts',
-  description: '3 sets of 5',
-  deadline: '1000-01-01 00:00:00'
-}, {
-  id: 6,
-  lists_id: 3,
-  name: 'Tricepts',
-  description: '4 sets of 8',
-  deadline: '1000-01-01 00:00:00'
-}, {
-  id: 7,
-  lists_id: 3,
-  name: 'Deltoids',
-  description: '2 sets of 10',
-  deadline: '1000-01-01 00:00:00'
-}];
-
 
 /***/ }),
 

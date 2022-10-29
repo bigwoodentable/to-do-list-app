@@ -1,8 +1,8 @@
 import React from 'react'
-import Tasks from './Tasks'
+import Dashboard from './Dashboard'
 
 const App = () => {
-  return <Tasks />
+  return <Dashboard />
 }
 
 export default App

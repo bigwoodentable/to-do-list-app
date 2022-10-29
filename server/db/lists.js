@@ -14,4 +14,12 @@ const getListsAll = async (db = connection) => {
   return Promise.all(listPromises)
 }
 
-module.exports = { getListsAll }
+const addList = (newList, db = connection) => {
+  const listFormatted = {
+    list_name: newList.name,
+  }
+
+  return db('lists').insert(listFormatted)
+}
+
+module.exports = { getListsAll, addList }

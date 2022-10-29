@@ -6,36 +6,25 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Typography,
 } from '@material-ui/core'
 import { Formik, Field, Form } from 'formik'
-import { updateTask } from '../../apis/tasks'
+import { addList } from '../../apis/lists'
 
-const EditTaskForm = ({
-  editFormOpen,
-  handleCloseEdit,
-  taskId,
-  setUpdate,
-  task,
-}) => {
-  const initialValues = {
-    name: task.name,
-    description: task.description,
-    deadline: task.deadline,
-  }
+const initialValues = {
+  name: '',
+}
 
-  const handleSubmit = (task) => {
-    const taskWithId = { taskId, ...task }
-    console.log('handleSubmit', taskWithId)
-    handleCloseEdit()
-    updateTask(taskWithId)
+const AddListForm = ({ addListOpen, handleCloseAddList, setUpdate }) => {
+  const handleSubmit = (newList) => {
+    addList(newList)
+    handleCloseAddList()
     setUpdate((n) => n + 1)
   }
 
   return (
     <>
       <Box>
-        <Dialog open={editFormOpen} onClose={handleCloseEdit}>
+        <Dialog open={addListOpen} onClose={handleCloseAddList}>
           <Formik
             initialValues={initialValues}
             onSubmit={(values) => handleSubmit(values)}
@@ -45,12 +34,6 @@ const EditTaskForm = ({
                 <DialogTitle align="center"> Edit Task</DialogTitle>
                 <DialogContent>
                   <Field name="name" placeholder="Name" />
-                  <Field
-                    name="description"
-                    placeholder="Description"
-                    as="textarea"
-                  />
-                  <Field name="deadline" placeholder="Deadline" />
                 </DialogContent>
                 <DialogActions>
                   <Button variant="contained" type="submit">
@@ -66,4 +49,4 @@ const EditTaskForm = ({
   )
 }
 
-export default EditTaskForm
+export default AddListForm

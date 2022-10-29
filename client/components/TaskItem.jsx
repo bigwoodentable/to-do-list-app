@@ -24,7 +24,7 @@ const TaskItem = ({ task, setUpdate }) => {
     setUpdate((n) => n + 1)
   }
 
-  const handleEdit = () => {
+  const handleEditOpen = () => {
     setEditFormOpen(true)
     setUpdate((n) => n + 1)
   }
@@ -44,7 +44,7 @@ const TaskItem = ({ task, setUpdate }) => {
         task={task}
       />
       <Box>
-        <IconButton onClick={handleEdit}>EDIT</IconButton>
+        <IconButton onClick={handleEditOpen}>EDIT</IconButton>
       </Box>
       <Box>
         <IconButton onClick={handleCompleted}>COMPLETED</IconButton>

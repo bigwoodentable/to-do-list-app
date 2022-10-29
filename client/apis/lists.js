@@ -11,3 +11,14 @@ export const getAllLists = () => {
     })
     .catch((err) => console.error(err))
 }
+
+// /api/v1/lists/add
+export const addList = (newList) => {
+  return request
+    .post(rootUrl + '/add')
+    .send(newList)
+    .then(() => {
+      return null
+    })
+    .catch((err) => console.error(err))
+}

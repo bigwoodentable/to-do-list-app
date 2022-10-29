@@ -9,7 +9,7 @@ const initialValues = {
   deadline: '',
 }
 
-const AddTaskForm = ({ open, handleClose, listId, setUpdate }) => {
+const AddTaskForm = ({ addTaskFormOpen, handleClose, listId, setUpdate }) => {
   const handleSubmit = (task) => {
     //add task to db
     const taskWithListId = {
@@ -21,7 +21,7 @@ const AddTaskForm = ({ open, handleClose, listId, setUpdate }) => {
   }
 
   return (
-    open && (
+    addTaskFormOpen && (
       <>
         <Formik
           initialValues={initialValues}
@@ -29,7 +29,7 @@ const AddTaskForm = ({ open, handleClose, listId, setUpdate }) => {
         >
           {() => (
             <Form>
-              <Field name="name" placeholder="Name" />
+              <Field name="name" placeholder="Task Name" />
               <Field
                 name="description"
                 placeholder="Description"
