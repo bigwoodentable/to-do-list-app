@@ -12350,7 +12350,8 @@ var getAllLists = function getAllLists() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "addTaskByListId": () => (/* binding */ addTaskByListId),
-/* harmony export */   "delTaskByTaskId": () => (/* binding */ delTaskByTaskId)
+/* harmony export */   "delTaskByTaskId": () => (/* binding */ delTaskByTaskId),
+/* harmony export */   "taskCompleted": () => (/* binding */ taskCompleted)
 /* harmony export */ });
 /* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! superagent */ "./node_modules/superagent/lib/client.js");
 /* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(superagent__WEBPACK_IMPORTED_MODULE_0__);
@@ -12367,6 +12368,13 @@ function addTaskByListId(task, handleClose) {
 // /api/v1/tasks/del/:id
 function delTaskByTaskId(taskId) {
   return superagent__WEBPACK_IMPORTED_MODULE_0___default()["delete"](rootUrl + "/del/".concat(taskId)).then(function () {
+    return null;
+  });
+}
+
+// /api/v1/tasks/del/:id
+function taskCompleted(taskId) {
+  return superagent__WEBPACK_IMPORTED_MODULE_0___default().patch(rootUrl + "/completed/".concat(taskId)).then(function () {
     return null;
   });
 }
@@ -12416,14 +12424,14 @@ __webpack_require__.r(__webpack_exports__);
 
 function ListComponent(_ref) {
   var listItem = _ref.listItem,
-    update = _ref.update;
+    setUpdate = _ref.setUpdate;
   var listName = listItem.listName,
     tasks = listItem.tasks;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_2__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, listName), tasks.map(function (task, i) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_TaskItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
       key: i,
       task: task,
-      update: update
+      setUpdate: setUpdate
     });
   }));
 }
@@ -12463,16 +12471,26 @@ __webpack_require__.r(__webpack_exports__);
 
 function TaskItem(_ref) {
   var task = _ref.task,
-    update = _ref.update;
+    setUpdate = _ref.setUpdate;
   var taskId = task.taskId,
     name = task.name,
     description = task.description,
     deadline = task.deadline;
   var handleDelete = function handleDelete() {
     (0,_apis_tasks__WEBPACK_IMPORTED_MODULE_1__.delTaskByTaskId)(taskId);
-    update.current += 1;
+    setUpdate(function (n) {
+      return n + 1;
+    });
+  };
+  var handleCompleted = function handleCompleted() {
+    (0,_apis_tasks__WEBPACK_IMPORTED_MODULE_1__.taskCompleted)(taskId);
+    setUpdate(function (n) {
+      return n + 1;
+    });
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    onClick: handleCompleted
+  }, "COMPLETED")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onClick: handleDelete
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_4__["default"], null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Paper__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Accordion__WEBPACK_IMPORTED_MODULE_6__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_AccordionSummary__WEBPACK_IMPORTED_MODULE_7__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_8__["default"], {
     style: {
@@ -12550,7 +12568,11 @@ function Tasks() {
     _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState, 2),
     open = _useState2[0],
     setOpen = _useState2[1];
-  var update = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(0);
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(0),
+    _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState3, 2),
+    update = _useState4[0],
+    setUpdate = _useState4[1];
+  console.log('update', update);
   (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)( /*#__PURE__*/(0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee() {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee$(_context) {
       while (1) {
@@ -12582,7 +12604,7 @@ function Tasks() {
       open: open,
       handleClose: handleClose,
       listId: listItem.listId,
-      update: update
+      setUpdate: setUpdate
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_10__["default"], {
       display: "flex",
       justifyContent: "flex-end"
@@ -12593,7 +12615,7 @@ function Tasks() {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_12__["default"], null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_ListComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
       key: i,
       listItem: listItem,
-      update: update
+      setUpdate: setUpdate
     }));
   });
 }
@@ -12633,14 +12655,16 @@ function AddTaskForm(_ref) {
   var open = _ref.open,
     handleClose = _ref.handleClose,
     listId = _ref.listId,
-    update = _ref.update;
+    setUpdate = _ref.setUpdate;
   var handleSubmit = function handleSubmit(task) {
     //add task to db
     var taskWithListId = _objectSpread(_objectSpread({}, task), {}, {
       listId: listId
     });
     (0,_apis_tasks_js__WEBPACK_IMPORTED_MODULE_3__.addTaskByListId)(taskWithListId, handleClose);
-    update.current += 1;
+    setUpdate(function (n) {
+      return n + 1;
+    });
   };
   return open && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(react__WEBPACK_IMPORTED_MODULE_2__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Formik, {
     initialValues: initialValues,

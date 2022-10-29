@@ -10,7 +10,7 @@ exports.up = function (knex) {
     table.string('name')
     table.string('description')
     table.datetime('deadline')
-    table.boolean('completed')
+    table.string('status')
   })
 }
 

@@ -25,7 +25,8 @@ data shape:
 function Tasks() {
   const [lists, setLists] = useStateIfMounted([])
   const [open, setOpen] = useState(false)
-  const update = useRef(0)
+  const [update, setUpdate] = useState(0)
+  console.log('update', update)
 
   useEffect(async () => {
     setLists(await getAllLists())
@@ -45,14 +46,14 @@ function Tasks() {
         open={open}
         handleClose={handleClose}
         listId={listItem.listId}
-        update={update}
+        setUpdate={setUpdate}
       />
       <Box display="flex" justifyContent="flex-end">
         <IconButton color="primary" size="large" onClick={handleClickOpen}>
           <EditIcon />
         </IconButton>
       </Box>
-      <ListComponent key={i} listItem={listItem} update={update} />
+      <ListComponent key={i} listItem={listItem} setUpdate={setUpdate} />
     </React.Fragment>
   ))
 }

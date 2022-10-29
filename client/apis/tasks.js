@@ -15,3 +15,8 @@ export function addTaskByListId(task, handleClose) {
 export function delTaskByTaskId(taskId) {
   return request.delete(rootUrl + `/del/${taskId}`).then(() => null)
 }
+
+// /api/v1/tasks/del/:id
+export function taskCompleted(taskId) {
+  return request.patch(rootUrl + `/completed/${taskId}`).then(() => null)
+}

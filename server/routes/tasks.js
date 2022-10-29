@@ -27,7 +27,16 @@ router.post('/add', async (req, res) => {
 router.delete('/del/:taskId', (req, res) => {
   const taskId = req.params.taskId
   db.delTaskByTaskId(taskId)
-    .then(() => res.json('success in deleting the report'))
+    .then(() => res.json('success in deleting the task'))
+    .catch((err) => console.error(error))
+})
+
+// /api/v1/tasks/completed/:taskId
+
+router.patch('/completed/:taskId', (req, res) => {
+  const taskId = req.params.taskId
+  db.updateStatusByTaskId(taskId)
+    .then(() => res.json('success in completing the task'))
     .catch((err) => console.error(error))
 })
 
