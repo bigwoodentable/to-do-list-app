@@ -36,6 +36,7 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
 
   // When checked, save the task's id in state. When unchecked, remove the task's id from state.
   const handleChecked = (event) => {
+    event.preventDefault()
     if (event.target.checked) {
       setGroup((group) => {
         return { ...group, [taskId]: true }

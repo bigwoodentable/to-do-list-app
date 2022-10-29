@@ -16,11 +16,6 @@ export const delTaskByTaskId = (taskId) => {
   return request.delete(rootUrl + `/del/${taskId}`).then(() => null)
 }
 
-// /api/v1/tasks/delGroup/:id
-// export const delGroupByTaskId = (taskId) => {
-//   return request.delete(rootUrl + `/del-group/${taskId}`).then(() => null)
-// }
-
 // /api/v1/tasks/del/:id
 export const taskCompleted = (taskId) => {
   return request.patch(rootUrl + `/completed/${taskId}`).then(() => null)
@@ -32,4 +27,9 @@ export const updateTask = (updatedTask) => {
     .patch(rootUrl + `/update`)
     .send(updatedTask)
     .then(() => null)
+}
+
+// /api/v1/tasks/move/:taskId/:listId
+export const moveTask = (taskId, listId) => {
+  return request.patch(rootUrl + `/move/${taskId}/${listId}`).then(() => null)
 }

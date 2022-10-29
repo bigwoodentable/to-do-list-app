@@ -6,13 +6,11 @@ import AddTaskForm from './forms/AddTaskForm'
 import EditIcon from '@mui/icons-material/Edit'
 import TaskItem from './TaskItem'
 import { delTaskByTaskId } from '../apis/tasks'
+import MoveForm from './forms/MoveForm'
 
-const ListComponent = ({ listDetails, setUpdate }) => {
+const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
   const [addTaskFormOpen, setAddTaskFormOpen] = useState(false)
-  const [group, setGroup] = useState({})
   const { listId, listName, tasks } = listDetails
-
-  console.log('group', group)
 
   //functions for AddTaskForm.jsx to create a new task
   const handleClickOpen = () => {
@@ -35,6 +33,7 @@ const ListComponent = ({ listDetails, setUpdate }) => {
       const taskId = property[0]
       delTaskByTaskId(taskId)
     })
+    setGroup({})
     setUpdate((n) => n + 1)
   }
 
@@ -47,6 +46,7 @@ const ListComponent = ({ listDetails, setUpdate }) => {
         listId={listDetails.listId}
         setUpdate={setUpdate}
       />
+
       <Box display="flex" justifyContent="flex-end">
         <IconButton color="primary" size="large" onClick={handleDelGroup}>
           DELETE MULTIPLE TASKS

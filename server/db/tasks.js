@@ -33,12 +33,14 @@ const updateStatusByTaskId = (taskId, db = connection) => {
 }
 
 const editTaskByTaskId = (task, db = connection) => {
-  console.log('task', task)
   return db('tasks').where('id', task.taskId).update({
     name: task.name,
     description: task.description,
     deadline: task.deadline,
   })
+}
+const updateTaskListId = (taskId, listId, db = connection) => {
+  return db('tasks').where('id', taskId).update('lists_id', listId)
 }
 
 module.exports = {
@@ -48,4 +50,5 @@ module.exports = {
   updateStatusByTaskId,
   editTaskByTaskId,
   delTaskByListId,
+  updateTaskListId,
 }
