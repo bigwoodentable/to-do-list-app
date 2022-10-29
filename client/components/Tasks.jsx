@@ -6,16 +6,17 @@ import ListComponent from './ListComponent.jsx'
 import { Box } from '@mui/system'
 import { IconButton } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
-import { tasksMockData, listsMockData, allLists } from './mockdata'
 import { useEffect } from 'react'
 import { getAllLists } from '../apis/lists.js'
+// Delete this when refactoring
+import { tasksMockData, listsMockData, allLists } from './mockdata'
 
 /*
 data shape:
 [
-  { list_name: 'Kitchen', tasks: [] },
-  { list_name: 'Kitchen', tasks: [] },
-  { list_name: 'Kitchen', tasks: [] },
+  { listId: 1, listName: 'Kitchen', tasks: [] },
+  { listId: 1, listName: 'Kitchen', tasks: [] },
+  { listId: 1, listName: 'Kitchen', tasks: [] },
 ]
 */
 
@@ -25,7 +26,7 @@ function Tasks() {
 
   useEffect(async () => {
     setLists(await getAllLists())
-  }, [])
+  }, [open])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -37,8 +38,11 @@ function Tasks() {
 
   return lists.map((listItem, i) => (
     <React.Fragment key={i}>
-      {/* <AddTaskForm open={open} handleClose={handleClose} setTasks={setTasks} /> */}
-      <AddTaskForm open={open} handleClose={handleClose} />
+      <AddTaskForm
+        open={open}
+        handleClose={handleClose}
+        listId={listItem.listId}
+      />
       <Box display="flex" justifyContent="flex-end">
         <IconButton color="primary" size="large" onClick={handleClickOpen}>
           <EditIcon />

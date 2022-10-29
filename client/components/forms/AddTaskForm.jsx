@@ -1,6 +1,7 @@
 import { Button } from '@mui/material'
 import { Formik, Field, Form } from 'formik'
 import React from 'react'
+import { addTaskByListId } from '../../apis/tasks.js'
 
 const initialValues = {
   name: '',
@@ -8,10 +9,14 @@ const initialValues = {
   deadline: '',
 }
 
-function AddTaskForm({ open, handleClose, setTasks }) {
+function AddTaskForm({ open, handleClose, listId }) {
   const handleSubmit = (task) => {
-    //change this to api function
-    setTasks((tasks) => [...tasks, task])
+    //add task to db
+    const taskWithListId = {
+      ...task,
+      listId,
+    }
+    addTaskByListId(taskWithListId, handleClose)
   }
 
   return (
