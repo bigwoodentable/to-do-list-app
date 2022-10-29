@@ -1,5 +1,5 @@
 const connection = require('./connection')
-const { getTasksByListId } = require('./tasks')
+const { getTasksByListId, delTaskByListId } = require('./tasks')
 
 const getListsAll = async (db = connection) => {
   const listsIdsNames = await db('lists').select('id', 'list_name as listName')
@@ -22,4 +22,9 @@ const addList = (newList, db = connection) => {
   return db('lists').insert(listFormatted)
 }
 
-module.exports = { getListsAll, addList }
+const delListByListId = async (listId, db = connection) => {
+  await delTaskByListId(listId)
+  return db('lists').where('id', listId).del()
+}
+
+module.exports = { getListsAll, addList, delListByListId }

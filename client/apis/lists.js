@@ -22,3 +22,8 @@ export const addList = (newList) => {
     })
     .catch((err) => console.error(err))
 }
+
+// /api/v1/tasks/del/:id
+export const delListByListId = (listId) => {
+  return request.delete(rootUrl + `/del/${listId}`).then(() => null)
+}

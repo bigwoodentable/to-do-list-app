@@ -20109,6 +20109,7 @@ if (false) {} else {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "addList": () => (/* binding */ addList),
+/* harmony export */   "delListByListId": () => (/* binding */ delListByListId),
 /* harmony export */   "getAllLists": () => (/* binding */ getAllLists)
 /* harmony export */ });
 /* harmony import */ var superagent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! superagent */ "./node_modules/superagent/lib/client.js");
@@ -20131,6 +20132,13 @@ var addList = function addList(newList) {
     return null;
   })["catch"](function (err) {
     return console.error(err);
+  });
+};
+
+// /api/v1/tasks/del/:id
+var delListByListId = function delListByListId(listId) {
+  return superagent__WEBPACK_IMPORTED_MODULE_0___default()["delete"](rootUrl + "/del/".concat(listId)).then(function () {
+    return null;
   });
 };
 
@@ -20224,15 +20232,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var use_state_if_mounted__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! use-state-if-mounted */ "./node_modules/use-state-if-mounted/index.js");
-/* harmony import */ var _forms_AddTaskForm_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./forms/AddTaskForm.jsx */ "./client/components/forms/AddTaskForm.jsx");
-/* harmony import */ var _ListComponent_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ListComponent.jsx */ "./client/components/ListComponent.jsx");
-/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
-/* harmony import */ var _mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/icons-material/Edit */ "./node_modules/@mui/icons-material/Edit.js");
-/* harmony import */ var _apis_lists_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../apis/lists.js */ "./client/apis/lists.js");
-/* harmony import */ var _forms_AddListForm_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./forms/AddListForm.jsx */ "./client/components/forms/AddListForm.jsx");
-
-
+/* harmony import */ var _ListComponent_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ListComponent.jsx */ "./client/components/ListComponent.jsx");
+/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/Box/Box.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
+/* harmony import */ var _apis_lists_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../apis/lists.js */ "./client/apis/lists.js");
+/* harmony import */ var _forms_AddListForm_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./forms/AddListForm.jsx */ "./client/components/forms/AddListForm.jsx");
 
 
 
@@ -20251,16 +20255,12 @@ function Dashboard() {
     setLists = _useStateIfMounted2[1];
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
     _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState, 2),
-    addTaskFormOpen = _useState2[0],
-    setAddTaskFormOpen = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
+    addListFormOpen = _useState2[0],
+    setAddListFormOpen = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(0),
     _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState3, 2),
-    addListFormOpen = _useState4[0],
-    setAddListFormOpen = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(0),
-    _useState6 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState5, 2),
-    update = _useState6[0],
-    setUpdate = _useState6[1];
+    update = _useState4[0],
+    setUpdate = _useState4[1];
   console.log('update', update);
   //--------------------------------------------------------
   //Gets all lists and all tasks from the database
@@ -20271,7 +20271,7 @@ function Dashboard() {
           case 0:
             _context.t0 = setLists;
             _context.next = 3;
-            return (0,_apis_lists_js__WEBPACK_IMPORTED_MODULE_7__.getAllLists)();
+            return (0,_apis_lists_js__WEBPACK_IMPORTED_MODULE_6__.getAllLists)();
           case 3:
             _context.t1 = _context.sent;
             (0, _context.t0)(_context.t1);
@@ -20283,14 +20283,6 @@ function Dashboard() {
     }, _callee);
   })), [update]);
 
-  //functions for AddTaskForm.jsx to create a new task
-  var handleClickOpen = function handleClickOpen() {
-    setAddTaskFormOpen(true);
-  };
-  var handleClose = function handleClose() {
-    setAddTaskFormOpen(false);
-  };
-  //--------------------------------------------------------
   //functions for AddListForm.jsx to create a new to-do list
   var handleAddList = function handleAddList() {
     setAddListFormOpen(true);
@@ -20302,36 +20294,19 @@ function Dashboard() {
     setAddListFormOpen(false);
   };
   //--------------------------------------------------------
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(react__WEBPACK_IMPORTED_MODULE_3__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_forms_AddListForm_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(react__WEBPACK_IMPORTED_MODULE_3__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_forms_AddListForm_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     addListOpen: addListFormOpen,
     handleCloseAddList: handleCloseAddList,
     setUpdate: setUpdate
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_9__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_8__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
     onClick: handleAddList
-  }, "ADD LIST")), lists.map(function (listItem, i) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      style: {
-        border: '3px solid red',
-        margin: '15px'
-      },
-      key: i
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_forms_AddTaskForm_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      addTaskFormOpen: addTaskFormOpen,
-      handleClose: handleClose,
-      listId: listItem.listId,
-      setUpdate: setUpdate
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      display: "flex",
-      justifyContent: "flex-end"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      color: "primary",
-      size: "large",
-      onClick: handleClickOpen
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_11__["default"], null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_ListComponent_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, "ADD LIST")), lists.map(function (listDetails, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_ListComponent_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
       key: i,
-      listItem: listItem,
+      listDetails: listDetails,
       setUpdate: setUpdate
-    }));
+    });
   }));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dashboard);
@@ -20349,21 +20324,70 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Typography/Typography.js");
-/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/Box/Box.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _TaskItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TaskItem */ "./client/components/TaskItem.jsx");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Typography/Typography.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
+/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/Box/Box.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _apis_lists__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../apis/lists */ "./client/apis/lists.js");
+/* harmony import */ var _forms_AddTaskForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./forms/AddTaskForm */ "./client/components/forms/AddTaskForm.jsx");
+/* harmony import */ var _mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/icons-material/Edit */ "./node_modules/@mui/icons-material/Edit.js");
+/* harmony import */ var _TaskItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TaskItem */ "./client/components/TaskItem.jsx");
+
+
+
+
 
 
 
 
 var ListComponent = function ListComponent(_ref) {
-  var listItem = _ref.listItem,
+  var listDetails = _ref.listDetails,
     setUpdate = _ref.setUpdate;
-  var listName = listItem.listName,
-    tasks = listItem.tasks;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_2__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, listName), tasks.map(function (task, i) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_TaskItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState, 2),
+    addTaskFormOpen = _useState2[0],
+    setAddTaskFormOpen = _useState2[1];
+  var listId = listDetails.listId,
+    listName = listDetails.listName,
+    tasks = listDetails.tasks;
+
+  //functions for AddTaskForm.jsx to create a new task
+  var handleClickOpen = function handleClickOpen() {
+    setAddTaskFormOpen(true);
+  };
+  var handleClose = function handleClose() {
+    setAddTaskFormOpen(false);
+  };
+  //--------------------------------------------------------
+  //deletes specified list
+  var handleDeleteList = function handleDeleteList() {
+    (0,_apis_lists__WEBPACK_IMPORTED_MODULE_2__.delListByListId)(listId);
+    setUpdate(function (n) {
+      return n + 1;
+    });
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    style: {
+      border: '3px solid red',
+      margin: '15px'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, listName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_forms_AddTaskForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    addTaskFormOpen: addTaskFormOpen,
+    handleClose: handleClose,
+    listId: listDetails.listId,
+    setUpdate: setUpdate
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    display: "flex",
+    justifyContent: "flex-end"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    color: "primary",
+    size: "large",
+    onClick: handleClickOpen
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_8__["default"], null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    onClick: handleDeleteList
+  }, "DELETE LIST")), tasks.map(function (task, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_TaskItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
       key: i,
       task: task,
       setUpdate: setUpdate

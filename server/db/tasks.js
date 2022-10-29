@@ -24,6 +24,10 @@ const delTaskByTaskId = (taskId, db = connection) => {
   return db('tasks').where('id', taskId).del()
 }
 
+const delTaskByListId = (listId, db = connection) => {
+  return db('tasks').where('lists_id', listId).del()
+}
+
 const updateStatusByTaskId = (taskId, db = connection) => {
   return db('tasks').where('id', taskId).update('status', 'completed')
 }
@@ -43,4 +47,5 @@ module.exports = {
   delTaskByTaskId,
   updateStatusByTaskId,
   editTaskByTaskId,
+  delTaskByListId,
 }

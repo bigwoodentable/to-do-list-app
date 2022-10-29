@@ -3,7 +3,6 @@ const db = require('../db/lists')
 const router = express.Router()
 
 // /api/v1/lists/all
-
 router.get('/all', async (req, res) => {
   try {
     const lists = await db.getListsAll()
@@ -15,7 +14,6 @@ router.get('/all', async (req, res) => {
 })
 
 // /api/v1/lists/add
-
 router.post('/add', async (req, res) => {
   const newList = req.body
   try {
@@ -26,4 +24,17 @@ router.post('/add', async (req, res) => {
     return null
   }
 })
+
+// /api/v1/lists/del/:listId
+router.delete('/del/:listId', async (req, res) => {
+  const listId = req.params.listId
+  try {
+    await db.delListByListId(listId)
+    return res.json('success in deleting the list and the tasks in the list')
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+})
+
 module.exports = router

@@ -10,7 +10,6 @@ router.get('/test', (req, res) => {
 })
 
 // /api/v1/tasks/add
-
 router.post('/add', async (req, res) => {
   const task = req.body
   try {
@@ -23,7 +22,6 @@ router.post('/add', async (req, res) => {
 })
 
 // /api/v1/tasks/del/:taskId
-
 router.delete('/del/:taskId', async (req, res) => {
   const taskId = req.params.taskId
   try {
@@ -36,7 +34,6 @@ router.delete('/del/:taskId', async (req, res) => {
 })
 
 // /api/v1/tasks/completed/:taskId
-
 router.patch('/completed/:taskId', async (req, res) => {
   const taskId = req.params.taskId
   try {
