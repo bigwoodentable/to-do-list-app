@@ -3198,60 +3198,6 @@ const accordionSummaryClasses = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_1__["defa
 
 /***/ }),
 
-/***/ "./node_modules/@mui/material/esm/Box/Box.js":
-/*!***************************************************!*\
-  !*** ./node_modules/@mui/material/esm/Box/Box.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/createBox.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _className__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../className */ "./node_modules/@mui/utils/esm/ClassNameGenerator/ClassNameGenerator.js");
-/* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles */ "./node_modules/@mui/material/esm/styles/createTheme.js");
-
-
-
-
-const defaultTheme = (0,_styles__WEBPACK_IMPORTED_MODULE_0__["default"])();
-const Box = (0,_mui_system__WEBPACK_IMPORTED_MODULE_1__["default"])({
-  defaultTheme,
-  defaultClassName: 'MuiBox-root',
-  generateClassName: _className__WEBPACK_IMPORTED_MODULE_2__["default"].generate
-});
- true ? Box.propTypes
-/* remove-proptypes */
-= {
-  // ----------------------------- Warning --------------------------------
-  // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
-  // ----------------------------------------------------------------------
-
-  /**
-   * @ignore
-   */
-  children: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().node),
-
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().elementType),
-
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: prop_types__WEBPACK_IMPORTED_MODULE_3___default().oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_3___default().arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_3___default().oneOfType([(prop_types__WEBPACK_IMPORTED_MODULE_3___default().func), (prop_types__WEBPACK_IMPORTED_MODULE_3___default().object), (prop_types__WEBPACK_IMPORTED_MODULE_3___default().bool)])), (prop_types__WEBPACK_IMPORTED_MODULE_3___default().func), (prop_types__WEBPACK_IMPORTED_MODULE_3___default().object)])
-} : 0;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Box);
-
-/***/ }),
-
 /***/ "./node_modules/@mui/material/esm/Button/Button.js":
 /*!*********************************************************!*\
   !*** ./node_modules/@mui/material/esm/Button/Button.js ***!
@@ -12324,7 +12270,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mui_material_AccordionDetails__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material/AccordionDetails */ "./node_modules/@mui/material/esm/AccordionDetails/AccordionDetails.js");
 /* harmony import */ var _mui_material_Typography__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material/Typography */ "./node_modules/@mui/material/esm/Typography/Typography.js");
 /* harmony import */ var _mui_material_Paper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/material/Paper */ "./node_modules/@mui/material/esm/Paper/Paper.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Box/Box.js");
 
 
 
@@ -12334,16 +12279,19 @@ __webpack_require__.r(__webpack_exports__);
 
 function TaskItem(_ref) {
   var task = _ref.task;
+  var name = task.name,
+    description = task.description,
+    deadline = task.deadline;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Paper__WEBPACK_IMPORTED_MODULE_1__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Accordion__WEBPACK_IMPORTED_MODULE_2__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_AccordionSummary__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_4__["default"], {
     style: {
       fontWeight: 'bold'
     }
-  }, task)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_AccordionDetails__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_AccordionDetails__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_4__["default"], {
     variant: "h8",
     fontWeight: 'bold'
-  }, "Description"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, "Deadline: ", deadline), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_4__["default"], {
     variant: "body2"
-  }, "Description"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null)))));
+  }, description)))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TaskItem);
 
@@ -12376,7 +12324,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var tasksMockData = ['cook', 'clean', 'eat'];
+var tasksMockData = [{
+  name: 'cook',
+  description: 'Cookign Class',
+  deadline: '010101'
+}, {
+  name: 'clean',
+  description: 'Cleaning class',
+  deadline: '010101'
+}, {
+  name: 'wash',
+  description: 'Washing Class',
+  deadline: '010101'
+}];
 function Tasks() {
   var _useStateIfMounted = (0,use_state_if_mounted__WEBPACK_IMPORTED_MODULE_3__.useStateIfMounted)(tasksMockData),
     _useStateIfMounted2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useStateIfMounted, 2),
@@ -12446,7 +12406,7 @@ function AddTaskForm(_ref) {
   var handleSubmit = function handleSubmit(task) {
     //change this to api function
     setTasks(function (tasks) {
-      return [].concat((0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(tasks), [task.name]);
+      return [].concat((0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(tasks), [task]);
     });
   };
   return open && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(react__WEBPACK_IMPORTED_MODULE_2__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Formik, {

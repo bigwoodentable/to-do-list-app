@@ -7,23 +7,20 @@ import Paper from '@mui/material/Paper'
 import { Box } from '@mui/material'
 
 function TaskItem({ task }) {
+  const { name, description, deadline } = task
+
   return (
     <>
       <Paper>
         <Accordion>
           <AccordionSummary>
-            <Typography style={{ fontWeight: 'bold' }}>{task}</Typography>
+            <Typography style={{ fontWeight: 'bold' }}>{name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Box>
-              <Typography variant="h8" fontWeight={'bold'}>
-                Description
-              </Typography>
-              <Box>
-                <Typography variant="body2">Description</Typography>
-              </Box>
-            </Box>
-            <Box></Box>
+            <Typography variant="h8" fontWeight={'bold'}>
+              Deadline: {deadline}
+            </Typography>
+            <Typography variant="body2">{description}</Typography>
           </AccordionDetails>
         </Accordion>
       </Paper>

@@ -1,5 +1,5 @@
-import { Button, Typography } from '@mui/material'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Button } from '@mui/material'
+import { Formik, Field, Form } from 'formik'
 import React from 'react'
 
 const initialValues = {
@@ -11,7 +11,7 @@ const initialValues = {
 function AddTaskForm({ open, handleClose, setTasks }) {
   const handleSubmit = (task) => {
     //change this to api function
-    setTasks((tasks) => [...tasks, task.name])
+    setTasks((tasks) => [...tasks, task])
   }
 
   return (

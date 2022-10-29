@@ -6,7 +6,11 @@ import { Box } from '@mui/system'
 import { IconButton } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 
-const tasksMockData = ['cook', 'clean', 'eat']
+const tasksMockData = [
+  { name: 'cook', description: 'Cookign Class', deadline: '010101' },
+  { name: 'clean', description: 'Cleaning class', deadline: '010101' },
+  { name: 'wash', description: 'Washing Class', deadline: '010101' },
+]
 
 function Tasks() {
   const [tasks, setTasks] = useStateIfMounted(tasksMockData)
