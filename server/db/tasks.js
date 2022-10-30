@@ -43,6 +43,10 @@ const updateTaskListId = (taskId, listId, db = connection) => {
   return db('tasks').where('id', taskId).update('lists_id', listId)
 }
 
+const getTaskNameByTaskId = (taskId, db = connection) => {
+  return db('tasks').where('id', taskId).select('name').first()
+}
+
 module.exports = {
   getTasksByListId,
   addTaskByListId,
@@ -51,4 +55,5 @@ module.exports = {
   editTaskByTaskId,
   delTaskByListId,
   updateTaskListId,
+  getTaskNameByTaskId,
 }
