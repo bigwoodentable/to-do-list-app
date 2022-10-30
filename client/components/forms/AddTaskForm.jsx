@@ -2,11 +2,16 @@ import { Button } from '@mui/material'
 import { Formik, Field, Form } from 'formik'
 import React from 'react'
 import { addTaskByListId } from '../../apis/tasks.js'
+import dayjs, { Dayjs } from 'dayjs'
+import TextField from '@mui/material/TextField'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
 const initialValues = {
   name: '',
   description: '',
-  deadline: '',
+  deadline: {},
 }
 
 const AddTaskForm = ({ addTaskFormOpen, handleClose, listId, setUpdate }) => {
@@ -27,7 +32,7 @@ const AddTaskForm = ({ addTaskFormOpen, handleClose, listId, setUpdate }) => {
           initialValues={initialValues}
           onSubmit={(values) => handleSubmit(values)}
         >
-          {() => (
+          {({ values, setFieldValue }) => (
             <Form>
               <Field name="name" placeholder="Task Name" />
               <Field
@@ -35,7 +40,14 @@ const AddTaskForm = ({ addTaskFormOpen, handleClose, listId, setUpdate }) => {
                 placeholder="Description"
                 as="textarea"
               />
-              <Field name="deadline" placeholder="Deadline" />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  renderInput={(props) => <TextField {...props} />}
+                  label="DateTimePicker"
+                  value={values.deadline}
+                  onChange={(newValue) => setFieldValue('deadline', newValue)}
+                />
+              </LocalizationProvider>
               <Button color="primary" variant="contained" type="submit">
                 Submit
               </Button>
