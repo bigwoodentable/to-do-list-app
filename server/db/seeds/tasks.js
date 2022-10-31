@@ -11,7 +11,7 @@ exports.seed = async function (knex) {
       lists_id: 1,
       name: 'Boiling Water',
       description: 'Boil the water',
-      deadline: '1000-01-01 00:00:00',
+      deadline: '2022-10-13T18:15:00.000Z',
       status: 'incomplete',
     },
     {
@@ -19,7 +19,7 @@ exports.seed = async function (knex) {
       lists_id: 1,
       name: 'Chop the carrot',
       description: 'Chopping the carrot up into small pieces',
-      deadline: '1000-01-01 00:00:00',
+      deadline: '2022-10-13T18:15:00.000Z',
       status: 'incomplete',
     },
     {
@@ -27,7 +27,7 @@ exports.seed = async function (knex) {
       lists_id: 2,
       name: 'Apple',
       description: 'Buy apples',
-      deadline: '1000-01-01 00:00:00',
+      deadline: '2022-10-13T18:15:00.000Z',
       status: 'incomplete',
     },
     {
@@ -35,7 +35,7 @@ exports.seed = async function (knex) {
       lists_id: 2,
       name: 'Oranges',
       description: 'Buy oranges',
-      deadline: '1000-01-01 00:00:00',
+      deadline: '2023-10-13T18:15:00.000Z',
       status: 'incomplete',
     },
     {
@@ -43,7 +43,7 @@ exports.seed = async function (knex) {
       lists_id: 3,
       name: 'Bicepts',
       description: '3 sets of 5',
-      deadline: '1000-01-01 00:00:00',
+      deadline: '2023-10-13T18:15:00.000Z',
       status: 'incomplete',
     },
     {
@@ -51,7 +51,7 @@ exports.seed = async function (knex) {
       lists_id: 3,
       name: 'Tricepts',
       description: '4 sets of 8',
-      deadline: '1000-01-01 00:00:00',
+      deadline: '2023-10-13T18:15:00.000Z',
       status: 'incomplete',
     },
     {
@@ -59,7 +59,7 @@ exports.seed = async function (knex) {
       lists_id: 3,
       name: 'Deltoids',
       description: '2 sets of 10',
-      deadline: '1000-01-01 00:00:00',
+      deadline: '2023-10-13T18:15:00.000Z',
       status: 'incomplete',
     },
   ])

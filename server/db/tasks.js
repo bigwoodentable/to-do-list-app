@@ -1,8 +1,9 @@
 const connection = require('./connection')
 const { DateTime } = require('luxon')
+const { sendEmail } = require('../email')
 
 const addTaskByListId = (task, db = connection) => {
-  // Format dateTime when refactoring, convert to UTC from local time
+  //datetime saved as UTC
   const taskFormatted = {
     lists_id: task.listId,
     name: task.name,
@@ -10,7 +11,7 @@ const addTaskByListId = (task, db = connection) => {
     deadline: task.deadline,
     status: 'incomplete',
   }
-  console.log('task.deadline', task.deadline)
+  console.log('deadline', task.deadline)
   return db('tasks').insert(taskFormatted)
 }
 
@@ -52,14 +53,33 @@ const getAllTasks = (db = connection) => {
   return db('tasks').select('id', 'deadline')
 }
 
+// returns an array of late tasks' ids e.g. [1, 2, 3, null, null, null...]
 const checkLateTasks = async (db = connection) => {
-  const deadline = await db('tasks').where('id', 1).select('deadline').first()
-  const timeDiff = DateTime.fromISO('2022-11-10').diffNow()
-  console.log(timeDiff.values)
-  return null
+  const allTasks = await db('tasks').select('id', 'deadline')
+  const lateTasksPromises = allTasks.map(async (task) => {
+    const deadline = await db('tasks')
+      .where('id', task.id)
+      .select('deadline')
+      .first()
+    const deadLineUTC = DateTime.fromISO(deadline.deadline).toUTC().toISO()
+    const timeDiff = DateTime.fromISO(deadLineUTC).diffNow()
+    return timeDiff.values.milliseconds < 0 ? task.id : null
+  })
+  const deadlines = await Promise.all(lateTasksPromises)
+  const removedNulls = deadlines.filter((id) => id !== null)
+  return removedNulls
 }
 
-// checkLateTasks()
+const emailLateTasks = async () => {
+  const lateTaskIds = await checkLateTasks()
+  const lateTaskNamesPromises = lateTaskIds.map(async (taskId) => {
+    return await getTaskNameByTaskId(taskId)
+  })
+  const lateTasksName = await Promise.all(lateTaskNamesPromises)
+  const nameFormatted = lateTasksName.map((obj) => obj.name).join(', ')
+  sendEmail('late', nameFormatted)
+  return null
+}
 
 module.exports = {
   getTasksByListId,
@@ -71,5 +91,5 @@ module.exports = {
   updateTaskListId,
   getTaskNameByTaskId,
   getAllTasks,
-  checkLateTasks,
+  emailLateTasks,
 }

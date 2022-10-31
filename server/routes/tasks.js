@@ -3,6 +3,7 @@ const { async } = require('regenerator-runtime')
 const db = require('../db/tasks')
 const { sendEmail, emailData } = require('../email')
 const router = express.Router()
+const { intervalCheck } = require('../intervalLateCheck')
 
 // /api/v1/tasks/add
 router.post('/add', async (req, res) => {
@@ -68,6 +69,20 @@ router.patch('/update', async (req, res) => {
 router.patch('/move/:taskId/:listId', async (req, res) => {
   const taskId = req.params.taskId
   const listId = req.params.listId
+  try {
+    await db.updateTaskListId(taskId, listId)
+    return res.json('success in moving task to new list')
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+})
+
+// /api/v1/tasks/move/:taskId/:listId
+router.patch('/move/:taskId/:listId', async (req, res) => {
+  const taskId = req.params.taskId
+  const listId = req.params.listId
+
   try {
     await db.updateTaskListId(taskId, listId)
     return res.json('success in moving task to new list')

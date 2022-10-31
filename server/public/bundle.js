@@ -49303,9 +49303,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
-
-// import DatePicker from 'react-datepicker'
-
 var initialValues = {
   name: '',
   description: '',
