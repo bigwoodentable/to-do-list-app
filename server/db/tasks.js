@@ -53,9 +53,10 @@ const getAllTasks = (db = connection) => {
   return db('tasks').select('id', 'deadline')
 }
 
-// returns an array of late tasks' ids e.g. [1, 2, 3, null, null, null...]
+// returns a of late tasks e.g. 'Chop the carrot, Buy apple'
+// requires refactoring
 const checkLateTasks = async (db = connection) => {
-  const allTasks = await db('tasks').select('id', 'deadline')
+  const allTasks = await db('tasks').select('id', 'deadline', 'name')
   const lateTasksPromises = allTasks.map(async (task) => {
     const deadline = await db('tasks')
       .where('id', task.id)
@@ -63,22 +64,11 @@ const checkLateTasks = async (db = connection) => {
       .first()
     const deadLineUTC = DateTime.fromISO(deadline.deadline).toUTC().toISO()
     const timeDiff = DateTime.fromISO(deadLineUTC).diffNow()
-    return timeDiff.values.milliseconds < 0 ? task.id : null
+    return timeDiff.values.milliseconds < 0 ? task.name : null
   })
   const deadlines = await Promise.all(lateTasksPromises)
-  const removedNulls = deadlines.filter((id) => id !== null)
-  return removedNulls
-}
-
-const emailLateTasks = async () => {
-  const lateTaskIds = await checkLateTasks()
-  const lateTaskNamesPromises = lateTaskIds.map(async (taskId) => {
-    return await getTaskNameByTaskId(taskId)
-  })
-  const lateTasksName = await Promise.all(lateTaskNamesPromises)
-  const nameFormatted = lateTasksName.map((obj) => obj.name).join(', ')
-  sendEmail('late', nameFormatted)
-  return null
+  const removedNulls = deadlines.filter((name) => name !== null)
+  return removedNulls.join(', ')
 }
 
 module.exports = {
@@ -91,5 +81,5 @@ module.exports = {
   updateTaskListId,
   getTaskNameByTaskId,
   getAllTasks,
-  emailLateTasks,
+  checkLateTasks,
 }

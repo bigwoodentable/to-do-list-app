@@ -41,8 +41,6 @@ router.delete('/del/:taskId', async (req, res) => {
 router.patch('/completed/:taskId', async (req, res) => {
   const taskId = req.params.taskId
   try {
-    // await db.checkLateTasks()
-    // console.log(x)
     await db.updateStatusByTaskId(taskId)
     const completedTask = await db.getTaskNameByTaskId(taskId)
     sendEmail('completed', completedTask.name)
