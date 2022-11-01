@@ -1,10 +1,9 @@
 const express = require('express')
-const { async } = require('regenerator-runtime')
 const db = require('../db/tasks')
-const { sendEmail, emailData } = require('../email')
 const router = express.Router()
-const { intervalCheck } = require('../intervalLateCheck')
 const log = require('../logger')
+const { sendEmail } = require('../notifications/email')
+const { intervalCheck } = require('../notifications/intervalLateCheck')
 
 // /api/v1/tasks/add
 router.post('/add', async (req, res) => {

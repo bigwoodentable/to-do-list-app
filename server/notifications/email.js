@@ -1,3 +1,5 @@
+const log = require('../logger')
+
 const template = (body) =>
   `\r\nDear Reciever,\r\n\r\n${body}\r\n\r\nSincerely,\r\nSender\r\n`
 
@@ -17,7 +19,7 @@ const sendEmail = (category, task) => {
     default:
       return null
   }
-  console.log(email)
+  log(email)
 }
 
 module.exports = {

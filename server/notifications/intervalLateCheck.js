@@ -1,4 +1,4 @@
-const { checkLateTasks } = require('./db/tasks')
+const { checkLateTasks } = require('../db/tasks')
 const { sendEmail } = require('./email')
 
 //default set to a reminder email per day about tasks that has passed the deadline

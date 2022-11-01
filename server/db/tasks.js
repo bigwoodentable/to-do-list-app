@@ -1,6 +1,5 @@
 const connection = require('./connection')
 const { DateTime } = require('luxon')
-const { sendEmail } = require('../email')
 
 const getTaskByTaskId = (taskId, db = connection) => {
   return db('tasks').where('id', taskId).select().first()
@@ -30,8 +29,6 @@ const delTaskByTaskId = (taskId, db = connection) => {
   return db('tasks').where('id', taskId).del()
 }
 
-// delTaskByTaskId(3).then((id) => console.log(id))
-
 const delTaskByListId = (listId, db = connection) => {
   return db('tasks').where('lists_id', listId).del(['lists_id'])
 }
@@ -60,7 +57,6 @@ const getAllTasks = (db = connection) => {
 }
 
 // returns a string of late tasks e.g. 'Chop the carrot, Buy apple'
-// requires refactoring
 const checkLateTasks = async (db = connection) => {
   const allTasks = await db('tasks').select('id', 'deadline', 'name')
   const lateTasksPromises = allTasks.map(async (task) => {
