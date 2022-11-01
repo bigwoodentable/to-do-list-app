@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import { Formik, Field, Form } from 'formik'
 import React from 'react'
-import { addTaskByListId } from '../../apis/tasks.js'
+import { addTask } from '../../apis/tasks.js'
 import dayjs, { Dayjs } from 'dayjs'
 import TextField from '@mui/material/TextField'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -21,7 +21,7 @@ const AddTaskForm = ({ addTaskFormOpen, handleClose, listId, setUpdate }) => {
       ...task,
       listId,
     }
-    addTaskByListId(taskWithListId, handleClose)
+    addTask(taskWithListId, handleClose)
     setUpdate((n) => n + 1)
   }
 

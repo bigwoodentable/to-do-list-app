@@ -48766,7 +48766,7 @@ var delListByListId = function delListByListId(listId) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "addTaskByListId": () => (/* binding */ addTaskByListId),
+/* harmony export */   "addTask": () => (/* binding */ addTask),
 /* harmony export */   "delTaskByTaskId": () => (/* binding */ delTaskByTaskId),
 /* harmony export */   "moveTask": () => (/* binding */ moveTask),
 /* harmony export */   "taskCompleted": () => (/* binding */ taskCompleted),
@@ -48778,7 +48778,7 @@ __webpack_require__.r(__webpack_exports__);
 var rootUrl = '/api/v1/tasks';
 
 // /api/v1/tasks/add
-var addTaskByListId = function addTaskByListId(task, handleClose) {
+var addTask = function addTask(task, handleClose) {
   return superagent__WEBPACK_IMPORTED_MODULE_0___default().post(rootUrl + '/add').send(task).then(function (res) {
     return res.body;
   }).then(handleClose());
@@ -49318,7 +49318,7 @@ var AddTaskForm = function AddTaskForm(_ref) {
     var taskWithListId = _objectSpread(_objectSpread({}, task), {}, {
       listId: listId
     });
-    (0,_apis_tasks_js__WEBPACK_IMPORTED_MODULE_3__.addTaskByListId)(taskWithListId, handleClose);
+    (0,_apis_tasks_js__WEBPACK_IMPORTED_MODULE_3__.addTask)(taskWithListId, handleClose);
     setUpdate(function (n) {
       return n + 1;
     });

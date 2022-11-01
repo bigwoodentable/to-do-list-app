@@ -2,7 +2,11 @@ const connection = require('./connection')
 const { DateTime } = require('luxon')
 const { sendEmail } = require('../email')
 
-const addTaskByListId = (task, db = connection) => {
+const getTaskByTaskId = (taskId, db = connection) => {
+  return db('tasks').where('id', taskId).select().first()
+}
+
+const addTask = async (task, db = connection) => {
   //datetime saved as UTC
   const taskFormatted = {
     lists_id: task.listId,
@@ -11,8 +15,8 @@ const addTaskByListId = (task, db = connection) => {
     deadline: task.deadline,
     status: 'incomplete',
   }
-  console.log('deadline', task.deadline)
-  return db('tasks').insert(taskFormatted)
+  const taskId = await db('tasks').insert(taskFormatted)
+  return getTaskByTaskId(taskId[0], db)
 }
 
 const getTasksByListId = (listId, db = connection) => {
@@ -26,8 +30,10 @@ const delTaskByTaskId = (taskId, db = connection) => {
   return db('tasks').where('id', taskId).del()
 }
 
+// delTaskByTaskId(3).then((id) => console.log(id))
+
 const delTaskByListId = (listId, db = connection) => {
-  return db('tasks').where('lists_id', listId).del()
+  return db('tasks').where('lists_id', listId).del(['lists_id'])
 }
 
 const updateStatusByTaskId = (taskId, db = connection) => {
@@ -53,7 +59,7 @@ const getAllTasks = (db = connection) => {
   return db('tasks').select('id', 'deadline')
 }
 
-// returns a of late tasks e.g. 'Chop the carrot, Buy apple'
+// returns a string of late tasks e.g. 'Chop the carrot, Buy apple'
 // requires refactoring
 const checkLateTasks = async (db = connection) => {
   const allTasks = await db('tasks').select('id', 'deadline', 'name')
@@ -73,7 +79,7 @@ const checkLateTasks = async (db = connection) => {
 
 module.exports = {
   getTasksByListId,
-  addTaskByListId,
+  addTask,
   delTaskByTaskId,
   updateStatusByTaskId,
   editTaskByTaskId,
@@ -82,4 +88,5 @@ module.exports = {
   getTaskNameByTaskId,
   getAllTasks,
   checkLateTasks,
+  getTaskByTaskId,
 }

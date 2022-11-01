@@ -3,7 +3,7 @@ import request from 'superagent'
 const rootUrl = '/api/v1/tasks'
 
 // /api/v1/tasks/add
-export const addTaskByListId = (task, handleClose) => {
+export const addTask = (task, handleClose) => {
   return request
     .post(rootUrl + '/add')
     .send(task)

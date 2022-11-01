@@ -1,14 +1,21 @@
 const express = require('express')
 const db = require('../db/lists')
+const log = require('../logger')
 const router = express.Router()
 
 // /api/v1/lists/all
 router.get('/all', async (req, res) => {
   try {
     const lists = await db.getListsAll()
-    return res.json(lists)
-  } catch (error) {
-    console.error(error)
+    res.json(lists)
+    return null
+  } catch (err) {
+    log(err.message)
+    res.status(500).json({
+      error: {
+        title: 'Unable to retrieve lists',
+      },
+    })
     return null
   }
 })
@@ -19,8 +26,13 @@ router.post('/add', async (req, res) => {
   try {
     const id = await db.addList(newList)
     return res.json(id)
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    log(err.message)
+    res.status(500).json({
+      error: {
+        title: 'Unable to add list',
+      },
+    })
     return null
   }
 })
@@ -31,8 +43,13 @@ router.delete('/del/:listId', async (req, res) => {
   try {
     await db.delListByListId(listId)
     return res.json('success in deleting the list and the tasks in the list')
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    log(err.message)
+    res.status(500).json({
+      error: {
+        title: 'Unable to delete list',
+      },
+    })
     return null
   }
 })
