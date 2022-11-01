@@ -4,7 +4,7 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
-import { Box, Checkbox, IconButton } from '@mui/material'
+import { Box, Checkbox, IconButton, ListItem } from '@mui/material'
 import { delTaskByTaskId, taskCompleted } from '../apis/tasks'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditTaskForm from './forms/EditTaskForm'
@@ -50,7 +50,7 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
   }
 
   return (
-    <>
+    <ListItem>
       <EditTaskForm
         editFormOpen={editFormOpen}
         handleCloseEdit={handleCloseEdit}
@@ -86,7 +86,7 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
           </AccordionDetails>
         </Accordion>
       </Paper>
-    </>
+    </ListItem>
   )
 }
 

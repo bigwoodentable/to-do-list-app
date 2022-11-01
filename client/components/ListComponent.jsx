@@ -46,7 +46,6 @@ const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
         listId={listDetails.listId}
         setUpdate={setUpdate}
       />
-
       <Box display="flex" justifyContent="flex-end">
         <IconButton color="primary" size="large" onClick={handleDelGroup}>
           DELETE MULTIPLE TASKS
@@ -60,16 +59,20 @@ const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
       <Box>
         <IconButton onClick={handleDeleteList}>DELETE LIST</IconButton>
       </Box>
-      {tasks.map((task, i) => {
-        return (
-          <TaskItem
-            key={i}
-            task={task}
-            setGroup={setGroup}
-            setUpdate={setUpdate}
-          />
-        )
-      })}
+      {tasks?.length ? (
+        tasks.map((task, i) => {
+          return (
+            <TaskItem
+              key={i}
+              task={task}
+              setGroup={setGroup}
+              setUpdate={setUpdate}
+            />
+          )
+        })
+      ) : (
+        <Typography>No tasks in this list.</Typography>
+      )}
     </Box>
   )
 }

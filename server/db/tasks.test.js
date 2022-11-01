@@ -19,10 +19,9 @@ afterAll(() => {
   return testDb.destroy()
 })
 
-//addTask
 describe('addTask', () => {
   it('inserts task correctly', async () => {
-    const task = {
+    const mockTask = {
       listId: 1,
       name: 'Testing Function',
       description: 'This is a description for the test.',
@@ -32,7 +31,7 @@ describe('addTask', () => {
 
     expect.assertions(5)
 
-    const newTask = await db.addTask(task, testDb)
+    const newTask = await db.addTask(mockTask, testDb)
     expect(newTask.lists_id).toBe(1)
     expect(newTask.name).toMatch('Testing Function')
     expect(newTask.description).toMatch('This is a description for the test.')

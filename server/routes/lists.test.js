@@ -9,7 +9,7 @@ jest.mock('../db/lists')
 
 describe('GET /api/v1/lists/all', () => {
   it('responds with the correct lists', () => {
-    const lists = [
+    const mockLists = [
       {
         listId: 1,
         listName: 'Test List A',
@@ -49,14 +49,14 @@ describe('GET /api/v1/lists/all', () => {
     ]
 
     db.getListsAll.mockImplementation(() => {
-      return Promise.resolve(lists)
+      return Promise.resolve(mockLists)
     })
 
     return request(server)
       .get('/api/v1/lists/all')
       .then((res) => {
-        expect(res.body[0]).toEqual(lists[0])
-        expect(res.body[1]).toEqual(lists[1])
+        expect(res.body[0]).toEqual(mockLists[0])
+        expect(res.body[1]).toEqual(mockLists[1])
         return null
       })
   })

@@ -4,6 +4,7 @@ const db = require('../db/tasks')
 const { sendEmail, emailData } = require('../email')
 const router = express.Router()
 const { intervalCheck } = require('../intervalLateCheck')
+const log = require('../logger')
 
 // /api/v1/tasks/add
 router.post('/add', async (req, res) => {
