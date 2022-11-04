@@ -10729,6 +10729,221 @@ var refType = prop_types__WEBPACK_IMPORTED_MODULE_0___default().oneOfType([(prop
 
 /***/ }),
 
+/***/ "./node_modules/@mui/base/ClickAwayListener/ClickAwayListener.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@mui/base/ClickAwayListener/ClickAwayListener.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/useForkRef.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/useEventCallback.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/ownerDocument.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/elementAcceptingRef.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/exactProp.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+ // TODO: return `EventHandlerName extends `on${infer EventName}` ? Lowercase<EventName> : never` once generatePropTypes runs with TS 4.1
+
+
+
+function mapEventPropToEvent(eventProp) {
+  return eventProp.substring(2).toLowerCase();
+}
+
+function clickedRootScrollbar(event, doc) {
+  return doc.documentElement.clientWidth < event.clientX || doc.documentElement.clientHeight < event.clientY;
+}
+
+/**
+ * Listen for click events that occur somewhere in the document, outside of the element itself.
+ * For instance, if you need to hide a menu when people click anywhere else on your page.
+ *
+ * Demos:
+ *
+ * - [Click-Away Listener](https://mui.com/base/react-click-away-listener/)
+ *
+ * API:
+ *
+ * - [ClickAwayListener API](https://mui.com/base/api/click-away-listener/)
+ */
+function ClickAwayListener(props) {
+  const {
+    children,
+    disableReactTree = false,
+    mouseEvent = 'onClick',
+    onClickAway,
+    touchEvent = 'onTouchEnd'
+  } = props;
+  const movedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const nodeRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const activatedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const syntheticEventRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    // Ensure that this component is not "activated" synchronously.
+    // https://github.com/facebook/react/issues/20074
+    setTimeout(() => {
+      activatedRef.current = true;
+    }, 0);
+    return () => {
+      activatedRef.current = false;
+    };
+  }, []);
+  const handleRef = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_2__["default"])( // @ts-expect-error TODO upstream fix
+  children.ref, nodeRef); // The handler doesn't take event.defaultPrevented into account:
+  //
+  // event.preventDefault() is meant to stop default behaviors like
+  // clicking a checkbox to check it, hitting a button to submit a form,
+  // and hitting left arrow to move the cursor in a text input etc.
+  // Only special HTML elements have these default behaviors.
+
+  const handleClickAway = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_3__["default"])(event => {
+    // Given developers can stop the propagation of the synthetic event,
+    // we can only be confident with a positive value.
+    const insideReactTree = syntheticEventRef.current;
+    syntheticEventRef.current = false;
+    const doc = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_4__["default"])(nodeRef.current); // 1. IE11 support, which trigger the handleClickAway even after the unbind
+    // 2. The child might render null.
+    // 3. Behave like a blur listener.
+
+    if (!activatedRef.current || !nodeRef.current || 'clientX' in event && clickedRootScrollbar(event, doc)) {
+      return;
+    } // Do not act if user performed touchmove
+
+
+    if (movedRef.current) {
+      movedRef.current = false;
+      return;
+    }
+
+    let insideDOM; // If not enough, can use https://github.com/DieterHolvoet/event-propagation-path/blob/master/propagationPath.js
+
+    if (event.composedPath) {
+      insideDOM = event.composedPath().indexOf(nodeRef.current) > -1;
+    } else {
+      insideDOM = !doc.documentElement.contains( // @ts-expect-error returns `false` as intended when not dispatched from a Node
+      event.target) || nodeRef.current.contains( // @ts-expect-error returns `false` as intended when not dispatched from a Node
+      event.target);
+    }
+
+    if (!insideDOM && (disableReactTree || !insideReactTree)) {
+      onClickAway(event);
+    }
+  }); // Keep track of mouse/touch events that bubbled up through the portal.
+
+  const createHandleSynthetic = handlerName => event => {
+    syntheticEventRef.current = true;
+    const childrenPropsHandler = children.props[handlerName];
+
+    if (childrenPropsHandler) {
+      childrenPropsHandler(event);
+    }
+  };
+
+  const childrenProps = {
+    ref: handleRef
+  };
+
+  if (touchEvent !== false) {
+    childrenProps[touchEvent] = createHandleSynthetic(touchEvent);
+  }
+
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (touchEvent !== false) {
+      const mappedTouchEvent = mapEventPropToEvent(touchEvent);
+      const doc = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_4__["default"])(nodeRef.current);
+
+      const handleTouchMove = () => {
+        movedRef.current = true;
+      };
+
+      doc.addEventListener(mappedTouchEvent, handleClickAway);
+      doc.addEventListener('touchmove', handleTouchMove);
+      return () => {
+        doc.removeEventListener(mappedTouchEvent, handleClickAway);
+        doc.removeEventListener('touchmove', handleTouchMove);
+      };
+    }
+
+    return undefined;
+  }, [handleClickAway, touchEvent]);
+
+  if (mouseEvent !== false) {
+    childrenProps[mouseEvent] = createHandleSynthetic(mouseEvent);
+  }
+
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (mouseEvent !== false) {
+      const mappedMouseEvent = mapEventPropToEvent(mouseEvent);
+      const doc = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_4__["default"])(nodeRef.current);
+      doc.addEventListener(mappedMouseEvent, handleClickAway);
+      return () => {
+        doc.removeEventListener(mappedMouseEvent, handleClickAway);
+      };
+    }
+
+    return undefined;
+  }, [handleClickAway, mouseEvent]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    children: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.cloneElement(children, childrenProps)
+  });
+}
+
+ true ? ClickAwayListener.propTypes
+/* remove-proptypes */
+= {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit TypeScript types and run "yarn proptypes"  |
+  // ----------------------------------------------------------------------
+
+  /**
+   * The wrapped element.
+   */
+  children: _mui_utils__WEBPACK_IMPORTED_MODULE_5__["default"].isRequired,
+
+  /**
+   * If `true`, the React tree is ignored and only the DOM tree is considered.
+   * This prop changes how portaled elements are handled.
+   * @default false
+   */
+  disableReactTree: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().bool),
+
+  /**
+   * The mouse event to listen to. You can disable the listener by providing `false`.
+   * @default 'onClick'
+   */
+  mouseEvent: prop_types__WEBPACK_IMPORTED_MODULE_6___default().oneOf(['onClick', 'onMouseDown', 'onMouseUp', 'onPointerDown', 'onPointerUp', false]),
+
+  /**
+   * Callback fired when a "click away" event is detected.
+   */
+  onClickAway: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().func.isRequired),
+
+  /**
+   * The touch event to listen to. You can disable the listener by providing `false`.
+   * @default 'onTouchEnd'
+   */
+  touchEvent: prop_types__WEBPACK_IMPORTED_MODULE_6___default().oneOf(['onTouchEnd', 'onTouchStart', false])
+} : 0;
+
+if (true) {
+  // eslint-disable-next-line
+  ClickAwayListener['propTypes' + ''] = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_7__["default"])(ClickAwayListener.propTypes);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ClickAwayListener);
+
+/***/ }),
+
 /***/ "./node_modules/@mui/base/FocusTrap/FocusTrap.js":
 /*!*******************************************************!*\
   !*** ./node_modules/@mui/base/FocusTrap/FocusTrap.js ***!
@@ -13101,6 +13316,34 @@ var _jsxRuntime = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/r
 var _default = (0, _createSvgIcon.default)( /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
   d: "M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
 }), 'Delete');
+
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./node_modules/@mui/icons-material/DeleteSweep.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@mui/icons-material/DeleteSweep.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@mui/icons-material/utils/createSvgIcon.js"));
+
+var _jsxRuntime = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+  d: "M15 16h4v2h-4zm0-8h7v2h-7zm0 4h6v2h-6zM3 18c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V8H3v10zM14 5h-3l-1-1H6L5 5H2v2h12z"
+}), 'DeleteSweep');
 
 exports["default"] = _default;
 
@@ -32469,6 +32712,285 @@ const Box = (0,_createBox__WEBPACK_IMPORTED_MODULE_0__["default"])();
 
 /***/ }),
 
+/***/ "./node_modules/@mui/system/esm/Stack/Stack.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@mui/system/esm/Stack/Stack.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _createStack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createStack */ "./node_modules/@mui/system/esm/Stack/createStack.js");
+
+
+/**
+ *
+ * Demos:
+ *
+ * - [Stack (Material UI)](https://mui.com/material-ui/react-stack/)
+ * - [Stack (MUI System)](https://mui.com/system/react-stack/)
+ *
+ * API:
+ *
+ * - [Stack API](https://mui.com/system/api/stack/)
+ */
+
+const Stack = (0,_createStack__WEBPACK_IMPORTED_MODULE_0__["default"])();
+ true ? Stack.propTypes
+/* remove-proptypes */
+= {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit TypeScript types and run "yarn proptypes"  |
+  // ----------------------------------------------------------------------
+
+  /**
+   * The content of the component.
+   */
+  children: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().node),
+
+  /**
+   * Defines the `flex-direction` style property.
+   * It is applied for all screen sizes.
+   * @default 'column'
+   */
+  direction: prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOf(['column-reverse', 'column', 'row-reverse', 'row']), prop_types__WEBPACK_IMPORTED_MODULE_1___default().arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOf(['column-reverse', 'column', 'row-reverse', 'row'])), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)]),
+
+  /**
+   * Add an element between each child.
+   */
+  divider: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().node),
+
+  /**
+   * Defines the space between immediate children.
+   * @default 0
+   */
+  spacing: prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default().arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOfType([(prop_types__WEBPACK_IMPORTED_MODULE_1___default().number), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)])), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().number), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)]),
+
+  /**
+   * The system prop, which allows defining system overrides as well as additional CSS styles.
+   */
+  sx: prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default().arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOfType([(prop_types__WEBPACK_IMPORTED_MODULE_1___default().func), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().bool)])), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)])
+} : 0;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Stack);
+
+/***/ }),
+
+/***/ "./node_modules/@mui/system/esm/Stack/createStack.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@mui/system/esm/Stack/createStack.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ createStack),
+/* harmony export */   "style": () => (/* binding */ style)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/deepmerge.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/composeClasses/composeClasses.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/generateUtilityClass/generateUtilityClass.js");
+/* harmony import */ var _styled__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../styled */ "./node_modules/@mui/system/esm/styled.js");
+/* harmony import */ var _useThemeProps__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../useThemeProps */ "./node_modules/@mui/system/esm/useThemeProps/useThemeProps.js");
+/* harmony import */ var _styleFunctionSx__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../styleFunctionSx */ "./node_modules/@mui/system/esm/styleFunctionSx/extendSxProp.js");
+/* harmony import */ var _createTheme__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../createTheme */ "./node_modules/@mui/system/esm/createTheme/createTheme.js");
+/* harmony import */ var _breakpoints__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../breakpoints */ "./node_modules/@mui/system/esm/breakpoints.js");
+/* harmony import */ var _spacing__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../spacing */ "./node_modules/@mui/system/esm/spacing.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+const _excluded = ["component", "direction", "spacing", "divider", "children", "className"];
+
+
+
+
+
+
+
+
+
+
+
+const defaultTheme = (0,_createTheme__WEBPACK_IMPORTED_MODULE_5__["default"])();
+// widening Theme to any so that the consumer can own the theme structure.
+const defaultCreateStyledComponent = (0,_styled__WEBPACK_IMPORTED_MODULE_6__["default"])('div', {
+  name: 'MuiStack',
+  slot: 'Root',
+  overridesResolver: (props, styles) => styles.root
+});
+
+function useThemePropsDefault(props) {
+  return (0,_useThemeProps__WEBPACK_IMPORTED_MODULE_7__["default"])({
+    props,
+    name: 'MuiStack',
+    defaultTheme
+  });
+}
+/**
+ * Return an array with the separator React element interspersed between
+ * each React node of the input children.
+ *
+ * > joinChildren([1,2,3], 0)
+ * [1,0,2,0,3]
+ */
+
+
+function joinChildren(children, separator) {
+  const childrenArray = react__WEBPACK_IMPORTED_MODULE_2__.Children.toArray(children).filter(Boolean);
+  return childrenArray.reduce((output, child, index) => {
+    output.push(child);
+
+    if (index < childrenArray.length - 1) {
+      output.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.cloneElement(separator, {
+        key: `separator-${index}`
+      }));
+    }
+
+    return output;
+  }, []);
+}
+
+const getSideFromDirection = direction => {
+  return {
+    row: 'Left',
+    'row-reverse': 'Right',
+    column: 'Top',
+    'column-reverse': 'Bottom'
+  }[direction];
+};
+
+const style = ({
+  ownerState,
+  theme
+}) => {
+  let styles = (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+    display: 'flex',
+    flexDirection: 'column'
+  }, (0,_breakpoints__WEBPACK_IMPORTED_MODULE_8__.handleBreakpoints)({
+    theme
+  }, (0,_breakpoints__WEBPACK_IMPORTED_MODULE_8__.resolveBreakpointValues)({
+    values: ownerState.direction,
+    breakpoints: theme.breakpoints.values
+  }), propValue => ({
+    flexDirection: propValue
+  })));
+
+  if (ownerState.spacing) {
+    const transformer = (0,_spacing__WEBPACK_IMPORTED_MODULE_9__.createUnarySpacing)(theme);
+    const base = Object.keys(theme.breakpoints.values).reduce((acc, breakpoint) => {
+      if (typeof ownerState.spacing === 'object' && ownerState.spacing[breakpoint] != null || typeof ownerState.direction === 'object' && ownerState.direction[breakpoint] != null) {
+        acc[breakpoint] = true;
+      }
+
+      return acc;
+    }, {});
+    const directionValues = (0,_breakpoints__WEBPACK_IMPORTED_MODULE_8__.resolveBreakpointValues)({
+      values: ownerState.direction,
+      base
+    });
+    const spacingValues = (0,_breakpoints__WEBPACK_IMPORTED_MODULE_8__.resolveBreakpointValues)({
+      values: ownerState.spacing,
+      base
+    });
+
+    if (typeof directionValues === 'object') {
+      Object.keys(directionValues).forEach((breakpoint, index, breakpoints) => {
+        const directionValue = directionValues[breakpoint];
+
+        if (!directionValue) {
+          const previousDirectionValue = index > 0 ? directionValues[breakpoints[index - 1]] : 'column';
+          directionValues[breakpoint] = previousDirectionValue;
+        }
+      });
+    }
+
+    const styleFromPropValue = (propValue, breakpoint) => {
+      return {
+        '& > :not(style) + :not(style)': {
+          margin: 0,
+          [`margin${getSideFromDirection(breakpoint ? directionValues[breakpoint] : ownerState.direction)}`]: (0,_spacing__WEBPACK_IMPORTED_MODULE_9__.getValue)(transformer, propValue)
+        }
+      };
+    };
+
+    styles = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_10__["default"])(styles, (0,_breakpoints__WEBPACK_IMPORTED_MODULE_8__.handleBreakpoints)({
+      theme
+    }, spacingValues, styleFromPropValue));
+  }
+
+  styles = (0,_breakpoints__WEBPACK_IMPORTED_MODULE_8__.mergeBreakpointsInOrder)(theme.breakpoints, styles);
+  return styles;
+};
+function createStack(options = {}) {
+  const {
+    // This will allow adding custom styled fn (for example for custom sx style function)
+    createStyledComponent = defaultCreateStyledComponent,
+    useThemeProps = useThemePropsDefault,
+    componentName = 'MuiStack'
+  } = options;
+
+  const useUtilityClasses = () => {
+    const slots = {
+      root: ['root']
+    };
+    return (0,_mui_utils__WEBPACK_IMPORTED_MODULE_11__["default"])(slots, slot => (0,_mui_utils__WEBPACK_IMPORTED_MODULE_12__["default"])(componentName, slot), {});
+  };
+
+  const StackRoot = createStyledComponent(style);
+  const Stack = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.forwardRef(function Grid(inProps, ref) {
+    const themeProps = useThemeProps(inProps);
+    const props = (0,_styleFunctionSx__WEBPACK_IMPORTED_MODULE_13__["default"])(themeProps); // `color` type conflicts with html color attribute.
+
+    const {
+      component = 'div',
+      direction = 'column',
+      spacing = 0,
+      divider,
+      children,
+      className
+    } = props,
+          other = (0,_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(props, _excluded);
+
+    const ownerState = {
+      direction,
+      spacing
+    };
+    const classes = useUtilityClasses();
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(StackRoot, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+      as: component,
+      ownerState: ownerState,
+      ref: ref,
+      className: (0,clsx__WEBPACK_IMPORTED_MODULE_3__["default"])(classes.root, className)
+    }, other, {
+      children: divider ? joinChildren(children, divider) : children
+    }));
+  });
+   true ? Stack.propTypes
+  /* remove-proptypes */
+  = {
+    children: (prop_types__WEBPACK_IMPORTED_MODULE_14___default().node),
+    direction: prop_types__WEBPACK_IMPORTED_MODULE_14___default().oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_14___default().oneOf(['column-reverse', 'column', 'row-reverse', 'row']), prop_types__WEBPACK_IMPORTED_MODULE_14___default().arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_14___default().oneOf(['column-reverse', 'column', 'row-reverse', 'row'])), (prop_types__WEBPACK_IMPORTED_MODULE_14___default().object)]),
+    divider: (prop_types__WEBPACK_IMPORTED_MODULE_14___default().node),
+    spacing: prop_types__WEBPACK_IMPORTED_MODULE_14___default().oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_14___default().arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_14___default().oneOfType([(prop_types__WEBPACK_IMPORTED_MODULE_14___default().number), (prop_types__WEBPACK_IMPORTED_MODULE_14___default().string)])), (prop_types__WEBPACK_IMPORTED_MODULE_14___default().number), (prop_types__WEBPACK_IMPORTED_MODULE_14___default().object), (prop_types__WEBPACK_IMPORTED_MODULE_14___default().string)]),
+    sx: prop_types__WEBPACK_IMPORTED_MODULE_14___default().oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_14___default().arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_14___default().oneOfType([(prop_types__WEBPACK_IMPORTED_MODULE_14___default().func), (prop_types__WEBPACK_IMPORTED_MODULE_14___default().object), (prop_types__WEBPACK_IMPORTED_MODULE_14___default().bool)])), (prop_types__WEBPACK_IMPORTED_MODULE_14___default().func), (prop_types__WEBPACK_IMPORTED_MODULE_14___default().object)])
+  } : 0;
+  return Stack;
+}
+
+/***/ }),
+
 /***/ "./node_modules/@mui/system/esm/borders.js":
 /*!*************************************************!*\
   !*** ./node_modules/@mui/system/esm/borders.js ***!
@@ -34821,6 +35343,24 @@ function unstable_createStyleFunctionSx(styleFunctionMapping = _getThemeValue__W
 const styleFunctionSx = unstable_createStyleFunctionSx();
 styleFunctionSx.filterProps = ['sx'];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (styleFunctionSx);
+
+/***/ }),
+
+/***/ "./node_modules/@mui/system/esm/styled.js":
+/*!************************************************!*\
+  !*** ./node_modules/@mui/system/esm/styled.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _createStyled__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createStyled */ "./node_modules/@mui/system/esm/createStyled.js");
+
+const styled = (0,_createStyled__WEBPACK_IMPORTED_MODULE_0__["default"])();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (styled);
 
 /***/ }),
 
@@ -49864,6 +50404,7 @@ function Dashboard() {
       display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
+      //
       marginRight: '20px',
       marginTop: '5px',
       border: 'blue 3px solid',
@@ -49898,17 +50439,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Typography/Typography.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
-/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/Box/Box.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _apis_lists__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../apis/lists */ "./client/apis/lists.js");
-/* harmony import */ var _forms_AddTaskForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./forms/AddTaskForm */ "./client/components/forms/AddTaskForm.jsx");
-/* harmony import */ var _mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/icons-material/Edit */ "./node_modules/@mui/icons-material/Edit.js");
-/* harmony import */ var _TaskItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TaskItem */ "./client/components/TaskItem.jsx");
-/* harmony import */ var _apis_tasks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../apis/tasks */ "./client/apis/tasks.js");
-/* harmony import */ var _forms_MoveForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./forms/MoveForm */ "./client/components/forms/MoveForm.jsx");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Paper/Paper.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Typography/Typography.js");
+/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/Box/Box.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _apis_lists__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../apis/lists */ "./client/apis/lists.js");
+/* harmony import */ var _forms_AddTaskForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./forms/AddTaskForm */ "./client/components/forms/AddTaskForm.jsx");
+/* harmony import */ var _TaskItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TaskItem */ "./client/components/TaskItem.jsx");
+/* harmony import */ var _apis_tasks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../apis/tasks */ "./client/apis/tasks.js");
+/* harmony import */ var _forms_MoveForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./forms/MoveForm */ "./client/components/forms/MoveForm.jsx");
+/* harmony import */ var _buttons_DeleteListButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./buttons/DeleteListButton */ "./client/components/buttons/DeleteListButton.jsx");
+/* harmony import */ var _buttons_DeleteTaskButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./buttons/DeleteTaskButton */ "./client/components/buttons/DeleteTaskButton.jsx");
+
 
 
 
@@ -49924,25 +50466,14 @@ var ListComponent = function ListComponent(_ref) {
     setUpdate = _ref.setUpdate,
     setGroup = _ref.setGroup,
     group = _ref.group;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState, 2),
-    addTaskFormOpen = _useState2[0],
-    setAddTaskFormOpen = _useState2[1];
   var listId = listDetails.listId,
     listName = listDetails.listName,
     tasks = listDetails.tasks;
 
-  //functions for AddTaskForm.jsx to create a new task
-  var handleClickOpen = function handleClickOpen() {
-    setAddTaskFormOpen(true);
-  };
-  var handleClose = function handleClose() {
-    setAddTaskFormOpen(false);
-  };
   //--------------------------------------------------------
   //deletes specified list
   var handleDeleteList = function handleDeleteList() {
-    (0,_apis_lists__WEBPACK_IMPORTED_MODULE_2__.delListByListId)(listId);
+    (0,_apis_lists__WEBPACK_IMPORTED_MODULE_1__.delListByListId)(listId);
     setUpdate(function (n) {
       return n + 1;
     });
@@ -49952,53 +50483,49 @@ var ListComponent = function ListComponent(_ref) {
   var handleDelGroup = function handleDelGroup() {
     Object.entries(group).forEach(function (property) {
       var taskId = property[0];
-      (0,_apis_tasks__WEBPACK_IMPORTED_MODULE_5__.delTaskByTaskId)(taskId);
+      (0,_apis_tasks__WEBPACK_IMPORTED_MODULE_4__.delTaskByTaskId)(taskId);
     });
     setGroup({});
     setUpdate(function (n) {
       return n + 1;
     });
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     style: {
-      // position: 'absolute',
-      border: '3px solid red',
+      //task-card
+      border: '0.1rem solid lightgrey',
       margin: '15px',
-      width: '400px'
+      width: '25rem',
+      padding: '1rem'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], null, listName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_forms_AddTaskForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    addTaskFormOpen: addTaskFormOpen,
-    handleClose: handleClose,
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    style: {
+      fontSize: '2rem'
+    }
+  }, listName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_AddTaskForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
     listId: listDetails.listId,
     setUpdate: setUpdate
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "button-group",
-    display: "flex",
-    justifyContent: "flex-end"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    color: "primary",
-    size: "large",
-    onClick: handleDelGroup
-  }, "DELETE MULTIPLE TASKS")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "button-group",
-    display: "flex",
-    justifyContent: "flex-end"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    color: "primary",
-    size: "large",
-    onClick: handleClickOpen
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_10__["default"], null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "button-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    onClick: handleDeleteList
-  }, "DELETE LIST")), tasks !== null && tasks !== void 0 && tasks.length ? tasks.map(function (task, i) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_TaskItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }), tasks !== null && tasks !== void 0 && tasks.length ? tasks.map(function (task, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_TaskItem__WEBPACK_IMPORTED_MODULE_3__["default"], {
       key: i,
       task: task,
       setGroup: setGroup,
       setUpdate: setUpdate
     });
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], null, "No tasks in this list."));
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], null, "No tasks in this list."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    style: {
+      //flex-container
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'right',
+      //Delete buttons for task
+      marginTop: '1rem'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons_DeleteListButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    handleDeleteList: handleDeleteList
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons_DeleteTaskButton__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    handleDelGroup: handleDelGroup
+  })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ListComponent);
 
@@ -50018,25 +50545,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _mui_material_Accordion__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material/Accordion */ "./node_modules/@mui/material/esm/Accordion/Accordion.js");
-/* harmony import */ var _mui_material_AccordionSummary__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material/AccordionSummary */ "./node_modules/@mui/material/esm/AccordionSummary/AccordionSummary.js");
-/* harmony import */ var _mui_material_AccordionDetails__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/material/AccordionDetails */ "./node_modules/@mui/material/esm/AccordionDetails/AccordionDetails.js");
-/* harmony import */ var _mui_material_Typography__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material/Typography */ "./node_modules/@mui/material/esm/Typography/Typography.js");
-/* harmony import */ var _mui_material_Paper__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material/Paper */ "./node_modules/@mui/material/esm/Paper/Paper.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/ListItem/ListItem.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Checkbox/Checkbox.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
+/* harmony import */ var _mui_material_Accordion__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material/Accordion */ "./node_modules/@mui/material/esm/Accordion/Accordion.js");
+/* harmony import */ var _mui_material_AccordionSummary__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/material/AccordionSummary */ "./node_modules/@mui/material/esm/AccordionSummary/AccordionSummary.js");
+/* harmony import */ var _mui_material_AccordionDetails__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material/AccordionDetails */ "./node_modules/@mui/material/esm/AccordionDetails/AccordionDetails.js");
+/* harmony import */ var _mui_material_Typography__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material/Typography */ "./node_modules/@mui/material/esm/Typography/Typography.js");
+/* harmony import */ var _mui_material_Paper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material/Paper */ "./node_modules/@mui/material/esm/Paper/Paper.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/ListItem/ListItem.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Checkbox/Checkbox.js");
 /* harmony import */ var _apis_tasks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../apis/tasks */ "./client/apis/tasks.js");
-/* harmony import */ var _mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mui/icons-material/Edit */ "./node_modules/@mui/icons-material/Edit.js");
-/* harmony import */ var _mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @mui/icons-material/Delete */ "./node_modules/@mui/icons-material/Delete.js");
-/* harmony import */ var _mui_icons_material_Check__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @mui/icons-material/Check */ "./node_modules/@mui/icons-material/Check.js");
 /* harmony import */ var _forms_EditTaskForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./forms/EditTaskForm */ "./client/components/forms/EditTaskForm.jsx");
+/* harmony import */ var _buttons_EditTaskButton__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./buttons/EditTaskButton */ "./client/components/buttons/EditTaskButton.jsx");
+/* harmony import */ var _buttons_CompleteTaskButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./buttons/CompleteTaskButton */ "./client/components/buttons/CompleteTaskButton.jsx");
 
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
 
 
 
@@ -50061,12 +50584,6 @@ var TaskItem = function TaskItem(_ref) {
     name = task.name,
     description = task.description,
     deadline = task.deadline;
-  var handleDelete = function handleDelete() {
-    (0,_apis_tasks__WEBPACK_IMPORTED_MODULE_3__.delTaskByTaskId)(taskId);
-    setUpdate(function (n) {
-      return n + 1;
-    });
-  };
   var handleCompleted = function handleCompleted() {
     (0,_apis_tasks__WEBPACK_IMPORTED_MODULE_3__.taskCompleted)(taskId);
     setUpdate(function (n) {
@@ -50100,37 +50617,186 @@ var TaskItem = function TaskItem(_ref) {
       });
     }
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_forms_EditTaskForm__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_forms_EditTaskForm__WEBPACK_IMPORTED_MODULE_4__["default"], {
     editFormOpen: editFormOpen,
     handleCloseEdit: handleCloseEdit,
     taskId: taskId,
     setUpdate: setUpdate,
     task: task
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     onChange: function onChange(event) {
       return handleChecked(event);
     },
     inputProps: {
       'aria-label': 'controlled'
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Paper__WEBPACK_IMPORTED_MODULE_7__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Accordion__WEBPACK_IMPORTED_MODULE_8__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_AccordionSummary__WEBPACK_IMPORTED_MODULE_9__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Paper__WEBPACK_IMPORTED_MODULE_9__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Accordion__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    style: {
+      width: '15rem'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_AccordionSummary__WEBPACK_IMPORTED_MODULE_11__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_12__["default"], {
     style: {
       fontWeight: 'bold'
     }
-  }, name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_AccordionDetails__WEBPACK_IMPORTED_MODULE_11__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }, name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_AccordionDetails__WEBPACK_IMPORTED_MODULE_13__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_12__["default"], {
     variant: "h8",
     fontWeight: 'bold'
-  }, "Deadline: ", deadline), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }, "Deadline: ", deadline), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_12__["default"], {
     variant: "body2"
-  }, description)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
-    onClick: handleEditOpen
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_14__["default"], null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
-    onClick: handleCompleted
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_icons_material_Check__WEBPACK_IMPORTED_MODULE_15__["default"], null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
-    onClick: handleDelete
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_16__["default"], null))));
+  }, description)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_buttons_EditTaskButton__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    handleEditOpen: handleEditOpen
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_buttons_CompleteTaskButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    handleCompleted: handleCompleted
+  }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TaskItem);
+
+/***/ }),
+
+/***/ "./client/components/buttons/AddTaskButton.jsx":
+/*!*****************************************************!*\
+  !*** ./client/components/buttons/AddTaskButton.jsx ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Box/Box.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Typography/Typography.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mui_icons_material_Add__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/icons-material/Add */ "./node_modules/@mui/icons-material/Add.js");
+
+
+
+function AddTaskButton(_ref) {
+  var handleClickOpen = _ref.handleClickOpen;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    display: "flex",
+    justifyContent: "center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    style: {
+      width: '100%'
+    },
+    color: "primary",
+    size: "large",
+    onClick: handleClickOpen
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_icons_material_Add__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], null, "Add a task")));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddTaskButton);
+
+/***/ }),
+
+/***/ "./client/components/buttons/CompleteTaskButton.jsx":
+/*!**********************************************************!*\
+  !*** ./client/components/buttons/CompleteTaskButton.jsx ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mui_icons_material_Check__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/icons-material/Check */ "./node_modules/@mui/icons-material/Check.js");
+
+
+
+function CompleteTaskButton(_ref) {
+  var handleCompleted = _ref.handleCompleted;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    onClick: handleCompleted
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_icons_material_Check__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompleteTaskButton);
+
+/***/ }),
+
+/***/ "./client/components/buttons/DeleteListButton.jsx":
+/*!********************************************************!*\
+  !*** ./client/components/buttons/DeleteListButton.jsx ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Typography/Typography.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mui_icons_material_DeleteSweep__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/icons-material/DeleteSweep */ "./node_modules/@mui/icons-material/DeleteSweep.js");
+
+
+
+function DeleteListButton(_ref) {
+  var handleDeleteList = _ref.handleDeleteList;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    onClick: handleDeleteList
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_icons_material_DeleteSweep__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, "Delete List"));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DeleteListButton);
+
+/***/ }),
+
+/***/ "./client/components/buttons/DeleteTaskButton.jsx":
+/*!********************************************************!*\
+  !*** ./client/components/buttons/DeleteTaskButton.jsx ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Typography/Typography.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/icons-material/Delete */ "./node_modules/@mui/icons-material/Delete.js");
+
+
+
+function DeleteTaskButton(_ref) {
+  var handleDelGroup = _ref.handleDelGroup;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    onClick: handleDelGroup
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, "Delete Tasks"));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DeleteTaskButton);
+
+/***/ }),
+
+/***/ "./client/components/buttons/EditTaskButton.jsx":
+/*!******************************************************!*\
+  !*** ./client/components/buttons/EditTaskButton.jsx ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/IconButton/IconButton.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/icons-material/Edit */ "./node_modules/@mui/icons-material/Edit.js");
+
+
+
+function EditTaskButton(_ref) {
+  var handleEditOpen = _ref.handleEditOpen;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    onClick: handleEditOpen
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_icons_material_Edit__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EditTaskButton);
 
 /***/ }),
 
@@ -50238,20 +50904,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Button/Button.js");
-/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _apis_tasks_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../apis/tasks.js */ "./client/apis/tasks.js");
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _mui_material_TextField__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material/TextField */ "./node_modules/@mui/material/esm/TextField/TextField.js");
-/* harmony import */ var _mui_x_date_pickers_AdapterDayjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/x-date-pickers/AdapterDayjs */ "./node_modules/@mui/x-date-pickers/AdapterDayjs/index.js");
-/* harmony import */ var _mui_x_date_pickers_LocalizationProvider__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/x-date-pickers/LocalizationProvider */ "./node_modules/@mui/x-date-pickers/LocalizationProvider/LocalizationProvider.js");
-/* harmony import */ var _mui_x_date_pickers_DateTimePicker__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/x-date-pickers/DateTimePicker */ "./node_modules/@mui/x-date-pickers/DateTimePicker/DateTimePicker.js");
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/base/ClickAwayListener/ClickAwayListener.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Box/Box.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Button/Button.js");
+/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _apis_tasks_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../apis/tasks.js */ "./client/apis/tasks.js");
+/* harmony import */ var _mui_material_TextField__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material/TextField */ "./node_modules/@mui/material/esm/TextField/TextField.js");
+/* harmony import */ var _mui_x_date_pickers_AdapterDayjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/x-date-pickers/AdapterDayjs */ "./node_modules/@mui/x-date-pickers/AdapterDayjs/index.js");
+/* harmony import */ var _mui_x_date_pickers_LocalizationProvider__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/x-date-pickers/LocalizationProvider */ "./node_modules/@mui/x-date-pickers/LocalizationProvider/LocalizationProvider.js");
+/* harmony import */ var _mui_x_date_pickers_DateTimePicker__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/x-date-pickers/DateTimePicker */ "./node_modules/@mui/x-date-pickers/DateTimePicker/DateTimePicker.js");
+/* harmony import */ var _mui_system__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/Stack/Stack.js");
+/* harmony import */ var _buttons_AddTaskButton_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../buttons/AddTaskButton.jsx */ "./client/components/buttons/AddTaskButton.jsx");
+
+
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 
 
@@ -50268,21 +50940,42 @@ var initialValues = {
   deadline: {}
 };
 var AddTaskForm = function AddTaskForm(_ref) {
-  var addTaskFormOpen = _ref.addTaskFormOpen,
-    handleClose = _ref.handleClose,
-    listId = _ref.listId,
+  var listId = _ref.listId,
     setUpdate = _ref.setUpdate;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(false),
+    _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState, 2),
+    addTaskFormOpen = _useState2[0],
+    setAddTaskFormOpen = _useState2[1];
+  //functions for AddTaskForm.jsx to create a new task
+  var handleClickOpen = function handleClickOpen() {
+    setAddTaskFormOpen(true);
+  };
+  var handleClose = function handleClose() {
+    setAddTaskFormOpen(false);
+  };
   var handleSubmit = function handleSubmit(task) {
     //add task to db
     var taskWithListId = _objectSpread(_objectSpread({}, task), {}, {
       listId: listId
     });
-    (0,_apis_tasks_js__WEBPACK_IMPORTED_MODULE_3__.addTask)(taskWithListId, handleClose);
+    (0,_apis_tasks_js__WEBPACK_IMPORTED_MODULE_5__.addTask)(taskWithListId, handleClose);
     setUpdate(function (n) {
       return n + 1;
     });
   };
-  return addTaskFormOpen && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(react__WEBPACK_IMPORTED_MODULE_2__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Formik, {
+  return !addTaskFormOpen ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_buttons_AddTaskButton_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    handleClickOpen: handleClickOpen
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    onClickAway: handleClose
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    style: {
+      //add-task-form-layout
+      padding: '1rem',
+      marginBottom: '1rem',
+      //form-color variable
+      backgroundColor: '#fafafa'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(formik__WEBPACK_IMPORTED_MODULE_3__.Formik, {
     initialValues: initialValues,
     onSubmit: function onSubmit(values) {
       return handleSubmit(values);
@@ -50290,32 +50983,45 @@ var AddTaskForm = function AddTaskForm(_ref) {
   }, function (_ref2) {
     var values = _ref2.values,
       setFieldValue = _ref2.setFieldValue;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Form, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Field, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(formik__WEBPACK_IMPORTED_MODULE_3__.Form, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      spacing: 3
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(formik__WEBPACK_IMPORTED_MODULE_3__.Field, {
       name: "name",
       placeholder: "Task Name"
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(formik__WEBPACK_IMPORTED_MODULE_1__.Field, {
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(formik__WEBPACK_IMPORTED_MODULE_3__.Field, {
       name: "description",
       placeholder: "Description",
-      as: "textarea"
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_x_date_pickers_LocalizationProvider__WEBPACK_IMPORTED_MODULE_5__.LocalizationProvider, {
-      dateAdapter: _mui_x_date_pickers_AdapterDayjs__WEBPACK_IMPORTED_MODULE_6__.AdapterDayjs
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_x_date_pickers_DateTimePicker__WEBPACK_IMPORTED_MODULE_7__.DateTimePicker, {
+      as: "textarea",
+      style: {
+        //textarea-description-task-add-form
+        maxWidth: '100%',
+        minWidth: '100%',
+        minHeight: '1.5rem'
+      }
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_mui_x_date_pickers_LocalizationProvider__WEBPACK_IMPORTED_MODULE_10__.LocalizationProvider, {
+      dateAdapter: _mui_x_date_pickers_AdapterDayjs__WEBPACK_IMPORTED_MODULE_11__.AdapterDayjs
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_mui_x_date_pickers_DateTimePicker__WEBPACK_IMPORTED_MODULE_12__.DateTimePicker, {
       renderInput: function renderInput(props) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_8__["default"], props);
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_13__["default"], (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props, {
+          style: {
+            width: '100%'
+          }
+        }));
       },
-      label: "DateTimePicker",
+      label: "Deadline",
       value: values.deadline,
       onChange: function onChange(newValue) {
         return setFieldValue('deadline', newValue);
       }
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      color: "primary",
-      variant: "contained",
-      type: "submit"
-    }, "Submit"));
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    onClick: handleClose
-  }, "Close"));
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      style: {
+        display: 'block'
+      },
+      variant: "outlined",
+      type: "submit",
+      color: "primary"
+    }, "Submit")));
+  })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddTaskForm);
 

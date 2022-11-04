@@ -1,4 +1,4 @@
-import { IconButton, Typography } from '@mui/material'
+import { IconButton, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { delListByListId } from '../apis/lists'
@@ -8,18 +8,12 @@ import TaskItem from './TaskItem'
 import { delTaskByTaskId } from '../apis/tasks'
 import MoveForm from './forms/MoveForm'
 
+import DeleteListButton from './buttons/DeleteListButton'
+import DeleteTaskButton from './buttons/DeleteTaskButton'
+
 const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
-  const [addTaskFormOpen, setAddTaskFormOpen] = useState(false)
   const { listId, listName, tasks } = listDetails
 
-  //functions for AddTaskForm.jsx to create a new task
-  const handleClickOpen = () => {
-    setAddTaskFormOpen(true)
-  }
-
-  const handleClose = () => {
-    setAddTaskFormOpen(false)
-  }
   //--------------------------------------------------------
   //deletes specified list
   const handleDeleteList = () => {
@@ -38,34 +32,17 @@ const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
   }
 
   return (
-    <Box
+    <Paper
       style={{
-        // position: 'absolute',
-        border: '3px solid red',
+        //task-card
+        border: '0.1rem solid lightgrey',
         margin: '15px',
-        width: '400px',
+        width: '25rem',
+        padding: '1rem',
       }}
     >
-      <Typography>{listName}</Typography>
-      <AddTaskForm
-        addTaskFormOpen={addTaskFormOpen}
-        handleClose={handleClose}
-        listId={listDetails.listId}
-        setUpdate={setUpdate}
-      />
-      <Box className="button-group" display="flex" justifyContent="flex-end">
-        <IconButton color="primary" size="large" onClick={handleDelGroup}>
-          DELETE MULTIPLE TASKS
-        </IconButton>
-      </Box>
-      <Box className="button-group" display="flex" justifyContent="flex-end">
-        <IconButton color="primary" size="large" onClick={handleClickOpen}>
-          <EditIcon />
-        </IconButton>
-      </Box>
-      <Box className="button-group">
-        <IconButton onClick={handleDeleteList}>DELETE LIST</IconButton>
-      </Box>
+      <Typography style={{ fontSize: '2rem' }}>{listName}</Typography>
+      <AddTaskForm listId={listDetails.listId} setUpdate={setUpdate} />
       {tasks?.length ? (
         tasks.map((task, i) => {
           return (
@@ -80,7 +57,20 @@ const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
       ) : (
         <Typography>No tasks in this list.</Typography>
       )}
-    </Box>
+      <Box
+        style={{
+          //flex-container
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'right',
+          //Delete buttons for task
+          marginTop: '1rem',
+        }}
+      >
+        <DeleteListButton handleDeleteList={handleDeleteList} />
+        <DeleteTaskButton handleDelGroup={handleDelGroup} />
+      </Box>
+    </Paper>
   )
 }
 

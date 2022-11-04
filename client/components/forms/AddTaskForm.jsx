@@ -1,13 +1,13 @@
-import { Button } from '@mui/material'
+import { Box, Button, ClickAwayListener } from '@mui/material'
 import { Formik, Field, Form } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import { addTask } from '../../apis/tasks.js'
-import dayjs, { Dayjs } from 'dayjs'
 import TextField from '@mui/material/TextField'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import AddIcon from '@mui/icons-material/Add'
+import { Stack } from '@mui/system'
+import AddTaskButton from '../buttons/AddTaskButton.jsx'
 
 const initialValues = {
   name: '',
@@ -15,7 +15,17 @@ const initialValues = {
   deadline: {},
 }
 
-const AddTaskForm = ({ addTaskFormOpen, handleClose, listId, setUpdate }) => {
+const AddTaskForm = ({ listId, setUpdate }) => {
+  const [addTaskFormOpen, setAddTaskFormOpen] = useState(false)
+  //functions for AddTaskForm.jsx to create a new task
+  const handleClickOpen = () => {
+    setAddTaskFormOpen(true)
+  }
+
+  const handleClose = () => {
+    setAddTaskFormOpen(false)
+  }
+
   const handleSubmit = (task) => {
     //add task to db
     const taskWithListId = {
@@ -26,38 +36,66 @@ const AddTaskForm = ({ addTaskFormOpen, handleClose, listId, setUpdate }) => {
     setUpdate((n) => n + 1)
   }
 
-  return (
-    addTaskFormOpen && (
-      <>
+  return !addTaskFormOpen ? (
+    <AddTaskButton handleClickOpen={handleClickOpen} />
+  ) : (
+    <ClickAwayListener onClickAway={handleClose}>
+      <Box
+        style={{
+          //add-task-form-layout
+          padding: '1rem',
+          marginBottom: '1rem',
+          //form-color variable
+          backgroundColor: '#fafafa',
+        }}
+      >
         <Formik
           initialValues={initialValues}
           onSubmit={(values) => handleSubmit(values)}
         >
           {({ values, setFieldValue }) => (
             <Form>
-              <Field name="name" placeholder="Task Name" />
-              <Field
-                name="description"
-                placeholder="Description"
-                as="textarea"
-              />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker
-                  renderInput={(props) => <TextField {...props} />}
-                  label="DateTimePicker"
-                  value={values.deadline}
-                  onChange={(newValue) => setFieldValue('deadline', newValue)}
+              <Stack spacing={3}>
+                <Field name="name" placeholder="Task Name" />
+                <Field
+                  name="description"
+                  placeholder="Description"
+                  as="textarea"
+                  style={{
+                    //textarea-description-task-add-form
+                    maxWidth: '100%',
+                    minWidth: '100%',
+                    minHeight: '1.5rem',
+                  }}
                 />
-              </LocalizationProvider>
-              <Button color="primary" variant="contained" type="submit">
-                Submit
-              </Button>
+                <Box>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateTimePicker
+                      renderInput={(props) => (
+                        <TextField {...props} style={{ width: '100%' }} />
+                      )}
+                      label="Deadline"
+                      value={values.deadline}
+                      onChange={(newValue) =>
+                        setFieldValue('deadline', newValue)
+                      }
+                    />
+                  </LocalizationProvider>
+                </Box>
+                <Button
+                  style={{ display: 'block' }}
+                  variant="outlined"
+                  type="submit"
+                  color="primary"
+                >
+                  Submit
+                </Button>
+              </Stack>
             </Form>
           )}
         </Formik>
-        <Button onClick={handleClose}>Close</Button>
-      </>
-    )
+      </Box>
+    </ClickAwayListener>
   )
 }
 

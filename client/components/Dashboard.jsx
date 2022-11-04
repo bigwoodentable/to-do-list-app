@@ -52,6 +52,7 @@ function Dashboard() {
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap',
+          //
           marginRight: '20px',
           marginTop: '5px',
           border: 'blue 3px solid',
