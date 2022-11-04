@@ -50552,6 +50552,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mui_material_Paper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material/Paper */ "./node_modules/@mui/material/esm/Paper/Paper.js");
 /* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/ListItem/ListItem.js");
 /* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Checkbox/Checkbox.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Box/Box.js");
 /* harmony import */ var _apis_tasks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../apis/tasks */ "./client/apis/tasks.js");
 /* harmony import */ var _forms_EditTaskForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./forms/EditTaskForm */ "./client/components/forms/EditTaskForm.jsx");
 /* harmony import */ var _buttons_EditTaskButton__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./buttons/EditTaskButton */ "./client/components/buttons/EditTaskButton.jsx");
@@ -50639,11 +50640,17 @@ var TaskItem = function TaskItem(_ref) {
       fontWeight: 'bold'
     }
   }, name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_AccordionDetails__WEBPACK_IMPORTED_MODULE_13__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_12__["default"], {
-    variant: "h8",
+    fontSize: '0.75rem',
     fontWeight: 'bold'
-  }, "Deadline: ", deadline), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }, "Deadline: ", deadline), description && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_14__["default"], {
+    style: {
+      padding: '1rem',
+      marginTop: '0.5rem',
+      backgroundColor: '#fafafa'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_12__["default"], {
     variant: "body2"
-  }, description)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_buttons_EditTaskButton__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, description))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_buttons_EditTaskButton__WEBPACK_IMPORTED_MODULE_5__["default"], {
     handleEditOpen: handleEditOpen
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_buttons_CompleteTaskButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
     handleCompleted: handleCompleted

@@ -65,10 +65,21 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
             <Typography style={{ fontWeight: 'bold' }}>{name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography variant="h8" fontWeight={'bold'}>
+            <Typography fontSize={'0.75rem'} fontWeight={'bold'}>
               Deadline: {deadline}
             </Typography>
-            <Typography variant="body2">{description}</Typography>
+            {/* Task Description Body; form-color variable */}
+            {description && (
+              <Box
+                style={{
+                  padding: '1rem',
+                  marginTop: '0.5rem',
+                  backgroundColor: '#fafafa',
+                }}
+              >
+                <Typography variant="body2">{description}</Typography>
+              </Box>
+            )}
           </AccordionDetails>
         </Accordion>
       </Paper>

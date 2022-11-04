@@ -1,12 +1,12 @@
 const connection = require('./connection')
-const { DateTime } = require('luxon')
+const { ISOtoLocaleString, localToUTC } = require('./datetime-utils')
 
 const getTaskByTaskId = (taskId, db = connection) => {
   return db('tasks').where('id', taskId).select().first()
 }
 
+//datetime saved as UTC
 const addTask = async (task, db = connection) => {
-  //datetime saved as UTC
   const taskFormatted = {
     lists_id: task.listId,
     name: task.name,
@@ -18,11 +18,17 @@ const addTask = async (task, db = connection) => {
   return getTaskByTaskId(taskId[0], db)
 }
 
-const getTasksByListId = (listId, db = connection) => {
-  return db('tasks')
+const getTasksByListId = async (listId, db = connection) => {
+  const tasks = await db('tasks')
     .where('lists_id', listId)
     .andWhere('status', 'incomplete')
     .select('id as taskId', 'name', 'description', 'deadline')
+  return tasks.map((task) => {
+    //returns datetime in a more readable format
+    return task.deadline
+      ? { ...task, deadline: ISOtoLocaleString(task.deadline) }
+      : null
+  })
 }
 
 const delTaskByTaskId = (taskId, db = connection) => {
@@ -56,6 +62,7 @@ const getAllTasks = (db = connection) => {
   return db('tasks').select('id', 'deadline')
 }
 
+// checks whether a task is late by comparing its deadline and the time now, if negative then deadline passed
 // returns a string of late tasks e.g. 'Chop the carrot, Buy apple'
 const checkLateTasks = async (db = connection) => {
   const allTasks = await db('tasks').select('id', 'deadline', 'name')
@@ -64,13 +71,12 @@ const checkLateTasks = async (db = connection) => {
       .where('id', task.id)
       .select('deadline')
       .first()
-    const deadLineUTC = DateTime.fromISO(deadline.deadline).toUTC().toISO()
-    const timeDiff = DateTime.fromISO(deadLineUTC).diffNow()
-    return timeDiff.values.milliseconds < 0 ? task.name : null
+    const timeDiff = timeDiff(localToUTC(deadline.deadline))
+    return timeDiff < 0 ? task.name : null
   })
-  const deadlines = await Promise.all(lateTasksPromises)
-  const removedNulls = deadlines.filter((name) => name !== null)
-  return removedNulls.join(', ')
+  const lateTasks = await Promise.all(lateTasksPromises)
+  const lateTasksRemoveNulls = lateTasks.filter((name) => name !== null)
+  return lateTasksRemoveNulls.join(', ')
 }
 
 module.exports = {
