@@ -10,7 +10,6 @@ import MoveForm from './forms/MoveForm.jsx'
 
 function Dashboard() {
   const [lists, setLists] = useStateIfMounted([])
-  const [addListFormOpen, setAddListFormOpen] = useState(false)
   const [moveFormOpen, setMoveFormOpen] = useState(false)
   const [update, setUpdate] = useState(0)
   const [group, setGroup] = useState({})
@@ -21,15 +20,6 @@ function Dashboard() {
     setLists(await getAllLists())
   }, [update])
 
-  //functions for AddListForm.jsx to create a new to-do list
-  const handleAddListOpen = () => {
-    setAddListFormOpen(true)
-    setUpdate((n) => n + 1)
-  }
-
-  const handleCloseAddList = () => {
-    setAddListFormOpen(false)
-  }
   //--------------------------------------------------------
   //functions for MoveForm.jsx to move selected tasks to a different list
   const handleMoveFormOpen = () => {
@@ -43,11 +33,6 @@ function Dashboard() {
   //--------------------------------------------------------
   return (
     <React.Fragment>
-      <AddListForm
-        addListOpen={addListFormOpen}
-        handleCloseAddList={handleCloseAddList}
-        setUpdate={setUpdate}
-      />
       <MoveForm
         moveFormOpen={moveFormOpen}
         handleCloseMoveForm={handleCloseMoveForm}
@@ -56,24 +41,36 @@ function Dashboard() {
         group={group}
         setGroup={setGroup}
       />
-      <Box>
-        <IconButton onClick={handleAddListOpen}>ADD LIST</IconButton>
-      </Box>
       <Box display="flex" justifyContent="flex-end">
         <IconButton color="primary" size="large" onClick={handleMoveFormOpen}>
           MOVE MULTIPLE TASKS
         </IconButton>
       </Box>
-
-      {lists.map((listDetails, i) => (
-        <ListComponent
-          key={i}
-          listDetails={listDetails}
-          group={group}
-          setGroup={setGroup}
-          setUpdate={setUpdate}
-        />
-      ))}
+      <Box
+        style={{
+          //flex-container
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          marginRight: '20px',
+          marginTop: '5px',
+          border: 'blue 3px solid',
+          padding: '20px',
+          margin: '20px',
+          minWidth: '1000px',
+        }}
+      >
+        {lists.map((listDetails, i) => (
+          <ListComponent
+            key={i}
+            listDetails={listDetails}
+            group={group}
+            setGroup={setGroup}
+            setUpdate={setUpdate}
+          />
+        ))}
+        <AddListForm setUpdate={setUpdate} />
+      </Box>
     </React.Fragment>
   )
 }

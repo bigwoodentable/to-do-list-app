@@ -38,7 +38,14 @@ const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
   }
 
   return (
-    <Box style={{ border: '3px solid red', margin: '15px' }}>
+    <Box
+      style={{
+        // position: 'absolute',
+        border: '3px solid red',
+        margin: '15px',
+        width: '400px',
+      }}
+    >
       <Typography>{listName}</Typography>
       <AddTaskForm
         addTaskFormOpen={addTaskFormOpen}
@@ -46,17 +53,17 @@ const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
         listId={listDetails.listId}
         setUpdate={setUpdate}
       />
-      <Box display="flex" justifyContent="flex-end">
+      <Box className="button-group" display="flex" justifyContent="flex-end">
         <IconButton color="primary" size="large" onClick={handleDelGroup}>
           DELETE MULTIPLE TASKS
         </IconButton>
       </Box>
-      <Box display="flex" justifyContent="flex-end">
+      <Box className="button-group" display="flex" justifyContent="flex-end">
         <IconButton color="primary" size="large" onClick={handleClickOpen}>
           <EditIcon />
         </IconButton>
       </Box>
-      <Box>
+      <Box className="button-group">
         <IconButton onClick={handleDeleteList}>DELETE LIST</IconButton>
       </Box>
       {tasks?.length ? (

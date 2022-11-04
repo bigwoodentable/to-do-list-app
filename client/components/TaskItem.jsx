@@ -6,7 +6,9 @@ import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
 import { Box, Checkbox, IconButton, ListItem } from '@mui/material'
 import { delTaskByTaskId, taskCompleted } from '../apis/tasks'
+import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import CheckIcon from '@mui/icons-material/Check'
 import EditTaskForm from './forms/EditTaskForm'
 import { useState } from 'react'
 
@@ -58,17 +60,6 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
         setUpdate={setUpdate}
         task={task}
       />
-      <Box>
-        <IconButton onClick={handleEditOpen}>EDIT</IconButton>
-      </Box>
-      <Box>
-        <IconButton onClick={handleCompleted}>COMPLETED</IconButton>
-      </Box>
-      <Box>
-        <IconButton onClick={handleDelete}>
-          <DeleteIcon />
-        </IconButton>
-      </Box>
       <Checkbox
         onChange={(event) => handleChecked(event)}
         inputProps={{ 'aria-label': 'controlled' }}
@@ -86,6 +77,21 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
           </AccordionDetails>
         </Accordion>
       </Paper>
+      <Box>
+        <IconButton onClick={handleEditOpen}>
+          <EditIcon />
+        </IconButton>
+      </Box>
+      <Box>
+        <IconButton onClick={handleCompleted}>
+          <CheckIcon />
+        </IconButton>
+      </Box>
+      <Box>
+        <IconButton onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </Box>
     </ListItem>
   )
 }
