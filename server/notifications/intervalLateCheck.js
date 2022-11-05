@@ -8,6 +8,6 @@ const intervalCheck = (interval = 86400000) => {
   }, interval)
 }
 
-// intervalCheck(1000)
+intervalCheck(1000)
 
 exports.module = { intervalCheck }

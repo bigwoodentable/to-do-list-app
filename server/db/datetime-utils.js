@@ -13,7 +13,7 @@ const localToUTC = (dateTime) => {
 // Compares a datetime and the time now, returns difference in milliseconds
 const timeDiff = (dateTime) => {
   const diff = DateTime.fromISO(dateTime).diffNow()
-  return diff.values.milliseconds
+  return diff.values?.milliseconds
 }
 
 module.exports = { ISOtoLocaleString, localToUTC, timeDiff }

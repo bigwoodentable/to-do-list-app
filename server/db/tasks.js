@@ -1,5 +1,5 @@
 const connection = require('./connection')
-const { ISOtoLocaleString, localToUTC } = require('./datetime-utils')
+const { ISOtoLocaleString, localToUTC, timeDiff } = require('./datetime-utils')
 
 const getTaskByTaskId = (taskId, db = connection) => {
   return db('tasks').where('id', taskId).select().first()
@@ -71,8 +71,8 @@ const checkLateTasks = async (db = connection) => {
       .where('id', task.id)
       .select('deadline')
       .first()
-    const timeDiff = timeDiff(localToUTC(deadline.deadline))
-    return timeDiff < 0 ? task.name : null
+    const timeDifference = timeDiff(localToUTC(deadline.deadline))
+    return timeDifference < 0 ? task.name : null
   })
   const lateTasks = await Promise.all(lateTasksPromises)
   const lateTasksRemoveNulls = lateTasks.filter((name) => name !== null)
