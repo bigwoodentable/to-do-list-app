@@ -48,31 +48,18 @@ function Dashboard() {
     setUpdate((n) => n + 1)
   }
   return (
-    //page-format
-    <Box style={{ padding: '1.5rem' }}>
+    <Box className="dashboard-layout">
       <Typography
-        //title
-        color="primary"
         variant="h4"
-        display="flex"
-        justifyContent="center"
+        className="dashboard-title flex-container center-flex"
       >
         To-Doify
       </Typography>
-      <Box display="flex" justifyContent="center">
+      <Box className="flex-container center-flex">
         <MoveListButton handleMoveFormOpen={handleMoveFormOpen} />
         <DeleteTaskButton handleDelGroup={handleDelGroup} />
       </Box>
-      <Box
-        style={{
-          //flex-container
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          //
-          minWidth: '62.5rem',
-        }}
-      >
+      <Box className="lists-layout flex-container flex-row flex-wrap">
         {lists.map((listDetails, i) => (
           <List
             key={i}

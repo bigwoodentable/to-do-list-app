@@ -17,16 +17,10 @@ const List = ({ listDetails, setUpdate, setGroup, uncheckAll }) => {
   }
 
   return (
-    <Paper
-      style={{
-        //task-card
-        border: '0.1rem solid lightgrey',
-        margin: '1rem',
-        width: '25rem',
-        padding: '1rem',
-      }}
-    >
-      <Typography style={{ fontSize: '2rem' }}>{listName}</Typography>
+    <Paper className="list-item">
+      <Typography variant="h5" className="list-title">
+        {listName}
+      </Typography>
       <AddTaskForm listId={listDetails.listId} setUpdate={setUpdate} />
       {tasks?.length ? (
         tasks.map((task, i) => {
@@ -43,16 +37,7 @@ const List = ({ listDetails, setUpdate, setGroup, uncheckAll }) => {
       ) : (
         <Typography>No tasks in this list.</Typography>
       )}
-      <Box
-        style={{
-          //flex-container
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'right',
-          //Delete buttons for task
-          marginTop: '1rem',
-        }}
-      >
+      <Box className="flex-container flex-row right-flex del-list-button">
         <DeleteListButton handleDeleteList={handleDeleteList} />
       </Box>
     </Paper>

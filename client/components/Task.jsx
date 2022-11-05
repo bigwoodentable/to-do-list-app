@@ -61,12 +61,12 @@ const Task = ({ task, setUpdate, setGroup, uncheckAll }) => {
         inputProps={{ 'aria-label': 'controlled' }}
       />
       <Paper>
-        <Accordion style={{ width: '15rem' }}>
+        <Accordion className="task-layout">
           <AccordionSummary>
-            <Typography style={{ fontWeight: 'bold' }}>{name}</Typography>
+            <Typography className="task-title">{name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography fontSize={'0.75rem'} fontWeight={'bold'}>
+            <Typography variant="body2" className="task-description">
               {deadline === 'Invalid DateTime'
                 ? 'No Deadline'
                 : `Deadline: ${deadline}`}

@@ -339,4 +339,63 @@ h6 {
 
 a {
   color: #99ddcc;
+}
+
+.dashboard-layout {
+  padding: 1.5rem;
+}
+
+.lists-layout {
+  min-width: 62.5rem;
+}
+
+.task-layout {
+  width: 15rem;
+}
+
+.list-item {
+  border: 0.1rem solid lightgrey;
+  margin: 1rem;
+  width: 25rem;
+  padding: 1rem;
+}
+
+.dashboard-title {
+  color: orange;
+}
+
+.list-title {
+  color: rgb(71, 71, 71);
+}
+
+.task-title {
+  font-weight: 900;
+}
+
+.task-description {
+  font-weight: bold;
+}
+
+.del-list-button {
+  margin-top: 1rem;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.center-flex {
+  justify-content: center;
+}
+
+.right-flex {
+  justify-content: right;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }/*# sourceMappingURL=main.css.map */

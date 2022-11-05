@@ -48506,17 +48506,10 @@ var List = function List(_ref) {
     });
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    style: {
-      //task-card
-      border: '0.1rem solid lightgrey',
-      margin: '1rem',
-      width: '25rem',
-      padding: '1rem'
-    }
+    className: "list-item"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    style: {
-      fontSize: '2rem'
-    }
+    variant: "h5",
+    className: "list-title"
   }, listName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_AddTaskForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
     listId: listDetails.listId,
     setUpdate: setUpdate
@@ -48529,14 +48522,7 @@ var List = function List(_ref) {
       uncheckAll: uncheckAll
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, "No tasks in this list."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    style: {
-      //flex-container
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'right',
-      //Delete buttons for task
-      marginTop: '1rem'
-    }
+    className: "flex-container flex-row right-flex del-list-button"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons_DeleteListButton__WEBPACK_IMPORTED_MODULE_4__["default"], {
     handleDeleteList: handleDeleteList
   })));
@@ -48652,16 +48638,12 @@ var Task = function Task(_ref) {
       'aria-label': 'controlled'
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    style: {
-      width: '15rem'
-    }
+    className: "task-layout"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
-    style: {
-      fontWeight: 'bold'
-    }
+    className: "task-title"
   }, name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
-    fontSize: '0.75rem',
-    fontWeight: 'bold'
+    variant: "body2",
+    className: "task-description"
   }, deadline === 'Invalid DateTime' ? 'No Deadline' : "Deadline: ".concat(deadline)), description && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_14__["default"], {
     style: {
       padding: '1rem',
@@ -49458,56 +49440,38 @@ function Dashboard() {
       return n + 1;
     });
   };
-  return (
-    /*#__PURE__*/
-    //page-format
-    react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      style: {
-        padding: '1.5rem'
-      }
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"]
-    //title
-    , {
-      color: "primary",
-      variant: "h4",
-      display: "flex",
-      justifyContent: "center"
-    }, "To-Doify"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      display: "flex",
-      justifyContent: "center"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_buttons_MoveListButton_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      handleMoveFormOpen: handleMoveFormOpen
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_buttons_DeleteTaskButton_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
-      handleDelGroup: handleDelGroup
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      style: {
-        //flex-container
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        //
-        minWidth: '62.5rem'
-      }
-    }, lists.map(function (listDetails, i) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_List_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        key: i,
-        listDetails: listDetails,
-        setGroup: setGroup,
-        setUpdate: setUpdate,
-        uncheckAll: uncheckAll
-      });
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_forms_AddListForm_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      setUpdate: setUpdate
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_forms_MoveForm_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      moveFormOpen: moveFormOpen,
-      handleCloseMoveForm: handleCloseMoveForm,
-      lists: lists,
-      setUpdate: setUpdate,
-      group: group,
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    className: "dashboard-layout"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    variant: "h4",
+    className: "dashboard-title flex-container center-flex"
+  }, "To-Doify"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    className: "flex-container center-flex"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_buttons_MoveListButton_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    handleMoveFormOpen: handleMoveFormOpen
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_buttons_DeleteTaskButton_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    handleDelGroup: handleDelGroup
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_mui_system__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    className: "lists-layout flex-container flex-row flex-wrap"
+  }, lists.map(function (listDetails, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_List_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      key: i,
+      listDetails: listDetails,
       setGroup: setGroup,
-      setUncheckAll: setUncheckAll
-    })))
-  );
+      setUpdate: setUpdate,
+      uncheckAll: uncheckAll
+    });
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_forms_AddListForm_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    setUpdate: setUpdate
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components_forms_MoveForm_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    moveFormOpen: moveFormOpen,
+    handleCloseMoveForm: handleCloseMoveForm,
+    lists: lists,
+    setUpdate: setUpdate,
+    group: group,
+    setGroup: setGroup,
+    setUncheckAll: setUncheckAll
+  })));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dashboard);
 
