@@ -1,21 +1,14 @@
 import React from 'react'
-import Button from '@material-ui/core/Button'
-import { Box, Paper } from '@mui/material'
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from '@material-ui/core'
 import { Formik, Field, Form } from 'formik'
+import { Box } from '@mui/material'
+import { Dialog, DialogContent, Typography } from '@material-ui/core'
 import { updateTask } from '../../apis/tasks'
 import { Stack } from '@mui/system'
-import SubmitButton from '../buttons/SubmitButton'
-import TextField from '@mui/material/TextField'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import SubmitButton from '../buttons/SubmitButton'
+import TextField from '@mui/material/TextField'
 
 const EditTaskForm = ({
   editFormOpen,
@@ -32,7 +25,6 @@ const EditTaskForm = ({
 
   const handleSubmit = (task) => {
     const taskWithId = { taskId, ...task }
-    console.log('handleSubmit', taskWithId)
     handleCloseEdit()
     updateTask(taskWithId)
     setUpdate((n) => n + 1)
