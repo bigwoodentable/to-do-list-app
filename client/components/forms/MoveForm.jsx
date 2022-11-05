@@ -4,9 +4,11 @@ import {
   Box,
   FormControlLabel,
   FormLabel,
+  IconButton,
   Paper,
   Radio,
   RadioGroup,
+  Typography,
 } from '@mui/material'
 import {
   Dialog,
@@ -17,6 +19,7 @@ import {
 import { Formik, Field, Form } from 'formik'
 import { addList } from '../../apis/lists'
 import { moveTask } from '../../apis/tasks'
+import SubmitButton from '../buttons/SubmitButton'
 
 const initialValues = {
   listId: 0,
@@ -29,6 +32,7 @@ const MoveForm = ({
   group,
   setUpdate,
   setGroup,
+  setUncheckAll,
 }) => {
   //moves multiple selected tasks
   const moveGroup = (listid) => {
@@ -38,6 +42,7 @@ const MoveForm = ({
     })
     handleCloseMoveForm()
     setGroup({})
+    setUncheckAll(true)
     setUpdate((n) => n + 1)
   }
 
@@ -62,23 +67,22 @@ const MoveForm = ({
                   <Box role="group">
                     {lists.map((list, i) => {
                       return (
-                        <FormLabel key={i}>
+                        // <Box style={{ margin: '0.5rem' }}>
+                        <FormLabel key={i} style={{ margin: '0.5rem' }}>
                           <Field
                             type="radio"
                             name="listId"
                             value={`${list.listId}`}
+                            style={{ margin: '0.35rem' }}
                           />
                           {list.listName}
                         </FormLabel>
+                        // </Box>
                       )
                     })}
                   </Box>
                 </DialogContent>
-                <DialogActions>
-                  <Button variant="contained" type="submit">
-                    Submit
-                  </Button>
-                </DialogActions>
+                <SubmitButton />
               </Form>
             )}
           </Formik>

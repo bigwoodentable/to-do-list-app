@@ -1,26 +1,11 @@
-import React from 'react'
-import Button from '@material-ui/core/Button'
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  IconButton,
-  Paper,
-  Typography,
-} from '@mui/material'
-import {
-  ClickAwayListener,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@material-ui/core'
-import { Formik, Field, Form } from 'formik'
+import React, { useState } from 'react'
 import { addList } from '../../apis/lists'
+import { Box, IconButton, Paper, Typography } from '@mui/material'
+import { ClickAwayListener } from '@material-ui/core'
+import { Formik, Field, Form } from 'formik'
 import CheckIcon from '@mui/icons-material/Check'
-import { useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
+
 const initialValues = {
   name: '',
 }
@@ -46,9 +31,10 @@ const AddListForm = ({ setUpdate }) => {
     <>
       <Box
         style={{
-          border: '3px solid red',
           margin: '15px',
-          width: '400px',
+          width: '25rem',
+          height: '4.25rem',
+          border: '0.1rem solid lightgrey',
         }}
       >
         <ClickAwayListener onClickAway={handleFormClose}>
@@ -60,6 +46,7 @@ const AddListForm = ({ setUpdate }) => {
               flexWrap: 'wrap',
               //
               width: '100%',
+              height: '100%',
               justifyContent: 'center',
             }}
           >
@@ -74,7 +61,7 @@ const AddListForm = ({ setUpdate }) => {
                 onSubmit={(values) => handleSubmit(values)}
               >
                 {(values) => (
-                  <Form>
+                  <Form style={{ marginTop: '1rem' }}>
                     <Field name="name" placeholder="Name" />
                     <IconButton type="submit">
                       <CheckIcon />

@@ -4,9 +4,11 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 function DeleteTaskButton({ handleDelGroup }) {
   return (
-    <IconButton onClick={handleDelGroup}>
+    <IconButton style={{ color: 'grey' }} onClick={handleDelGroup}>
       <DeleteIcon />
-      <Typography>Delete Tasks</Typography>
+      <Typography style={{ color: 'grey' }} variant="h6">
+        Delete Tasks
+      </Typography>
     </IconButton>
   )
 }

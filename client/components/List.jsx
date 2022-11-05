@@ -1,17 +1,12 @@
-import { IconButton, Paper, Typography } from '@mui/material'
+import React from 'react'
+import { Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useState } from 'react'
 import { delListByListId } from '../apis/lists'
 import AddTaskForm from './forms/AddTaskForm'
-import EditIcon from '@mui/icons-material/Edit'
-import TaskItem from './TaskItem'
-import { delTaskByTaskId } from '../apis/tasks'
-import MoveForm from './forms/MoveForm'
-
+import Task from './Task'
 import DeleteListButton from './buttons/DeleteListButton'
-import DeleteTaskButton from './buttons/DeleteTaskButton'
 
-const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
+const List = ({ listDetails, setUpdate, setGroup, uncheckAll }) => {
   const { listId, listName, tasks } = listDetails
 
   //--------------------------------------------------------
@@ -20,23 +15,13 @@ const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
     delListByListId(listId)
     setUpdate((n) => n + 1)
   }
-  //--------------------------------------------------------
-  //deletes multiple selected tasks
-  const handleDelGroup = () => {
-    Object.entries(group).forEach((property) => {
-      const taskId = property[0]
-      delTaskByTaskId(taskId)
-    })
-    setGroup({})
-    setUpdate((n) => n + 1)
-  }
 
   return (
     <Paper
       style={{
         //task-card
         border: '0.1rem solid lightgrey',
-        margin: '15px',
+        margin: '1rem',
         width: '25rem',
         padding: '1rem',
       }}
@@ -46,11 +31,12 @@ const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
       {tasks?.length ? (
         tasks.map((task, i) => {
           return (
-            <TaskItem
+            <Task
               key={i}
               task={task}
               setGroup={setGroup}
               setUpdate={setUpdate}
+              uncheckAll={uncheckAll}
             />
           )
         })
@@ -68,10 +54,9 @@ const ListComponent = ({ listDetails, setUpdate, setGroup, group }) => {
         }}
       >
         <DeleteListButton handleDeleteList={handleDeleteList} />
-        <DeleteTaskButton handleDelGroup={handleDelGroup} />
       </Box>
     </Paper>
   )
 }
 
-export default ListComponent
+export default List

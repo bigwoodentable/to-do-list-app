@@ -1,10 +1,10 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 
-import ListComponent from './ListComponent'
+import List from './List'
 
-describe('ListComponent', () => {
-  it('displays correct number of tasks from props provided to listComponent', () => {
+describe('List', () => {
+  it('displays correct number of tasks from props provided to List', () => {
     const mockList = {
       listId: 1,
       listName: 'Test List A',
@@ -24,7 +24,7 @@ describe('ListComponent', () => {
       ],
     }
 
-    render(<ListComponent listDetails={mockList} />)
+    render(<List listDetails={mockList} />)
     expect(screen.getAllByRole('listitem')).toHaveLength(2)
     expect(screen.queryByText('No tasks in this list.')).toBeNull()
   })
@@ -36,7 +36,7 @@ describe('ListComponent', () => {
       tasks: [],
     }
 
-    render(<ListComponent listDetails={mockListNoTasks} />)
+    render(<List listDetails={mockListNoTasks} />)
     expect(screen.queryByRole('listitem')).toBeNull()
     expect(screen.getByText('No tasks in this list.'))
   })

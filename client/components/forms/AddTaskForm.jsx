@@ -1,13 +1,14 @@
-import { Box, Button, ClickAwayListener } from '@mui/material'
-import { Formik, Field, Form } from 'formik'
 import React, { useState } from 'react'
+import { Box, ClickAwayListener } from '@mui/material'
+import { Formik, Field, Form } from 'formik'
 import { addTask } from '../../apis/tasks.js'
-import TextField from '@mui/material/TextField'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { Stack } from '@mui/system'
+import TextField from '@mui/material/TextField'
 import AddTaskButton from '../buttons/AddTaskButton.jsx'
+import SubmitButton from '../buttons/SubmitButton.jsx'
 
 const initialValues = {
   name: '',
@@ -68,28 +69,17 @@ const AddTaskForm = ({ listId, setUpdate }) => {
                     minHeight: '1.5rem',
                   }}
                 />
-                <Box>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                      renderInput={(props) => (
-                        <TextField {...props} style={{ width: '100%' }} />
-                      )}
-                      label="Deadline"
-                      value={values.deadline}
-                      onChange={(newValue) =>
-                        setFieldValue('deadline', newValue)
-                      }
-                    />
-                  </LocalizationProvider>
-                </Box>
-                <Button
-                  style={{ display: 'block' }}
-                  variant="outlined"
-                  type="submit"
-                  color="primary"
-                >
-                  Submit
-                </Button>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateTimePicker
+                    renderInput={(props) => (
+                      <TextField {...props} style={{ width: '100%' }} />
+                    )}
+                    label="Deadline"
+                    value={values.deadline}
+                    onChange={(newValue) => setFieldValue('deadline', newValue)}
+                  />
+                </LocalizationProvider>
+                <SubmitButton />
               </Stack>
             </Form>
           )}

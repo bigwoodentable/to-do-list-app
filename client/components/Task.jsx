@@ -1,18 +1,13 @@
-import React from 'react'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import Typography from '@mui/material/Typography'
-import Paper from '@mui/material/Paper'
-import { Box, Checkbox, IconButton, ListItem } from '@mui/material'
-import { delTaskByTaskId, taskCompleted } from '../apis/tasks'
-
-import EditTaskForm from './forms/EditTaskForm'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import EditTaskButton from './buttons/EditTaskButton'
 import CompleteTaskButton from './buttons/CompleteTaskButton'
+import EditTaskForm from './forms/EditTaskForm'
+import { taskCompleted } from '../apis/tasks'
+import { Box, Checkbox, ListItem, Typography, Paper } from '@mui/material'
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
-const TaskItem = ({ task, setUpdate, setGroup }) => {
+const Task = ({ task, setUpdate, setGroup, uncheckAll }) => {
+  const [checked, setChecked] = useState(false)
   const [editFormOpen, setEditFormOpen] = useState(false)
   const { taskId, name, description, deadline } = task
 
@@ -30,10 +25,15 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
     setEditFormOpen(false)
     setUpdate((n) => n + 1)
   }
+  //--------------------------------------------------------
+  // functions related to checkbox
+  // Controls whether the checkbox is checked or not
+  const handleCheck = (event) => {
+    setChecked(event.target.checked)
+  }
 
   // When checked, save the task's id in state. When unchecked, remove the task's id from state.
   const handleChecked = (event) => {
-    event.preventDefault()
     if (event.target.checked) {
       setGroup((group) => {
         return { ...group, [taskId]: true }
@@ -45,18 +45,19 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
       })
     }
   }
-
+  // Unchecks the checkbox whenever uncheckAll is true
+  useEffect(() => {
+    if (uncheckAll) {
+      setChecked(false)
+    }
+  }, [uncheckAll])
+  //--------------------------------------------------------
   return (
     <ListItem>
-      <EditTaskForm
-        editFormOpen={editFormOpen}
-        handleCloseEdit={handleCloseEdit}
-        taskId={taskId}
-        setUpdate={setUpdate}
-        task={task}
-      />
       <Checkbox
-        onChange={(event) => handleChecked(event)}
+        checked={uncheckAll ? false : checked}
+        onClick={handleCheck}
+        onChange={handleChecked}
         inputProps={{ 'aria-label': 'controlled' }}
       />
       <Paper>
@@ -66,8 +67,11 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
           </AccordionSummary>
           <AccordionDetails>
             <Typography fontSize={'0.75rem'} fontWeight={'bold'}>
-              Deadline: {deadline}
+              {deadline === 'Invalid DateTime'
+                ? 'No Deadline'
+                : `Deadline: ${deadline}`}
             </Typography>
+
             {/* Task Description Body; form-color variable */}
             {description && (
               <Box
@@ -85,8 +89,16 @@ const TaskItem = ({ task, setUpdate, setGroup }) => {
       </Paper>
       <EditTaskButton handleEditOpen={handleEditOpen} />
       <CompleteTaskButton handleCompleted={handleCompleted} />
+      {/* forms that are by default hidden and only opens as a MUI dialog when prompted */}
+      <EditTaskForm
+        editFormOpen={editFormOpen}
+        handleCloseEdit={handleCloseEdit}
+        taskId={taskId}
+        setUpdate={setUpdate}
+        task={task}
+      />
     </ListItem>
   )
 }
 
-export default TaskItem
+export default Task

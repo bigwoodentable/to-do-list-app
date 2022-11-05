@@ -4,13 +4,9 @@ import AddIcon from '@mui/icons-material/Add'
 
 function AddTaskButton({ handleClickOpen }) {
   return (
+    //Button-format
     <Box display="flex" justifyContent="center">
-      <IconButton
-        style={{ width: '100%' }}
-        color="primary"
-        size="large"
-        onClick={handleClickOpen}
-      >
+      <IconButton onClick={handleClickOpen}>
         <AddIcon />
         <Typography>Add a task</Typography>
       </IconButton>

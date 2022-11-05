@@ -10,6 +10,12 @@ import {
 } from '@material-ui/core'
 import { Formik, Field, Form } from 'formik'
 import { updateTask } from '../../apis/tasks'
+import { Stack } from '@mui/system'
+import SubmitButton from '../buttons/SubmitButton'
+import TextField from '@mui/material/TextField'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
 const EditTaskForm = ({
   editFormOpen,
@@ -40,23 +46,44 @@ const EditTaskForm = ({
             initialValues={initialValues}
             onSubmit={(values) => handleSubmit(values)}
           >
-            {() => (
-              <Form>
-                <DialogTitle align="center"> Edit Task</DialogTitle>
+            {({ values, setFieldValue }) => (
+              <Form style={{ width: '25rem' }}>
+                <Typography
+                  style={{
+                    //form-title
+                    display: 'flex',
+                    justifyContent: 'center',
+                    paddingTop: '1rem',
+                    color: 'grey',
+                  }}
+                  variant="h6"
+                >
+                  Edit Task
+                </Typography>
+
                 <DialogContent>
-                  <Field name="name" placeholder="Name" />
-                  <Field
-                    name="description"
-                    placeholder="Description"
-                    as="textarea"
-                  />
-                  <Field name="deadline" placeholder="Deadline" />
+                  <Stack spacing={3}>
+                    <Field name="name" placeholder="Name" />
+                    <Field
+                      name="description"
+                      placeholder="Description"
+                      as="textarea"
+                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateTimePicker
+                        renderInput={(props) => (
+                          <TextField {...props} style={{ width: '100%' }} />
+                        )}
+                        label="Deadline"
+                        value={values.deadline ? values.deadline : null}
+                        onChange={(newValue) =>
+                          setFieldValue('deadline', newValue)
+                        }
+                      />
+                    </LocalizationProvider>
+                    <SubmitButton />
+                  </Stack>
                 </DialogContent>
-                <DialogActions>
-                  <Button variant="contained" type="submit">
-                    Submit
-                  </Button>
-                </DialogActions>
               </Form>
             )}
           </Formik>
