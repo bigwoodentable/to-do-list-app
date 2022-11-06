@@ -10,7 +10,7 @@
 1. Clone and install dependancies
 
 ```
-git clone https://github.com/bigwoodentable/patient-medicine-management.git
+git clone https://github.com/bigwoodentable/bigwoodentable.github.io.git
 npm install
 ```
 
