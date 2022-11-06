@@ -45,6 +45,8 @@ router.patch('/completed/:taskId', async (req, res) => {
   try {
     await db.updateStatusByTaskId(taskId);
     const completedTask = await db.getTaskNameByTaskId(taskId);
+
+    //sends an 'email' when a task is completed
     sendEmail('completed', completedTask.name);
     return res.json('success in completing the task');
   } catch (err) {
