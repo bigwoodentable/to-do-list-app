@@ -1,34 +1,38 @@
-import React, { useState } from 'react'
-import { addList } from '../../apis/lists'
-import { Box, Paper } from '@mui/material'
-import { ClickAwayListener } from '@material-ui/core'
-import { Formik, Field, Form } from 'formik'
-import CheckIcon from '@mui/icons-material/Check'
-import AddIcon from '@mui/icons-material/Add'
-import ButtonComponent from '../buttons/ButtonComponent'
+import React, { useState } from 'react';
+import { addList } from '../../apis/lists';
+import { Box, Paper } from '@mui/material';
+import { ClickAwayListener } from '@material-ui/core';
+import { Formik, Field, Form } from 'formik';
+import CheckIcon from '@mui/icons-material/Check';
+import AddIcon from '@mui/icons-material/Add';
+import ButtonComponent from '../buttons/ButtonComponent';
 
+//initial values for formmik
 const initialValues = {
   name: '',
-}
+};
 
+//adds a list
 const AddListForm = ({ setLists }) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleFormOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
   const handleFormClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   const handleSubmit = async (newList) => {
-    const newListId = await addList(newList)
+    const newListId = await addList(newList);
+    //--------------------------------------------------------
+    //update the list that's saved in state to update the user interface
     setLists((list) => [
       ...list,
       { listId: newListId, listName: newList.name, tasks: [] },
-    ])
-    handleFormClose()
-  }
+    ]);
+    handleFormClose();
+  };
 
   return (
     <>
@@ -58,7 +62,7 @@ const AddListForm = ({ setLists }) => {
         </ClickAwayListener>
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default AddListForm
+export default AddListForm;

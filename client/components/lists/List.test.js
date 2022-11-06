@@ -1,7 +1,7 @@
-import React from 'react'
-import { render, screen } from '@testing-library/react'
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 
-import List from './List'
+import List from './List';
 
 describe('List', () => {
   it('displays correct number of tasks from props provided to List', () => {
@@ -22,22 +22,22 @@ describe('List', () => {
           deadline: '2023-10-13T18:15:00.000Z',
         },
       ],
-    }
+    };
 
-    render(<List listDetails={mockList} />)
-    expect(screen.getAllByRole('listitem')).toHaveLength(2)
-    expect(screen.queryByText('No tasks in this list.')).toBeNull()
-  })
+    render(<List listDetails={mockList} />);
+    expect(screen.getAllByRole('listitem')).toHaveLength(2);
+    expect(screen.queryByText('No tasks in this list.')).toBeNull();
+  });
 
   it('displays "No tasks in this list." if no tasks are provided.', () => {
     const mockListNoTasks = {
       listId: 2,
       listName: 'Test List B',
       tasks: [],
-    }
+    };
 
-    render(<List listDetails={mockListNoTasks} />)
-    expect(screen.queryByRole('listitem')).toBeNull()
-    expect(screen.getByText('No tasks in this list.'))
-  })
-})
+    render(<List listDetails={mockListNoTasks} />);
+    expect(screen.queryByRole('listitem')).toBeNull();
+    expect(screen.getByText('No tasks in this list.'));
+  });
+});

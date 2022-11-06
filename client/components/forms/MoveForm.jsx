@@ -5,10 +5,12 @@ import { Formik, Field, Form } from 'formik';
 import { moveTask } from '../../apis/tasks';
 import ButtonComponent from '../buttons/ButtonComponent';
 
+//initial values for formmik
 const initialValues = {
   listId: 0,
 };
 
+//moves one or multiple selected tasks
 const MoveForm = ({
   moveFormOpen,
   handleCloseMoveForm,
@@ -18,8 +20,6 @@ const MoveForm = ({
   setUncheckAll,
   setLists,
 }) => {
-  //--------------------------------------------------------
-  //moves multiple selected tasks
   const moveGroup = async (listId) => {
     const movedTasks = await Promise.all(
       Object.entries(group).map(async (property) => {
@@ -27,7 +27,8 @@ const MoveForm = ({
         return await moveTask(taskId, listId);
       }),
     );
-
+    //--------------------------------------------------------
+    //update the list that's saved in state to update the user interface
     setLists(
       lists.map((list) => {
         if (list.listId === listId) {
@@ -49,6 +50,7 @@ const MoveForm = ({
   };
 
   const handleSubmit = (value) => {
+    //requires users to pick a list
     if (!value.listId) {
       alert('Sorry, please pick a list.');
       return null;

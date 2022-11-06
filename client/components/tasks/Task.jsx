@@ -19,8 +19,11 @@ const Task = ({
   const [editFormOpen, setEditFormOpen] = useState(false);
   const { taskId, name, description, deadline } = task;
 
+  //changes the status of a task from incomplete to complete in the database
   const handleCompleted = () => {
     taskCompleted(taskId);
+    //--------------------------------------------------------
+    //update the list that's saved in state to update the user interface
     setLists((lists) =>
       lists.map((list) => {
         if (list.listId === listId) {
@@ -30,10 +33,12 @@ const Task = ({
         return list;
       }),
     );
+
     setUncheckAll(true);
     setGroup({});
   };
-
+  //--------------------------------------------------------
+  //handles the revealing and hiding of the edit task form
   const handleEditOpen = () => {
     setEditFormOpen(true);
   };
@@ -101,7 +106,7 @@ const Task = ({
       </Paper>
       <ButtonComponent icon={<EditIcon />} handleFunction={handleEditOpen} />
       <ButtonComponent icon={<CheckIcon />} handleFunction={handleCompleted} />
-      {/* forms that are by default hidden and only opens as a MUI dialog when prompted */}
+      {/* forms that are by default hidden */}
       <EditTaskForm
         editFormOpen={editFormOpen}
         handleCloseEdit={handleCloseEdit}

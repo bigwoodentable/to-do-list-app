@@ -1,6 +1,5 @@
 const log = require('./logger');
 
-//formatting
 const template = (body) =>
   `\r\nDear Reciever,\r\n\r\n${body}\r\n\r\nSincerely,\r\nSender\r\n`;
 

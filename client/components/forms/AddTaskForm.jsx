@@ -11,15 +11,17 @@ import ButtonComponent from '../buttons/ButtonComponent.jsx';
 import AddIcon from '@mui/icons-material/Add';
 import { formatDate } from '../../datetime-utils.js';
 
+//initial values for formmik
 const initialValues = {
   name: '',
   description: '',
   deadline: {},
 };
 
+//adds a task
 const AddTaskForm = ({ listId, setLists }) => {
   const [addTaskFormOpen, setAddTaskFormOpen] = useState(false);
-  //functions for AddTaskForm.jsx to create a new task
+
   const handleClickOpen = () => {
     setAddTaskFormOpen(true);
   };
@@ -29,13 +31,13 @@ const AddTaskForm = ({ listId, setLists }) => {
   };
 
   const handleSubmit = async (task) => {
-    //add task to db
     const taskWithListId = {
       ...task,
       listId,
     };
     const newTask = await addTask(taskWithListId, handleClose);
-
+    //--------------------------------------------------------
+    //update the list that's saved in state to update the user interface
     setLists((lists) => {
       return lists.map((list) => {
         if (list.listId === listId) {

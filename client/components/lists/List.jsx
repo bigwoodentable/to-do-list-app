@@ -23,7 +23,7 @@ const List = ({
     delListByListId(listId);
     setLists((lists) => lists.filter((list) => list.listId !== listId));
   };
-  //--------------------------------------------------------
+
   return (
     <Paper className="list-item">
       <Typography variant="h5" className="list-title">

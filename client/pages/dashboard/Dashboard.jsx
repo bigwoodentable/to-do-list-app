@@ -14,9 +14,9 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 function Dashboard() {
   const [lists, setLists] = useStateIfMounted([]);
   const [moveFormOpen, setMoveFormOpen] = useState(false);
+
   // this is part of the work-around for a bug that occurred in Task.jsx's check-boxes, please view Task.jsx for more detail
   // this work-around requires refactoring
-  // all subsequent code related to this will be commented with '***'
   const [group, setGroup] = useState({});
   const [uncheckAll, setUncheckAll] = useState(false);
 
@@ -25,7 +25,7 @@ function Dashboard() {
   }, [group]);
 
   //--------------------------------------------------------
-  //Gets all lists and all tasks from the database
+  //gets all lists and all tasks from the database to display in the user interface
   useEffect(() => {
     const fetchData = async () => {
       const data = await getAllLists();
@@ -35,7 +35,7 @@ function Dashboard() {
   }, []);
 
   //--------------------------------------------------------
-  //functions to reveal and hide MoveForm.jsx - a form that controls how selected tasks move to different lists
+  //functions to reveal and hide MoveForm - a form that controls how selected tasks move to different lists
   const handleMoveFormOpen = () => {
     setMoveFormOpen(true);
   };
@@ -44,7 +44,7 @@ function Dashboard() {
     setMoveFormOpen(false);
   };
   //--------------------------------------------------------
-  //deletes multiple selected tasks
+  //deletes one or multiple selected tasks
   const handleDelGroup = () => {
     Object.entries(group).forEach((property) => {
       const taskId = property[0];
@@ -57,10 +57,9 @@ function Dashboard() {
         return list;
       }),
     );
-    //***
+
     setUncheckAll(true);
     setGroup({});
-    //***
   };
 
   return (
@@ -90,9 +89,9 @@ function Dashboard() {
           <List
             key={i}
             listDetails={listDetails}
+            setLists={setLists}
             setGroup={setGroup}
             group={group}
-            setLists={setLists}
             uncheckAll={uncheckAll}
             setUncheckAll={setUncheckAll}
           />

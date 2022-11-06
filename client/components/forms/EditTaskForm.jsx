@@ -1,4 +1,6 @@
 import React from 'react';
+import TextField from '@mui/material/TextField';
+import ButtonComponent from '../buttons/ButtonComponent';
 import { Formik, Field, Form } from 'formik';
 import { Box } from '@mui/material';
 import { Dialog, DialogContent, Typography } from '@material-ui/core';
@@ -7,10 +9,9 @@ import { Stack } from '@mui/system';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import TextField from '@mui/material/TextField';
-import ButtonComponent from '../buttons/ButtonComponent';
 import { formatDate } from '../../datetime-utils';
 
+//edits a task
 const EditTaskForm = ({
   editFormOpen,
   handleCloseEdit,
@@ -27,6 +28,8 @@ const EditTaskForm = ({
 
   const handleSubmit = (newTask) => {
     const taskWithId = { taskId, ...newTask };
+    //--------------------------------------------------------
+    //update the list that's saved in state to update the user interface
     setLists((lists) =>
       lists.map((list) => {
         if (list.listId === listId) {
