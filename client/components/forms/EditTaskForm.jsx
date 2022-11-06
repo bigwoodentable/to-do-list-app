@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import { Dialog, DialogContent, Typography } from '@material-ui/core';
 import { updateTask } from '../../apis/tasks';
 import { Stack } from '@mui/system';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import TextField from '@mui/material/TextField';
@@ -25,22 +25,26 @@ const EditTaskForm = ({
     deadline: task.deadline,
   };
 
-  const handleSubmit = (task) => {
-    const taskWithId = { taskId, ...task };
-    handleCloseEdit();
-    updateTask(taskWithId);
+  const handleSubmit = (newTask) => {
+    const taskWithId = { taskId, ...newTask };
+    console.log('date', newTask.deadline);
     setLists((lists) =>
       lists.map((list) => {
         if (list.listId === listId) {
           list.tasks = list.tasks.map((task) => {
             return task.taskId === taskId
-              ? { ...taskWithId, deadline: formatDate(taskWithId.deadline.$d) }
+              ? {
+                  ...taskWithId,
+                  deadline: formatDate(taskWithId.deadline),
+                }
               : task;
           });
         }
         return list;
       }),
     );
+    handleCloseEdit();
+    updateTask(taskWithId);
   };
 
   return (
@@ -68,7 +72,7 @@ const EditTaskForm = ({
                       placeholder="Description"
                       as="textarea"
                     />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterLuxon}>
                       <DateTimePicker
                         renderInput={(props) => <TextField {...props} />}
                         label="Deadline"
@@ -76,6 +80,7 @@ const EditTaskForm = ({
                         onChange={(newValue) =>
                           setFieldValue('deadline', newValue)
                         }
+                        disableMaskedInput={true}
                       />
                     </LocalizationProvider>
                     <Box className="flex-container center-flex">

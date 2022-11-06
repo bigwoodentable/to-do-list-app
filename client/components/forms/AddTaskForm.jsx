@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, ClickAwayListener } from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import { addTask } from '../../apis/tasks.js';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { Stack } from '@mui/system';
@@ -42,7 +42,7 @@ const AddTaskForm = ({ listId, setLists }) => {
           list.tasks.push({
             ...task,
             taskId: newTask.taskId,
-            deadline: formatDate(task.deadline.$d),
+            deadline: formatDate(newTask.deadline),
           });
           return list;
         }
@@ -76,12 +76,13 @@ const AddTaskForm = ({ listId, setLists }) => {
                   placeholder="Description"
                   as="textarea"
                 />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterLuxon}>
                   <DateTimePicker
                     renderInput={(props) => <TextField {...props} />}
                     label="Deadline"
                     value={values.deadline}
                     onChange={(newValue) => setFieldValue('deadline', newValue)}
+                    disableMaskedInput={true}
                   />
                 </LocalizationProvider>
                 <Box className="flex-container center-flex">
