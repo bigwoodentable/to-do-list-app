@@ -7,15 +7,16 @@ import { Stack } from '@mui/system'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import SubmitButton from '../buttons/SubmitButton'
 import TextField from '@mui/material/TextField'
+import ButtonComponent from '../buttons/ButtonComponent'
 
 const EditTaskForm = ({
   editFormOpen,
   handleCloseEdit,
   taskId,
-  setUpdate,
   task,
+  listId,
+  setLists,
 }) => {
   const initialValues = {
     name: task.name,
@@ -27,7 +28,16 @@ const EditTaskForm = ({
     const taskWithId = { taskId, ...task }
     handleCloseEdit()
     updateTask(taskWithId)
-    setUpdate((n) => n + 1)
+    setLists((lists) =>
+      lists.map((list) => {
+        if (list.listId === listId) {
+          list.tasks = list.tasks.map((task) => {
+            return task.taskId === taskId ? taskWithId : task
+          })
+        }
+        return list
+      })
+    )
   }
 
   return (
@@ -39,16 +49,10 @@ const EditTaskForm = ({
             onSubmit={(values) => handleSubmit(values)}
           >
             {({ values, setFieldValue }) => (
-              <Form style={{ width: '25rem' }}>
+              <Form className="edit-task-form-layout">
                 <Typography
-                  style={{
-                    //form-title
-                    display: 'flex',
-                    justifyContent: 'center',
-                    paddingTop: '1rem',
-                    color: 'grey',
-                  }}
                   variant="h6"
+                  className="form-title flex-container center-flex "
                 >
                   Edit Task
                 </Typography>
@@ -63,9 +67,7 @@ const EditTaskForm = ({
                     />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DateTimePicker
-                        renderInput={(props) => (
-                          <TextField {...props} style={{ width: '100%' }} />
-                        )}
+                        renderInput={(props) => <TextField {...props} />}
                         label="Deadline"
                         value={values.deadline ? values.deadline : null}
                         onChange={(newValue) =>
@@ -73,7 +75,9 @@ const EditTaskForm = ({
                         }
                       />
                     </LocalizationProvider>
-                    <SubmitButton />
+                    <Box className="flex-container center-flex">
+                      <ButtonComponent description="Submit" type="submit" />
+                    </Box>
                   </Stack>
                 </DialogContent>
               </Form>

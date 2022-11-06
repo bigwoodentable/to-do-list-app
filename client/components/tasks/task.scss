@@ -1,0 +1,19 @@
+@use '../../styles/utils/vars';
+
+.task-deadline {
+  color: vars.$grey;
+}
+
+.task-title {
+  color: vars.$black;
+}
+
+.task-layout {
+  width: 15rem;
+}
+
+.task-description-layout {
+  padding: 1rem;
+  margin-top: 0.5rem;
+  background-color: vars.$offwhite;
+}

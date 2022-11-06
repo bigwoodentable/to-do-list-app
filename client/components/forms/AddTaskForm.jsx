@@ -7,8 +7,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { Stack } from '@mui/system'
 import TextField from '@mui/material/TextField'
-import AddTaskButton from '../buttons/AddTaskButton.jsx'
-import SubmitButton from '../buttons/SubmitButton.jsx'
+import ButtonComponent from '../buttons/ButtonComponent.jsx'
+import AddIcon from '@mui/icons-material/Add'
+import { formatDate } from '../../datetime-utils.js'
 
 const initialValues = {
   name: '',
@@ -16,7 +17,7 @@ const initialValues = {
   deadline: {},
 }
 
-const AddTaskForm = ({ listId, setUpdate }) => {
+const AddTaskForm = ({ listId, setLists }) => {
   const [addTaskFormOpen, setAddTaskFormOpen] = useState(false)
   //functions for AddTaskForm.jsx to create a new task
   const handleClickOpen = () => {
@@ -27,29 +28,39 @@ const AddTaskForm = ({ listId, setUpdate }) => {
     setAddTaskFormOpen(false)
   }
 
-  const handleSubmit = (task) => {
+  const handleSubmit = async (task) => {
     //add task to db
     const taskWithListId = {
       ...task,
       listId,
     }
-    addTask(taskWithListId, handleClose)
-    setUpdate((n) => n + 1)
+    const newTask = await addTask(taskWithListId, handleClose)
+    setLists((lists) => {
+      return lists.map((list) => {
+        if (list.listId === listId) {
+          list.tasks.push({
+            ...task,
+            taskId: newTask.id,
+            deadline: formatDate(task.deadline.$d),
+          })
+          return list
+        }
+        return list
+      })
+    })
   }
 
   return !addTaskFormOpen ? (
-    <AddTaskButton handleClickOpen={handleClickOpen} />
+    <Box className="flex-container center-flex">
+      <ButtonComponent
+        icon={<AddIcon />}
+        handleFunction={handleClickOpen}
+        description={'Add a task'}
+      />
+    </Box>
   ) : (
     <ClickAwayListener onClickAway={handleClose}>
-      <Box
-        style={{
-          //add-task-form-layout
-          padding: '1rem',
-          marginBottom: '1rem',
-          //form-color variable
-          backgroundColor: '#fafafa',
-        }}
-      >
+      <Box className="add-task-form-layout">
         <Formik
           initialValues={initialValues}
           onSubmit={(values) => handleSubmit(values)}
@@ -59,27 +70,22 @@ const AddTaskForm = ({ listId, setUpdate }) => {
               <Stack spacing={3}>
                 <Field name="name" placeholder="Task Name" />
                 <Field
+                  className="add-task-description-layout"
                   name="description"
                   placeholder="Description"
                   as="textarea"
-                  style={{
-                    //textarea-description-task-add-form
-                    maxWidth: '100%',
-                    minWidth: '100%',
-                    minHeight: '1.5rem',
-                  }}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DateTimePicker
-                    renderInput={(props) => (
-                      <TextField {...props} style={{ width: '100%' }} />
-                    )}
+                    renderInput={(props) => <TextField {...props} />}
                     label="Deadline"
                     value={values.deadline}
                     onChange={(newValue) => setFieldValue('deadline', newValue)}
                   />
                 </LocalizationProvider>
-                <SubmitButton />
+                <Box className="flex-container center-flex">
+                  <ButtonComponent description="Submit" type="submit" />
+                </Box>
               </Stack>
             </Form>
           )}

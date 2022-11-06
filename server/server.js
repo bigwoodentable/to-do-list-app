@@ -6,7 +6,10 @@ const tasksRoutes = require('./routes/tasks')
 
 const server = express()
 
+//accept json request - parse request body
+// *http payload
 server.use(express.json())
+//serve static files - e.g. bundle, pdf, img
 server.use(express.static(path.join(__dirname, 'public')))
 
 server.use('/api/v1/lists', listsRoutes)

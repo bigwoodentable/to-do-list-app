@@ -1,0 +1,20 @@
+@use '../../styles/utils/vars';
+
+.lists-layout {
+  min-width: 62.5rem;
+}
+
+.list-item {
+  border: 0.1rem solid vars.$lightgrey;
+  margin: 1rem;
+  width: 25rem;
+  padding: 1rem;
+}
+
+.list-title {
+  color: vars.$charcoal;
+}
+
+.del-list-button {
+  margin-top: 1rem;
+}

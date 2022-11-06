@@ -17,8 +17,8 @@ export const addList = (newList) => {
   return request
     .post(rootUrl + '/add')
     .send(newList)
-    .then(() => {
-      return null
+    .then((res) => {
+      return res.body[0]
     })
     .catch((err) => console.error(err))
 }

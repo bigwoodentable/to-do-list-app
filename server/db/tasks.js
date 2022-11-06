@@ -25,6 +25,7 @@ const getTasksByListId = async (listId, db = connection) => {
     .select('id as taskId', 'name', 'description', 'deadline')
   return tasks.map((task) => {
     //returns datetime in a more readable format
+    console.log('server task.deadline', task.deadline)
     return task.deadline
       ? { ...task, deadline: ISOtoLocaleString(task.deadline) }
       : null
@@ -64,6 +65,10 @@ const getAllTasks = (db = connection) => {
 
 // checks whether a task is late by comparing its deadline and the time now, if negative then deadline passed
 // returns a string of late tasks e.g. 'Chop the carrot, Buy apple'
+// **db transaction - how many times go to db
+// **join / subquery
+// where() - put comparison ('deadline', <, timenow)
+// ** improve variable naming
 const checkLateTasks = async (db = connection) => {
   const allTasks = await db('tasks').select('id', 'deadline', 'name')
   const lateTasksPromises = allTasks.map(async (task) => {
@@ -75,6 +80,7 @@ const checkLateTasks = async (db = connection) => {
     return timeDifference < 0 ? task.name : null
   })
   const lateTasks = await Promise.all(lateTasksPromises)
+  // utils
   const lateTasksRemoveNulls = lateTasks.filter((name) => name !== null)
   return lateTasksRemoveNulls.join(', ')
 }

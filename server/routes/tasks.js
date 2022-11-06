@@ -9,8 +9,8 @@ const { intervalCheck } = require('../notifications/intervalLateCheck')
 router.post('/add', async (req, res) => {
   const task = req.body
   try {
-    await db.addTask(task)
-    return res.json('success in adding the task')
+    const newTask = await db.addTask(task)
+    return res.json(newTask)
   } catch (err) {
     log(err.message)
     res.status(500).json({

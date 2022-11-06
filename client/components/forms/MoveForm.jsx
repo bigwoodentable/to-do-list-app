@@ -1,25 +1,9 @@
 import React from 'react'
-import Button from '@material-ui/core/Button'
-import {
-  Box,
-  FormControlLabel,
-  FormLabel,
-  IconButton,
-  Paper,
-  Radio,
-  RadioGroup,
-  Typography,
-} from '@mui/material'
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@material-ui/core'
+import { Box, FormLabel } from '@mui/material'
+import { Dialog, DialogContent } from '@material-ui/core'
 import { Formik, Field, Form } from 'formik'
-import { addList } from '../../apis/lists'
 import { moveTask } from '../../apis/tasks'
-import SubmitButton from '../buttons/SubmitButton'
+import ButtonComponent from '../buttons/ButtonComponent'
 
 const initialValues = {
   listId: 0,
@@ -43,6 +27,7 @@ const MoveForm = ({
     handleCloseMoveForm()
     setGroup({})
     setUncheckAll(true)
+    //change to a diffirent list
     setUpdate((n) => n + 1)
   }
 
@@ -67,22 +52,22 @@ const MoveForm = ({
                   <Box role="group">
                     {lists.map((list, i) => {
                       return (
-                        // <Box style={{ margin: '0.5rem' }}>
-                        <FormLabel key={i} style={{ margin: '0.5rem' }}>
+                        <FormLabel key={i} className="move-form-label-layout">
                           <Field
+                            className="move-form-field-layout"
                             type="radio"
                             name="listId"
                             value={`${list.listId}`}
-                            style={{ margin: '0.35rem' }}
                           />
                           {list.listName}
                         </FormLabel>
-                        // </Box>
                       )
                     })}
                   </Box>
                 </DialogContent>
-                <SubmitButton />
+                <Box className="flex-container center-flex">
+                  <ButtonComponent description="Submit" type="submit" />
+                </Box>
               </Form>
             )}
           </Formik>

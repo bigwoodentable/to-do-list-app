@@ -1,0 +1,9 @@
+@use '../../styles/utils/vars';
+
+.dashboard-title {
+  color: vars.$orange;
+}
+
+.dashboard-layout {
+  padding: 1.5rem;
+}

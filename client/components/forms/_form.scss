@@ -1,0 +1,45 @@
+@use '../../styles/utils/vars';
+
+//AddListForm
+.add-list-form-layout {
+  margin: 15px;
+  width: 25rem;
+  height: 4.25rem;
+  border: 0.1rem solid vars.$lightgrey;
+}
+
+.add-list-field-layout {
+  margin-top: 1rem;
+}
+
+//AddTaskForm
+.add-task-form-layout {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: vars.$offwhite;
+}
+
+.add-task-description-layout {
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 1.5rem;
+}
+
+.form-title {
+  color: vars.$grey;
+  padding-top: 1rem;
+}
+
+//EditTaskForm
+.edit-task-form-layout {
+  width: 25rem;
+}
+
+//MoveForm
+.move-form-label-layout {
+  margin: 0.5rem;
+}
+
+.move-form-field-layout {
+  margin: 0.35rem;
+}

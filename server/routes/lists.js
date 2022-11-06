@@ -3,6 +3,8 @@ const db = require('../db/lists')
 const log = require('../logger')
 const router = express.Router()
 
+//400 - user error e.g. user trying to get something not there, unauthorize;  500 - server issue, 100 - network status code
+
 // /api/v1/lists/all
 router.get('/all', async (req, res) => {
   try {
@@ -11,6 +13,7 @@ router.get('/all', async (req, res) => {
     return null
   } catch (err) {
     log(err.message)
+    //error handler
     res.status(500).json({
       error: {
         title: 'Unable to retrieve lists',
@@ -53,5 +56,5 @@ router.delete('/del/:listId', async (req, res) => {
     return null
   }
 })
-
+// runtime - node.js, no bundler/transpiler, react-js - browser - cannot run code above es6, but it has webpack
 module.exports = router
