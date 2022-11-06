@@ -49,3 +49,7 @@ npm run test
 ### Microservice Architecture
 
 The next step is to refactor the current monolith into microservices. I am referring to this [course](https://www.udemy.com/course/microservices-with-node-js-and-react/) as the starting point.
+
+## Notes
+
+The feature to remind the user when a task has passed it's deadline is set on an interval of 5 seconds. As it is currently logging to stdout, it may become slightly irrating. If that's the case, please change extend the interval or comment out 'deadlineCheck()' in server/server.js.
