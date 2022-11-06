@@ -38,4 +38,4 @@ npm run test
 
 ## API Documentation
 
-[a relative link](doc/index.html)
+[a API Documentation](doc/index.html)
