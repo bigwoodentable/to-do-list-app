@@ -1,5 +1,5 @@
 const connection = require('./connection');
-const { ISOtoLocaleString, localToUTC, timeDiff } = require('./datetime-utils');
+const { ISOtoLocaleString, dateNow } = require('./datetime-utils');
 
 const getTaskByTaskId = (taskId, db = connection) => {
   return db('tasks')
@@ -65,29 +65,16 @@ const getAllTasks = (db = connection) => {
   return db('tasks').select('id', 'deadline');
 };
 
-// checks whether a task is late by comparing its deadline and the time now, if negative then deadline passed
 // returns a string of late tasks e.g. 'Chop the carrot, Buy apple'
-// **db transaction - how many times go to db
-// **join / subquery
-// where() - put comparison ('deadline', <, timenow)
-// ** improve variable naming
 const checkLateTasks = async (db = connection) => {
-  const allTasks = await db('tasks').select('id', 'deadline', 'name');
-  const lateTasksPromises = allTasks.map(async (task) => {
-    const deadline = await db('tasks')
-      .where('id', task.id)
-      .orWhereNot('deadline', '{}')
-      .first();
-    const timeDifference = timeDiff(localToUTC(deadline.deadline));
-    return timeDifference < 0 ? task.name : null;
-  });
-  const lateTasks = await Promise.all(lateTasksPromises);
-  // utils
-  const lateTasksRemoveNulls = lateTasks.filter((name) => name !== null);
-  console.log('lateTasksRemoveNulls', lateTasksRemoveNulls);
-  return lateTasksRemoveNulls.join(', ');
+  const latetasks = await db('tasks')
+    .where('deadline', '<', dateNow())
+    .whereNot('status', 'completed')
+    .select('name');
+  const formattedTasks = latetasks.map((task) => task.name);
+  return formattedTasks.join(', ');
 };
-checkLateTasks();
+
 module.exports = {
   getTasksByListId,
   addTask,
