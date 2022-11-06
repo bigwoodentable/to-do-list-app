@@ -37,3 +37,5 @@ npm run test
 ```
 
 ## API Documentation
+
+[a relative link](doc/index.html)
