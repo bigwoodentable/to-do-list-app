@@ -14,21 +14,37 @@ const MoveForm = ({
   handleCloseMoveForm,
   lists,
   group,
-  setUpdate,
   setGroup,
   setUncheckAll,
+  setLists,
 }) => {
   //moves multiple selected tasks
-  const moveGroup = (listid) => {
-    Object.entries(group).forEach((property) => {
-      const taskId = property[0]
-      moveTask(taskId, listid)
-    })
+  const moveGroup = async (listId) => {
+    const movedTasks = await Promise.all(
+      Object.entries(group).map(async (property) => {
+        const taskId = property[0]
+        return await moveTask(taskId, listId)
+      })
+    )
+
+    setLists((lists) =>
+      lists.map((list) => {
+        if (list.listId === listId) {
+          //prevent duplication if user selects tasks in a list and also selects the same list as the new list
+          //this requires refactoring - perhaps preventing users from moving tasks to its own list in the first place
+          const unselectedTasks = list.tasks.filter(
+            (task) => !group[task.taskId]
+          )
+          list.tasks = [...unselectedTasks, ...movedTasks]
+        } else {
+          list.tasks = list.tasks.filter((task) => !group[task.taskId])
+        }
+        return list
+      })
+    )
     handleCloseMoveForm()
-    setGroup({})
     setUncheckAll(true)
-    //change to a diffirent list
-    setUpdate((n) => n + 1)
+    setGroup({})
   }
 
   const handleSubmit = (value) => {
@@ -36,8 +52,8 @@ const MoveForm = ({
       alert('Sorry, please pick a list.')
       return null
     } else {
-      const listid = Number(value.listId)
-      moveGroup(listid)
+      const listId = Number(value.listId)
+      moveGroup(listId)
     }
   }
 

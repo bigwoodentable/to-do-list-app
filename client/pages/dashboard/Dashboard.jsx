@@ -15,20 +15,27 @@ function Dashboard() {
   const [lists, setLists] = useStateIfMounted([])
   const [moveFormOpen, setMoveFormOpen] = useState(false)
   const [update, setUpdate] = useState(0)
+  console.log('lists', lists)
+  // this is part of the work-around for a bug that occurred in Task.jsx's check-boxes, please view Task.jsx for more detail
+  // this work-around requires refactoring
+  // all subsequent code related to this will be commented with '***'
   const [group, setGroup] = useState({})
   const [uncheckAll, setUncheckAll] = useState(false)
-  console.log('lists', lists)
+
+  useEffect(() => {
+    console.log('uncheckall - dashboard')
+    setUncheckAll(false)
+  }, [group])
+
   //--------------------------------------------------------
   //Gets all lists and all tasks from the database
   useEffect(async () => {
     setLists(await getAllLists())
-    setUncheckAll(false)
   }, [update])
 
   //--------------------------------------------------------
-  //functions for MoveForm.jsx to move selected tasks to a different list
+  //functions to reveal and hide MoveForm.jsx - a form that controls how selected tasks move to different lists
   const handleMoveFormOpen = () => {
-    console.log('move')
     setMoveFormOpen(true)
   }
 
@@ -36,23 +43,25 @@ function Dashboard() {
     setMoveFormOpen(false)
   }
   //--------------------------------------------------------
-  //--------------------------------------------------------
   //deletes multiple selected tasks
   const handleDelGroup = () => {
     Object.entries(group).forEach((property) => {
       const taskId = property[0]
       delTaskByTaskId(taskId)
     })
+    //updates the list that's saved in state to show the updated array of tasks
     setLists((lists) =>
       lists.map((list) => {
         list.tasks = list.tasks.filter((task) => !group[task.taskId])
         return list
       })
     )
+    //***
     setUncheckAll(true)
     setGroup({})
-    // setUpdate((n) => n + 1)
+    //***
   }
+
   return (
     <Box className="dashboard-layout">
       <Typography
@@ -81,8 +90,8 @@ function Dashboard() {
             key={i}
             listDetails={listDetails}
             setGroup={setGroup}
+            group={group}
             setLists={setLists}
-            setUpdate={setUpdate}
             uncheckAll={uncheckAll}
           />
         ))}
@@ -91,7 +100,7 @@ function Dashboard() {
           moveFormOpen={moveFormOpen}
           handleCloseMoveForm={handleCloseMoveForm}
           lists={lists}
-          setUpdate={setUpdate}
+          setLists={setLists}
           group={group}
           setGroup={setGroup}
           setUncheckAll={setUncheckAll}

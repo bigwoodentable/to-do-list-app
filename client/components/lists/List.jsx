@@ -7,7 +7,14 @@ import Task from '../tasks/Task'
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep'
 import ButtonComponent from '../buttons/ButtonComponent'
 
-const List = ({ listDetails, setUpdate, setGroup, uncheckAll, setLists }) => {
+const List = ({
+  listDetails,
+  setUpdate,
+  setGroup,
+  group,
+  uncheckAll,
+  setLists,
+}) => {
   const { listId, listName, tasks } = listDetails
 
   //--------------------------------------------------------
@@ -22,22 +29,19 @@ const List = ({ listDetails, setUpdate, setGroup, uncheckAll, setLists }) => {
       <Typography variant="h5" className="list-title">
         {listName}
       </Typography>
-      <AddTaskForm
-        listId={listDetails.listId}
-        setUpdate={setUpdate}
-        setLists={setLists}
-      />
+      <AddTaskForm listId={listDetails.listId} setLists={setLists} />
       {tasks?.length ? (
         tasks.map((task, i) => {
           return (
             <Task
               key={i}
               task={task}
-              setGroup={setGroup}
-              setUpdate={setUpdate}
               uncheckAll={uncheckAll}
               setLists={setLists}
-              listId={listId}
+              // ***
+              setGroup={setGroup}
+              group={group}
+              // ***
             />
           )
         })

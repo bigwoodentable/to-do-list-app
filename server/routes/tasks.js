@@ -81,7 +81,8 @@ router.patch('/move/:taskId/:listId', async (req, res) => {
   const listId = req.params.listId
   try {
     await db.updateTaskListId(taskId, listId)
-    return res.json('success in moving task to new list')
+    const updatedTask = await db.getTaskByTaskId(taskId)
+    return res.json(updatedTask)
   } catch (err) {
     log(err.message)
     res.status(500).json({

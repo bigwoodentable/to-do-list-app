@@ -18,7 +18,7 @@ const Task = ({ task, setUpdate, setGroup, uncheckAll, setLists, listId }) => {
       lists.map((list) => {
         if (list.listId === listId) {
           const tasks = list.tasks.filter((task) => task.taskId !== taskId)
-          return { ...list, tasks }
+          return { ...list, tasks: tasks }
         }
         return list
       })
@@ -34,10 +34,8 @@ const Task = ({ task, setUpdate, setGroup, uncheckAll, setLists, listId }) => {
   }
   //--------------------------------------------------------
   // functions related to checkbox
-  // Controls whether the checkbox is checked or not
-  const handleCheck = (event) => {
-    setChecked(event.target.checked)
-  }
+  // this is a work-around for a bug that occurred, where the checkboxes wouldn't uncheck after tasks are deleted
+  // this requires refactoring
 
   // When checked, save the task's id in state. When unchecked, remove the task's id from state.
   const handleChecked = (event) => {
@@ -52,11 +50,15 @@ const Task = ({ task, setUpdate, setGroup, uncheckAll, setLists, listId }) => {
       })
     }
   }
+
+  // controls whether the checkbox is checked or not
+  const handleCheck = (event) => {
+    setChecked(event.target.checked)
+  }
+
   // Unchecks the checkbox whenever uncheckAll is true
   useEffect(() => {
-    if (uncheckAll) {
-      setChecked(false)
-    }
+    setChecked(false)
   }, [uncheckAll])
   //--------------------------------------------------------
   return (
@@ -97,8 +99,6 @@ const Task = ({ task, setUpdate, setGroup, uncheckAll, setLists, listId }) => {
         taskId={taskId}
         setUpdate={setUpdate}
         task={task}
-        listId={listId}
-        setLists={setLists}
       />
     </ListItem>
   )

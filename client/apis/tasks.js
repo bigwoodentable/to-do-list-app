@@ -31,5 +31,7 @@ export const updateTask = (updatedTask) => {
 
 // /api/v1/tasks/move/:taskId/:listId
 export const moveTask = (taskId, listId) => {
-  return request.patch(rootUrl + `/move/${taskId}/${listId}`).then(() => null)
+  return request
+    .patch(rootUrl + `/move/${taskId}/${listId}`)
+    .then((res) => res.body)
 }

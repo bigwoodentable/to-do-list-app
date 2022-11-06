@@ -2,7 +2,10 @@ const connection = require('./connection')
 const { ISOtoLocaleString, localToUTC, timeDiff } = require('./datetime-utils')
 
 const getTaskByTaskId = (taskId, db = connection) => {
-  return db('tasks').where('id', taskId).select().first()
+  return db('tasks')
+    .where('id', taskId)
+    .select('id as taskId', 'name', 'description', 'deadline')
+    .first()
 }
 
 //datetime saved as UTC
