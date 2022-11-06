@@ -1,0 +1,224 @@
+openapi: 3.0.3
+
+info:
+  title: To-Do List API Documentation
+  description: API for to-do list data
+  version: 0.1.0
+
+externalDocs:
+  description: "To-do List Github Repository"
+  url: https://github.com/bigwoodentable/to-do-list
+
+servers:
+  - url: http://localhost:3000/
+    description: Local Server
+
+paths:
+  "/api/v1/lists/all":
+    get:
+      tags: ["Lists"]
+      summary: Returns all lists
+      responses:
+        "200":
+          description: Success in retrieving all lists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    listId:
+                      type: integer
+                      description: ID of the list
+                      example: 1
+                    listName:
+                      type: string
+                      description: Name of the List
+                      example: Create a cool web-app
+                    tasks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          taskId:
+                            type: integer
+                            description: ID of the task
+                          name:
+                            type: string
+                            description: Name of the task
+                          description:
+                            type: string
+                            description: Description of the task
+                          deadline:
+                            type: string
+                            description: Deadline of the task
+                            format: date-time
+                          status:
+                            type: string
+                            description: Complete / Incomplete
+                      example:
+                        - taskId: 1
+                          name: Testing API
+                          description: Testing API while eating a pizza.
+                          deadline: "2018-03-20T09:12:28Z"
+                          status: incomplete
+                        - taskId: 2
+                          name: Debugging
+                          description: Debugging while listening to music.
+                          deadline: "2018-03-20T09:12:28Z"
+                          status: incomplete
+        "500":
+          description: Unable to retrieve all lists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  "/api/v1/tasks/add":
+    post:
+      tags: ["Tasks"]
+      summary: Adds a task
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addTask-input"
+        required: true
+      responses:
+        "200":
+          description: Success in adding task, returning the added task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/task"
+        "500":
+          description: Unable to add task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  "/api/v1/tasks/move/{taskId}/{listId}":
+    parameters:
+      - name: taskId
+        in: path
+        description: ID of the task to move
+        example: "1"
+        required: true
+        schema:
+          type: string
+      - name: listId
+        in: path
+        description: ID of the list to move to
+        example: "2"
+        required: true
+        schema:
+          type: string
+    patch:
+      tags: ["Tasks"]
+      summary: Move a task to a different list
+      responses:
+        "200":
+          description: Success in moving task to a different list, returning the updated task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/movedTask"
+        "500":
+          description: Unable to move task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+components:
+  schemas:
+    addTask-input:
+      type: object
+      properties:
+        listId:
+          type: integer
+          description: ID of the list
+          example: 1
+        name:
+          type: string
+          description: Name of the task
+          example: Jogging
+        description:
+          type: string
+          description: Description of the task
+          example: Running for 1 hour around the park.
+        deadline:
+          type: string
+          description: Deadline of the task
+          format: date-time
+          example: "2018-03-20T09:12:28Z"
+        status:
+          type: string
+          description: Complete / Incomplete
+          example: incomplete
+    task:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the task
+          example: 1
+        listId:
+          type: integer
+          description: ID of the list
+          example: 1
+        name:
+          type: string
+          description: Name of the task
+          example: Jogging
+        description:
+          type: string
+          description: Description of the task
+          example: Running for 1 hour around the park.
+        deadline:
+          type: string
+          description: Deadline of the task
+          format: date-time
+          example: "2018-03-20T09:12:28Z"
+        status:
+          type: string
+          description: Complete / Incomplete
+          example: incomplete
+    movedTask:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the task
+          example: 1
+        listId:
+          type: integer
+          description: ID of the list
+          example: 2
+        name:
+          type: string
+          description: Name of the task
+          example: Jogging
+        description:
+          type: string
+          description: Description of the task
+          example: Running for 1 hour around the park.
+        deadline:
+          type: string
+          description: Deadline of the task
+          format: date-time
+          example: "2018-03-20T09:12:28Z"
+        status:
+          type: string
+          description: Complete / Incomplete
+          example: incomplete
+    error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            title:
+              type: string
+              description: Error Message
+              example: Internal Server Error

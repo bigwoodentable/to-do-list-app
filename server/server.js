@@ -12,7 +12,7 @@ server.use(express.static(path.join(__dirname, 'public')));
 
 //the deadline is checked at intervals, by default it is set to 1 day
 //for testing, the interval is set to a shorter period
-const unregisterEmailService = deadlineCheck(1000);
+const unregisterEmailService = deadlineCheck(5000);
 
 server.use('/api/v1/lists', listsRoutes);
 server.use('/api/v1/tasks', tasksRoutes);

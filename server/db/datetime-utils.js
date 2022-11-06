@@ -5,7 +5,6 @@ const ISOtoLocaleString = (dateTime) => {
   return DateTime.fromISO(dateTime).toLocaleString(DateTime.DATETIME_SHORT);
 };
 
-//this needs improvement, it is not very accurate
 const dateNow = () => {
   return DateTime.now().toISO();
 };
