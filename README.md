@@ -52,4 +52,4 @@ The next step is to refactor the current monolith into microservices. I am refer
 
 ## Notes
 
-The feature to remind the user when a task has passed it's deadline is set on an interval of 5 seconds. As it is currently logging to stdout, it may become slightly irrating. If that's the case, please change extend the interval or comment out 'deadlineCheck()' in server/server.js.
+The feature to remind the user when a task has passed it's deadline is set on an interval of 5 seconds. As it is currently logging to stdout, it may become slightly irrating. If that's the case, please extend the interval or comment out 'deadlineCheck()' in server/server.js.
