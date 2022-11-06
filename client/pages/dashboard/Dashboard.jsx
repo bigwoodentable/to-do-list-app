@@ -43,9 +43,15 @@ function Dashboard() {
       const taskId = property[0]
       delTaskByTaskId(taskId)
     })
+    setLists((lists) =>
+      lists.map((list) => {
+        list.tasks = list.tasks.filter((task) => !group[task.taskId])
+        return list
+      })
+    )
     setUncheckAll(true)
     setGroup({})
-    setUpdate((n) => n + 1)
+    // setUpdate((n) => n + 1)
   }
   return (
     <Box className="dashboard-layout">
