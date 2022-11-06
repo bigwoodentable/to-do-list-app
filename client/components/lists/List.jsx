@@ -40,10 +40,8 @@ const List = ({
               setLists={setLists}
               listId={listId}
               setUncheckAll={setUncheckAll}
-              // ***
               setGroup={setGroup}
               group={group}
-              // ***
             />
           );
         })

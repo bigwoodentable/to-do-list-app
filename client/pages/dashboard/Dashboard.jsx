@@ -15,6 +15,7 @@ function Dashboard() {
   const [lists, setLists] = useStateIfMounted([]);
   const [moveFormOpen, setMoveFormOpen] = useState(false);
 
+  //--------------------------------------------------------
   // this is part of the work-around for a bug that occurred in Task.jsx's check-boxes, please view Task.jsx for more detail
   // this work-around requires refactoring
   const [group, setGroup] = useState({});
@@ -50,6 +51,7 @@ function Dashboard() {
       const taskId = property[0];
       delTaskByTaskId(taskId);
     });
+    //--------------------------------------------------------
     //updates the list that's saved in state to show the updated array of tasks
     setLists((lists) =>
       lists.map((list) => {

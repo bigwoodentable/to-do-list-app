@@ -32,6 +32,7 @@ const MoveForm = ({
     setLists(
       lists.map((list) => {
         if (list.listId === listId) {
+          //--------------------------------------------------------
           //prevent duplication if user selects tasks in a list and also selects the same list as the new list
           //this requires refactoring - perhaps preventing users from moving tasks to its own list in the first place
           const unselectedTasks = list.tasks.filter(
@@ -50,6 +51,7 @@ const MoveForm = ({
   };
 
   const handleSubmit = (value) => {
+    //--------------------------------------------------------
     //requires users to pick a list
     if (!value.listId) {
       alert('Sorry, please pick a list.');

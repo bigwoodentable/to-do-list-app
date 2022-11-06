@@ -1,8 +1,8 @@
-import React from 'react'
-import Dashboard from './pages/dashboard/Dashboard'
+import React from 'react';
+import Dashboard from './pages/dashboard/Dashboard';
 
 const App = () => {
-  return <Dashboard />
-}
+  return <Dashboard />;
+};
 
-export default App
+export default App;
