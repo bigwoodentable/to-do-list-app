@@ -1,11 +1,11 @@
-const request = require('supertest')
+const request = require('supertest');
 
-const server = require('../server')
-const db = require('../db/lists')
-const log = require('../logger')
+const server = require('../server');
+const db = require('../db/lists');
+const log = require('../logger');
 
-jest.mock('../logger')
-jest.mock('../db/lists')
+jest.mock('../logger');
+jest.mock('../db/lists');
 
 describe('GET /api/v1/lists/all', () => {
   it('responds with the correct lists', () => {
@@ -46,32 +46,32 @@ describe('GET /api/v1/lists/all', () => {
           },
         ],
       },
-    ]
+    ];
 
     db.getListsAll.mockImplementation(() => {
-      return Promise.resolve(mockLists)
-    })
+      return Promise.resolve(mockLists);
+    });
 
     return request(server)
       .get('/api/v1/lists/all')
       .then((res) => {
-        expect(res.body[0]).toEqual(mockLists[0])
-        expect(res.body[1]).toEqual(mockLists[1])
-        return null
-      })
-  })
+        expect(res.body[0]).toEqual(mockLists[0]);
+        expect(res.body[1]).toEqual(mockLists[1]);
+        return null;
+      });
+  });
 
   it('responds with status 500 and an error during a DB error', () => {
     db.getListsAll.mockImplementation(() =>
-      Promise.reject(new Error('mock error'))
-    )
+      Promise.reject(new Error('mock error')),
+    );
     return request(server)
       .get('/api/v1/lists/all')
       .expect(500)
       .then((res) => {
-        expect(log).toHaveBeenCalledWith('mock error')
-        expect(res.body.error.title).toBe('Unable to retrieve lists')
-        return null
-      })
-  })
-})
+        expect(log).toHaveBeenCalledWith('mock error');
+        expect(res.body.error.title).toBe('Unable to retrieve lists');
+        return null;
+      });
+  });
+});

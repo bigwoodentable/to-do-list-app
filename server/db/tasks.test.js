@@ -32,7 +32,6 @@ describe('addTask', () => {
     expect.assertions(3);
 
     const newTask = await db.addTask(mockTask, testDb);
-    // expect(newTask.lists_id).toBe(1)
     expect(newTask.name).toMatch('Testing Function');
     expect(newTask.description).toMatch('This is a description for the test.');
     expect(newTask.deadline).toMatch('2022-10-13T18:15:00.000Z');

@@ -1,14 +1,15 @@
-import React from 'react'
-import { Formik, Field, Form } from 'formik'
-import { Box } from '@mui/material'
-import { Dialog, DialogContent, Typography } from '@material-ui/core'
-import { updateTask } from '../../apis/tasks'
-import { Stack } from '@mui/system'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import TextField from '@mui/material/TextField'
-import ButtonComponent from '../buttons/ButtonComponent'
+import React from 'react';
+import { Formik, Field, Form } from 'formik';
+import { Box } from '@mui/material';
+import { Dialog, DialogContent, Typography } from '@material-ui/core';
+import { updateTask } from '../../apis/tasks';
+import { Stack } from '@mui/system';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import TextField from '@mui/material/TextField';
+import ButtonComponent from '../buttons/ButtonComponent';
+import { formatDate } from '../../datetime-utils';
 
 const EditTaskForm = ({
   editFormOpen,
@@ -22,23 +23,25 @@ const EditTaskForm = ({
     name: task.name,
     description: task.description,
     deadline: task.deadline,
-  }
+  };
 
   const handleSubmit = (task) => {
-    const taskWithId = { taskId, ...task }
-    handleCloseEdit()
-    updateTask(taskWithId)
+    const taskWithId = { taskId, ...task };
+    handleCloseEdit();
+    updateTask(taskWithId);
     setLists((lists) =>
       lists.map((list) => {
         if (list.listId === listId) {
           list.tasks = list.tasks.map((task) => {
-            return task.taskId === taskId ? taskWithId : task
-          })
+            return task.taskId === taskId
+              ? { ...taskWithId, deadline: formatDate(taskWithId.deadline.$d) }
+              : task;
+          });
         }
-        return list
-      })
-    )
-  }
+        return list;
+      }),
+    );
+  };
 
   return (
     <>
@@ -86,7 +89,7 @@ const EditTaskForm = ({
         </Dialog>
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default EditTaskForm
+export default EditTaskForm;

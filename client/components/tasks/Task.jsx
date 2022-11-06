@@ -100,6 +100,8 @@ const Task = ({ task, setGroup, uncheckAll, setLists, listId }) => {
         handleCloseEdit={handleCloseEdit}
         taskId={taskId}
         task={task}
+        setLists={setLists}
+        listId={listId}
       />
     </ListItem>
   );
