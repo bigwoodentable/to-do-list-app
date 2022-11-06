@@ -35,7 +35,7 @@ const AddTaskForm = ({ listId, setLists }) => {
       listId,
     };
     const newTask = await addTask(taskWithListId, handleClose);
-    console.log('newTask', newTask);
+
     setLists((lists) => {
       return lists.map((list) => {
         if (list.listId === listId) {

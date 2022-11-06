@@ -3,6 +3,7 @@ const db = require('../db/tasks');
 const router = express.Router();
 const log = require('../logger');
 const { sendEmail } = require('../email');
+const { ISOtoLocaleString } = require('../db/datetime-utils');
 
 // /api/v1/tasks/add
 router.post('/add', async (req, res) => {
@@ -24,7 +25,6 @@ router.post('/add', async (req, res) => {
 // /api/v1/tasks/del/:taskId
 router.delete('/del/:taskId', async (req, res) => {
   const taskId = req.params.taskId;
-  console.log('taskId', taskId);
   try {
     await db.delTaskByTaskId(taskId);
     return res.json('success in deleting the task');
@@ -82,7 +82,11 @@ router.patch('/move/:taskId/:listId', async (req, res) => {
   try {
     await db.updateTaskListId(taskId, listId);
     const updatedTask = await db.getTaskByTaskId(taskId);
-    return res.json(updatedTask);
+    const formattedTask = {
+      ...updatedTask,
+      deadline: ISOtoLocaleString(updatedTask.deadline),
+    };
+    return res.json(formattedTask);
   } catch (err) {
     log(err.message);
     res.status(500).json({

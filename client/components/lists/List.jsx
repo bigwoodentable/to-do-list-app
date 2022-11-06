@@ -7,7 +7,14 @@ import Task from '../tasks/Task';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import ButtonComponent from '../buttons/ButtonComponent';
 
-const List = ({ listDetails, setGroup, group, uncheckAll, setLists }) => {
+const List = ({
+  listDetails,
+  setGroup,
+  group,
+  uncheckAll,
+  setLists,
+  setUncheckAll,
+}) => {
   const { listId, listName, tasks } = listDetails;
 
   //--------------------------------------------------------
@@ -32,6 +39,7 @@ const List = ({ listDetails, setGroup, group, uncheckAll, setLists }) => {
               uncheckAll={uncheckAll}
               setLists={setLists}
               listId={listId}
+              setUncheckAll={setUncheckAll}
               // ***
               setGroup={setGroup}
               group={group}

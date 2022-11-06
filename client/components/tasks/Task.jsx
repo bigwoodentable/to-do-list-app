@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import EditTaskForm from '../forms/EditTaskForm';
-import { taskCompleted } from '../../apis/tasks';
-import { Box, Checkbox, ListItem, Typography, Paper } from '@mui/material';
-import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ButtonComponent from '../buttons/ButtonComponent';
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
+import { taskCompleted } from '../../apis/tasks';
+import { Box, Checkbox, ListItem, Typography, Paper } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 
-const Task = ({ task, setGroup, uncheckAll, setLists, listId }) => {
+const Task = ({
+  task,
+  setGroup,
+  uncheckAll,
+  setUncheckAll,
+  setLists,
+  listId,
+}) => {
   const [checked, setChecked] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const { taskId, name, description, deadline } = task;
@@ -16,8 +23,6 @@ const Task = ({ task, setGroup, uncheckAll, setLists, listId }) => {
     taskCompleted(taskId);
     setLists((lists) =>
       lists.map((list) => {
-        console.log('list.listId', list.listId);
-        console.log('listId', listId);
         if (list.listId === listId) {
           const tasks = list.tasks.filter((task) => task.taskId !== taskId);
           return { ...list, tasks: tasks };
@@ -25,6 +30,8 @@ const Task = ({ task, setGroup, uncheckAll, setLists, listId }) => {
         return list;
       }),
     );
+    setUncheckAll(true);
+    setGroup({});
   };
 
   const handleEditOpen = () => {

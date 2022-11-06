@@ -1,13 +1,13 @@
-import React from 'react'
-import { Box, FormLabel } from '@mui/material'
-import { Dialog, DialogContent } from '@material-ui/core'
-import { Formik, Field, Form } from 'formik'
-import { moveTask } from '../../apis/tasks'
-import ButtonComponent from '../buttons/ButtonComponent'
+import React from 'react';
+import { Box, FormLabel } from '@mui/material';
+import { Dialog, DialogContent } from '@material-ui/core';
+import { Formik, Field, Form } from 'formik';
+import { moveTask } from '../../apis/tasks';
+import ButtonComponent from '../buttons/ButtonComponent';
 
 const initialValues = {
   listId: 0,
-}
+};
 
 const MoveForm = ({
   moveFormOpen,
@@ -23,10 +23,10 @@ const MoveForm = ({
   const moveGroup = async (listId) => {
     const movedTasks = await Promise.all(
       Object.entries(group).map(async (property) => {
-        const taskId = property[0]
-        return await moveTask(taskId, listId)
-      })
-    )
+        const taskId = property[0];
+        return await moveTask(taskId, listId);
+      }),
+    );
 
     setLists(
       lists.map((list) => {
@@ -34,29 +34,29 @@ const MoveForm = ({
           //prevent duplication if user selects tasks in a list and also selects the same list as the new list
           //this requires refactoring - perhaps preventing users from moving tasks to its own list in the first place
           const unselectedTasks = list.tasks.filter(
-            (task) => !group[task.taskId]
-          )
-          list.tasks = [...unselectedTasks, ...movedTasks]
+            (task) => !group[task.taskId],
+          );
+          list.tasks = [...unselectedTasks, ...movedTasks];
         } else {
-          list.tasks = list.tasks.filter((task) => !group[task.taskId])
+          list.tasks = list.tasks.filter((task) => !group[task.taskId]);
         }
-        return list
-      })
-    )
-    handleCloseMoveForm()
-    setUncheckAll(true)
-    setGroup({})
-  }
+        return list;
+      }),
+    );
+    handleCloseMoveForm();
+    setUncheckAll(true);
+    setGroup({});
+  };
 
   const handleSubmit = (value) => {
     if (!value.listId) {
-      alert('Sorry, please pick a list.')
-      return null
+      alert('Sorry, please pick a list.');
+      return null;
     } else {
-      const listId = Number(value.listId)
-      moveGroup(listId)
+      const listId = Number(value.listId);
+      moveGroup(listId);
     }
-  }
+  };
 
   return (
     <>
@@ -78,7 +78,7 @@ const MoveForm = ({
                           />
                           {list.listName}
                         </FormLabel>
-                      )
+                      );
                     })}
                   </Box>
                 </DialogContent>
@@ -91,7 +91,7 @@ const MoveForm = ({
         </Dialog>
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default MoveForm
+export default MoveForm;

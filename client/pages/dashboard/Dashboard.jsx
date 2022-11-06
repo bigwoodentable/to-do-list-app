@@ -14,7 +14,6 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 function Dashboard() {
   const [lists, setLists] = useStateIfMounted([]);
   const [moveFormOpen, setMoveFormOpen] = useState(false);
-  console.log('lists', lists);
   // this is part of the work-around for a bug that occurred in Task.jsx's check-boxes, please view Task.jsx for more detail
   // this work-around requires refactoring
   // all subsequent code related to this will be commented with '***'
@@ -54,9 +53,7 @@ function Dashboard() {
     //updates the list that's saved in state to show the updated array of tasks
     setLists((lists) =>
       lists.map((list) => {
-        console.log('1', list.tasks);
         list.tasks = list.tasks.filter((task) => !group[task.taskId]);
-        console.log('2', list.tasks);
         return list;
       }),
     );
@@ -97,6 +94,7 @@ function Dashboard() {
             group={group}
             setLists={setLists}
             uncheckAll={uncheckAll}
+            setUncheckAll={setUncheckAll}
           />
         ))}
         <AddListForm setLists={setLists} />

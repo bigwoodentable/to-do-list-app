@@ -27,7 +27,6 @@ const EditTaskForm = ({
 
   const handleSubmit = (newTask) => {
     const taskWithId = { taskId, ...newTask };
-    console.log('date', newTask.deadline);
     setLists((lists) =>
       lists.map((list) => {
         if (list.listId === listId) {
