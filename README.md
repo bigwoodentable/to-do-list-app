@@ -38,7 +38,7 @@ npm run test
 
 ## API Documentation
 
-[a API Documentation](doc/index.html)
+[a API Documentation](https://bigwoodentable.github.io/doc/index.html)
 
 ## Github Repo
 
