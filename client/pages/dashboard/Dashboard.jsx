@@ -28,8 +28,12 @@ function Dashboard() {
 
   //--------------------------------------------------------
   //Gets all lists and all tasks from the database
-  useEffect(async () => {
-    setLists(await getAllLists())
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAllLists()
+      setLists(data)
+    }
+    fetchData()
   }, [])
 
   //--------------------------------------------------------
