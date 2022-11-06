@@ -24,6 +24,7 @@ router.post('/add', async (req, res) => {
 // /api/v1/tasks/del/:taskId
 router.delete('/del/:taskId', async (req, res) => {
   const taskId = req.params.taskId;
+  console.log('taskId', taskId);
   try {
     await db.delTaskByTaskId(taskId);
     return res.json('success in deleting the task');

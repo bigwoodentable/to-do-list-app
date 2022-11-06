@@ -76,7 +76,7 @@ const checkLateTasks = async (db = connection) => {
   const lateTasksPromises = allTasks.map(async (task) => {
     const deadline = await db('tasks')
       .where('id', task.id)
-      .select('deadline')
+      .orWhereNot('deadline', '{}')
       .first();
     const timeDifference = timeDiff(localToUTC(deadline.deadline));
     return timeDifference < 0 ? task.name : null;
@@ -84,9 +84,10 @@ const checkLateTasks = async (db = connection) => {
   const lateTasks = await Promise.all(lateTasksPromises);
   // utils
   const lateTasksRemoveNulls = lateTasks.filter((name) => name !== null);
+  console.log('lateTasksRemoveNulls', lateTasksRemoveNulls);
   return lateTasksRemoveNulls.join(', ');
 };
-
+checkLateTasks();
 module.exports = {
   getTasksByListId,
   addTask,

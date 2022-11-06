@@ -1,37 +1,39 @@
-import React, { useState, useEffect } from 'react'
-import EditTaskForm from '../forms/EditTaskForm'
-import { taskCompleted } from '../../apis/tasks'
-import { Box, Checkbox, ListItem, Typography, Paper } from '@mui/material'
-import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
-import ButtonComponent from '../buttons/ButtonComponent'
-import CheckIcon from '@mui/icons-material/Check'
-import EditIcon from '@mui/icons-material/Edit'
+import React, { useState, useEffect } from 'react';
+import EditTaskForm from '../forms/EditTaskForm';
+import { taskCompleted } from '../../apis/tasks';
+import { Box, Checkbox, ListItem, Typography, Paper } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import ButtonComponent from '../buttons/ButtonComponent';
+import CheckIcon from '@mui/icons-material/Check';
+import EditIcon from '@mui/icons-material/Edit';
 
 const Task = ({ task, setGroup, uncheckAll, setLists, listId }) => {
-  const [checked, setChecked] = useState(false)
-  const [editFormOpen, setEditFormOpen] = useState(false)
-  const { taskId, name, description, deadline } = task
+  const [checked, setChecked] = useState(false);
+  const [editFormOpen, setEditFormOpen] = useState(false);
+  const { taskId, name, description, deadline } = task;
 
   const handleCompleted = () => {
-    taskCompleted(taskId)
+    taskCompleted(taskId);
     setLists((lists) =>
       lists.map((list) => {
+        console.log('list.listId', list.listId);
+        console.log('listId', listId);
         if (list.listId === listId) {
-          const tasks = list.tasks.filter((task) => task.taskId !== taskId)
-          return { ...list, tasks: tasks }
+          const tasks = list.tasks.filter((task) => task.taskId !== taskId);
+          return { ...list, tasks: tasks };
         }
-        return list
-      })
-    )
-  }
+        return list;
+      }),
+    );
+  };
 
   const handleEditOpen = () => {
-    setEditFormOpen(true)
-  }
+    setEditFormOpen(true);
+  };
 
   const handleCloseEdit = () => {
-    setEditFormOpen(false)
-  }
+    setEditFormOpen(false);
+  };
   //--------------------------------------------------------
   // functions related to checkbox
   // this is a work-around for a bug that occurred, where the checkboxes wouldn't uncheck after tasks are deleted
@@ -41,25 +43,26 @@ const Task = ({ task, setGroup, uncheckAll, setLists, listId }) => {
   const handleChecked = (event) => {
     if (event.target.checked) {
       setGroup((group) => {
-        return { ...group, [taskId]: true }
-      })
+        return { ...group, [taskId]: true };
+      });
     } else {
       setGroup((group) => {
-        delete group[taskId]
-        return group
-      })
+        delete group[taskId];
+        return group;
+      });
     }
-  }
+  };
 
   // controls whether the checkbox is checked or not
   const handleCheck = (event) => {
-    setChecked(event.target.checked)
-  }
+    setChecked(event.target.checked);
+  };
 
   // Unchecks the checkbox whenever uncheckAll is true
   useEffect(() => {
-    setChecked(false)
-  }, [uncheckAll])
+    setChecked(false);
+  }, [uncheckAll]);
+
   return (
     <ListItem>
       <Checkbox
@@ -99,7 +102,7 @@ const Task = ({ task, setGroup, uncheckAll, setLists, listId }) => {
         task={task}
       />
     </ListItem>
-  )
-}
+  );
+};
 
-export default Task
+export default Task;

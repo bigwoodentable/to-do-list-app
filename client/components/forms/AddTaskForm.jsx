@@ -1,54 +1,55 @@
-import React, { useState } from 'react'
-import { Box, ClickAwayListener } from '@mui/material'
-import { Formik, Field, Form } from 'formik'
-import { addTask } from '../../apis/tasks.js'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import { Stack } from '@mui/system'
-import TextField from '@mui/material/TextField'
-import ButtonComponent from '../buttons/ButtonComponent.jsx'
-import AddIcon from '@mui/icons-material/Add'
-import { formatDate } from '../../datetime-utils.js'
+import React, { useState } from 'react';
+import { Box, ClickAwayListener } from '@mui/material';
+import { Formik, Field, Form } from 'formik';
+import { addTask } from '../../apis/tasks.js';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { Stack } from '@mui/system';
+import TextField from '@mui/material/TextField';
+import ButtonComponent from '../buttons/ButtonComponent.jsx';
+import AddIcon from '@mui/icons-material/Add';
+import { formatDate } from '../../datetime-utils.js';
 
 const initialValues = {
   name: '',
   description: '',
   deadline: {},
-}
+};
 
 const AddTaskForm = ({ listId, setLists }) => {
-  const [addTaskFormOpen, setAddTaskFormOpen] = useState(false)
+  const [addTaskFormOpen, setAddTaskFormOpen] = useState(false);
   //functions for AddTaskForm.jsx to create a new task
   const handleClickOpen = () => {
-    setAddTaskFormOpen(true)
-  }
+    setAddTaskFormOpen(true);
+  };
 
   const handleClose = () => {
-    setAddTaskFormOpen(false)
-  }
+    setAddTaskFormOpen(false);
+  };
 
   const handleSubmit = async (task) => {
     //add task to db
     const taskWithListId = {
       ...task,
       listId,
-    }
-    const newTask = await addTask(taskWithListId, handleClose)
+    };
+    const newTask = await addTask(taskWithListId, handleClose);
+    console.log('newTask', newTask);
     setLists((lists) => {
       return lists.map((list) => {
         if (list.listId === listId) {
           list.tasks.push({
             ...task,
-            taskId: newTask.id,
+            taskId: newTask.taskId,
             deadline: formatDate(task.deadline.$d),
-          })
-          return list
+          });
+          return list;
         }
-        return list
-      })
-    })
-  }
+        return list;
+      });
+    });
+  };
 
   return !addTaskFormOpen ? (
     <Box className="flex-container center-flex">
@@ -92,7 +93,7 @@ const AddTaskForm = ({ listId, setLists }) => {
         </Formik>
       </Box>
     </ClickAwayListener>
-  )
-}
+  );
+};
 
-export default AddTaskForm
+export default AddTaskForm;

@@ -1,21 +1,21 @@
-import React from 'react'
-import { Paper, Typography } from '@mui/material'
-import { Box } from '@mui/system'
-import { delListByListId } from '../../apis/lists'
-import AddTaskForm from '../forms/AddTaskForm'
-import Task from '../tasks/Task'
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep'
-import ButtonComponent from '../buttons/ButtonComponent'
+import React from 'react';
+import { Paper, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { delListByListId } from '../../apis/lists';
+import AddTaskForm from '../forms/AddTaskForm';
+import Task from '../tasks/Task';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import ButtonComponent from '../buttons/ButtonComponent';
 
 const List = ({ listDetails, setGroup, group, uncheckAll, setLists }) => {
-  const { listId, listName, tasks } = listDetails
+  const { listId, listName, tasks } = listDetails;
 
   //--------------------------------------------------------
   //deletes specified list
   const handleDeleteList = () => {
-    delListByListId(listId)
-    setLists((lists) => lists.filter((list) => list.listId !== listId))
-  }
+    delListByListId(listId);
+    setLists((lists) => lists.filter((list) => list.listId !== listId));
+  };
   //--------------------------------------------------------
   return (
     <Paper className="list-item">
@@ -31,12 +31,13 @@ const List = ({ listDetails, setGroup, group, uncheckAll, setLists }) => {
               task={task}
               uncheckAll={uncheckAll}
               setLists={setLists}
+              listId={listId}
               // ***
               setGroup={setGroup}
               group={group}
               // ***
             />
-          )
+          );
         })
       ) : (
         <Typography>No tasks in this list.</Typography>
@@ -49,7 +50,7 @@ const List = ({ listDetails, setGroup, group, uncheckAll, setLists }) => {
         />
       </Box>
     </Paper>
-  )
-}
+  );
+};
 
-export default List
+export default List;
