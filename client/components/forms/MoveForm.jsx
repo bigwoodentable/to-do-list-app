@@ -18,6 +18,7 @@ const MoveForm = ({
   setUncheckAll,
   setLists,
 }) => {
+  //--------------------------------------------------------
   //moves multiple selected tasks
   const moveGroup = async (listId) => {
     const movedTasks = await Promise.all(
@@ -27,7 +28,7 @@ const MoveForm = ({
       })
     )
 
-    setLists((lists) =>
+    setLists(
       lists.map((list) => {
         if (list.listId === listId) {
           //prevent duplication if user selects tasks in a list and also selects the same list as the new list

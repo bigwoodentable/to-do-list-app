@@ -7,7 +7,7 @@ import ButtonComponent from '../buttons/ButtonComponent'
 import CheckIcon from '@mui/icons-material/Check'
 import EditIcon from '@mui/icons-material/Edit'
 
-const Task = ({ task, setUpdate, setGroup, uncheckAll, setLists, listId }) => {
+const Task = ({ task, setGroup, uncheckAll, setLists, listId }) => {
   const [checked, setChecked] = useState(false)
   const [editFormOpen, setEditFormOpen] = useState(false)
   const { taskId, name, description, deadline } = task
@@ -60,7 +60,6 @@ const Task = ({ task, setUpdate, setGroup, uncheckAll, setLists, listId }) => {
   useEffect(() => {
     setChecked(false)
   }, [uncheckAll])
-  //--------------------------------------------------------
   return (
     <ListItem>
       <Checkbox
@@ -97,7 +96,6 @@ const Task = ({ task, setUpdate, setGroup, uncheckAll, setLists, listId }) => {
         editFormOpen={editFormOpen}
         handleCloseEdit={handleCloseEdit}
         taskId={taskId}
-        setUpdate={setUpdate}
         task={task}
       />
     </ListItem>

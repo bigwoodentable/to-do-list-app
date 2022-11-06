@@ -28,7 +28,6 @@ const getTasksByListId = async (listId, db = connection) => {
     .select('id as taskId', 'name', 'description', 'deadline')
   return tasks.map((task) => {
     //returns datetime in a more readable format
-    console.log('server task.deadline', task.deadline)
     return task.deadline
       ? { ...task, deadline: ISOtoLocaleString(task.deadline) }
       : null

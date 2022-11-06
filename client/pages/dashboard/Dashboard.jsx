@@ -14,8 +14,7 @@ import { useStateIfMounted } from 'use-state-if-mounted'
 function Dashboard() {
   const [lists, setLists] = useStateIfMounted([])
   const [moveFormOpen, setMoveFormOpen] = useState(false)
-  const [update, setUpdate] = useState(0)
-  console.log('lists', lists)
+
   // this is part of the work-around for a bug that occurred in Task.jsx's check-boxes, please view Task.jsx for more detail
   // this work-around requires refactoring
   // all subsequent code related to this will be commented with '***'
@@ -31,7 +30,7 @@ function Dashboard() {
   //Gets all lists and all tasks from the database
   useEffect(async () => {
     setLists(await getAllLists())
-  }, [update])
+  }, [])
 
   //--------------------------------------------------------
   //functions to reveal and hide MoveForm.jsx - a form that controls how selected tasks move to different lists
