@@ -38,8 +38,14 @@ npm run test
 
 ## API Documentation
 
-[a API Documentation](https://bigwoodentable.github.io/doc/index.html)
+[API Documentation](https://bigwoodentable.github.io/doc/index.html)
 
 ## Github Repo
 
-[a repo](https://github.com/bigwoodentable/bigwoodentable.github.io)
+[repo](https://github.com/bigwoodentable/bigwoodentable.github.io)
+
+## Next Steps
+
+### Microservice Architecture
+
+The next step is to refactor the current monolith into microservices. I am referring to this [course](https://www.udemy.com/course/microservices-with-node-js-and-react/) as the starting point.
