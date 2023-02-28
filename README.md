@@ -44,7 +44,7 @@ application)</li>
 1. Clone and install dependancies
 
 ```
-git clone https://github.com/bigwoodentable/bigwoodentable.github.io.git
+git clone https://github.com/bigwoodentable/to-do-list-app.git
 npm install
 ```
 
