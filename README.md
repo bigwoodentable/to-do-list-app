@@ -21,7 +21,6 @@ User Requirements:
 task is completed </li>
     <li>As a user, I will receive an email (mock this functionality by logging to stdout) when a
 task passes it's deadline </li>
-<li>Good developer onboarding steps</li>
 </ol>
 
 Bonus Requirements:
@@ -34,6 +33,7 @@ application)</li>
   <li>The Twelve-Factor App</li>
   <li>Tests (unit and/or integration)</li>
   <li>Documentation of API</li>
+  <li>Good developer onboarding steps</li>
   </ol>
 </p>
 </div>
