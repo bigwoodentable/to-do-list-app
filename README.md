@@ -1,9 +1,43 @@
 <h1 align="center">
-  To-Doify 
+  To-Do
 </h1>
 <p align="center">
-  A To-Do List App
+  This app is created based on the user requirements below. I was given around 10 days to complete this.
+
+User Requirements:
+
+  <ol>
+    <li>As a user, I can view all lists and tasks which have been created </li>
+    <li>As a user, I can create an empty list with a name property </li>
+    <li>As a user, I can delete an entire list with all its tasks </li>
+    <li>As a user, I can add new tasks to an existing list with a name description and deadline properties </li>
+    <li>As a user, I can update the name, description and deadline of a task within a list </li>
+    <li>As a user, I can move a single task to a different list </li>
+    <li>As a user, I can move multiple tasks to a different list in a single transaction </li>
+    <li>As a user, I can delete a task from a list </li>
+    <li>As a user, I can delete multiple tasks from a list in a single transaction </li>
+    <li>As a user, I can complete a task </li>
+    <li>As a user, I will receive an email (mock this functionality by logging to stdout) when a
+task is completed </li>
+    <li>As a user, I will receive an email (mock this functionality by logging to stdout) when a
+task passes it's deadline </li>
+<li>Good developer onboarding steps</li>
+</ol>
+
+Bonus Requirements:
+
+  <ol>
+  <li>Microservice architecture (potentially implementing patterns such as an API Gateway)</li>
+  <li>Containerisation (docker-compose, minikube, etc.)</li>
+  <li>Relational or non-relational database (possibly run as a container with the
+application)</li>
+  <li>The Twelve-Factor App</li>
+  <li>Tests (unit and/or integration)</li>
+  <li>Documentation of API</li>
+  </ol>
 </p>
+</div>
+</br></br>
 
 ## Installation & Set Up
 
@@ -35,14 +69,6 @@ npm run dev
 npm run test
 
 ```
-
-## API Documentation
-
-[API Documentation](https://bigwoodentable.github.io/doc/index.html)
-
-## Github Repo
-
-[repo](https://github.com/bigwoodentable/bigwoodentable.github.io)
 
 ## Next Steps
 
